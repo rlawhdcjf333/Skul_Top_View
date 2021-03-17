@@ -15,7 +15,9 @@
 #include <iostream>
 #include <functional>
 #include <stack>
+#include <queue>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -41,13 +43,18 @@ using namespace std;
 #include "ObjectManager.h"
 #include "SceneManager.h"
 #include "GameEventManager.h"
+#include "Camera.h"
 #include "Gizmo.h"
 #include "Image.h"
+#include "TileList.h"
+#include "PathFinder.h"
+#include "Tile.h"
 
 //#ifdef UNICODE
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 //#endif
 
+extern POINT nonC_mousePosition; //마우스 절대 좌표
 extern POINT _mousePosition;	//마우스 좌표
 extern HWND	_hWnd;
 extern HINSTANCE	_hInstance;

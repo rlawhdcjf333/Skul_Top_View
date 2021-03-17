@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ObjectManager.h"
-
+#include "Bullet.h"
 #include "GameObject.h"
 ObjectManager::ObjectManager()
 {
@@ -57,6 +57,28 @@ void ObjectManager::Update()
 			}
 		}
 	}
+	IntersectObject();
+
+	mRenderList.clear();
+	for (int i = 0; i < (int)ObjectLayer::End; i++)
+	{
+		if (i == 0) continue;
+
+		for (GameObject* elem : mObjectList[(ObjectLayer)i])
+		{
+			mRenderList.push_back(elem);
+		}
+
+	}
+	function <bool(GameObject* a, GameObject* b)> comp = [](GameObject* a, GameObject* b)
+	{
+		int aY = a->GetRect().bottom;
+		int bY = b->GetRect().bottom;
+
+		return aY<bY;
+	};
+	sort(mRenderList.begin(), mRenderList.end(), comp);
+
 }
 
 void ObjectManager::Render(HDC hdc)
@@ -67,8 +89,44 @@ void ObjectManager::Render(HDC hdc)
 		for (int i = 0; i < iter->second.size(); ++i)
 		{
 			if (iter->second[i]->GetIsActive() == true)
-			{
+			{	
 				iter->second[i]->Render(hdc);
+			}
+		}
+	}
+
+	for (GameObject* elem : mObjectList[ObjectLayer::Background])
+	{
+		if (elem->GetIsActive() == true)
+		{
+			elem->Render(hdc);
+		}
+	}
+	for (GameObject* elem : mRenderList)
+	{
+		if (elem->GetIsActive() == true)
+		{
+			elem->Render(hdc);
+		}
+	}
+
+}
+
+void ObjectManager::IntersectObject()
+{
+	RECT tmp;
+
+	for (GameObject* elem : mObjectList[ObjectLayer::Player_Bullet])
+	{
+		for (GameObject* elemelem : mObjectList[ObjectLayer::Enemy])
+		{
+
+			RECT playerBullet = elem->GetRect();
+			RECT enemy = elemelem->GetRect();
+			if (IntersectRect(&tmp, &playerBullet, &enemy))
+			{
+				elemelem->Damage(elem->GetDamage());
+				elem->Damage(0);
 			}
 		}
 	}

@@ -12,6 +12,7 @@ wstring _className = L"플밍26기";	//유니코드는 아스키코드랑 다르
 //wchar라는 녀석을 쓰기 편하게 만든 클래스
 
 POINT _mousePosition;	//마우스 좌표
+POINT nonC_mousePosition; //마우스 절대좌표
 
 //NULL : 숫자 0, 없는 메모리 주소를 0으로 표기하자는 개발자들의 약속
 MainGame* _mainGame = NULL;

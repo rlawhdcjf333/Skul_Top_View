@@ -79,6 +79,12 @@
     <Filter Include="MainGame\Player">
       <UniqueIdentifier>{11d0613a-1895-418a-bd73-e58fe8c746b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy">
+      <UniqueIdentifier>{c66976d8-fcf0-41b9-8aaa-ee0713a93f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Bullet">
+      <UniqueIdentifier>{412150ea-7769-4e4b-8d14-73bc94d11d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -180,6 +186,12 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Dumb.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -268,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>MainGame\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Dumb.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

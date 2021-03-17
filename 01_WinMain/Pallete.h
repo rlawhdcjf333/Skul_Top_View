@@ -1,4 +1,5 @@
 #pragma once
+#include "Tile.h"
 
 class Pallete
 {
@@ -12,7 +13,7 @@ class Pallete
 	int mFrameY;
 
 	RECT mRect;
-
+	TileType mTileType;
 public:
 	Pallete(Image* pImage, float x, float y, int frameX, int frameY, float sizeX, float sizeY);
 	void Render(HDC hdc);
@@ -22,4 +23,7 @@ public:
 	RECT* GetRect() { return &mRect; }
 	int GetFrameX() { return mFrameX; }
 	int GetFrameY() { return mFrameY; }
+
+	void SetType(TileType val) { mTileType = val; }
+	TileType GetType() { return mTileType; }
 };

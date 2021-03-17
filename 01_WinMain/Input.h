@@ -33,4 +33,4 @@ public:
 
 };
 
-#define _Input Input::Get()
+#define INPUT Input::GetInstance()

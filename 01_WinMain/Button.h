@@ -3,7 +3,7 @@ class Button final
 {
 	enum class State : int
 	{
-		Normal, Push,
+		Normal, Push
 	};
 
 	function<void(void)> mFunc;	//버튼눌렸을때 실행될 함수

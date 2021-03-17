@@ -19,7 +19,7 @@ void Button::Update()
 	{
 		if (Input::GetInstance()->GetKeyDown(VK_LBUTTON))
 		{
-			if (PtInRect(&mRect, _mousePosition))
+			if (PtInRect(&mRect, nonC_mousePosition))
 			{
 				mState = State::Push;
 			}
@@ -35,7 +35,6 @@ void Button::Update()
 				mFunc();
 			}
 		}
-
 	}
 }
 

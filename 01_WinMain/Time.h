@@ -34,3 +34,4 @@ public:
 	inline void SetTimeScale(float scale) { this->mTimeScale = scale; }
 };
 
+#define dTime Time::GetInstance()->DeltaTime()

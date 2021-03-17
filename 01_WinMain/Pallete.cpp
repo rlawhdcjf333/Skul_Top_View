@@ -4,6 +4,7 @@
 Pallete::Pallete(Image* pImage, float x, float y, int frameX, int frameY, float sizeX, float sizeY)	
 	: mImage(pImage), mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY) 
 {
+	mTileType = TileType::Normal;
 	mRect = RectMake(mX, mY, mSizeX, mSizeY);
 }
 
@@ -15,6 +16,7 @@ void Pallete::Render(HDC hdc)
 
 void Pallete::Render(HDC hdc, float startX, float startY)
 {
-	mImage->ScaleFrameRender(hdc, startX, startY, mFrameX, mFrameY, mSizeX, mSizeY);
+	CAMERA->ScaleFrameRender(hdc, mImage, startX, startY, mFrameX, mFrameY, mSizeX, mSizeY);
+	//mImage->ScaleFrameRender(hdc, startX, startY, mFrameX, mFrameY, mSizeX, mSizeY);
 }
 

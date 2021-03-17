@@ -2,38 +2,26 @@
 #include "GameScene.h"
 #include "Player.h"
 #include "Tile.h"
-
+#include "Dumb.h"
+#include "MapObject.h"
 void GameScene::Init()
 {
-	for (int y = 0; y < 20; y++)
-	{
-		vector <Tile*> tmp;
-		for (int x = 0; x < 20; x++)
-		{
-			tmp.push_back
-			(
-				new Tile
-				(
-					IMAGEMANAGER->FindImage(L"Tiles"),
-					610 + (x - y) * 60 / 2,
-					100 + (x + y) * 30 / 2,
-					2,
-					3,
-					60,
-					30
-				)
-			);
-		}
-		mTileList.push_back(tmp);
-	}
+	IMAGEMANAGER->LoadFromFile(L"Tiles", Resources(L"tile_test.bmp"), 372, 372, 3, 6, true);
+	IMAGEMANAGER->LoadFromFile(L"ForestObject", Resources(L"forestObject.bmp"), 360, 300, 3, 5, true);
+	IMAGEMANAGER->LoadFromFile(L"Tree1", ResourcesObject(L"Tree1.bmp"), 200, 167, true);
 	MapLoad();
-	mPlayer = new Player(mTileList[10][10]->GetX()+30, mTileList[10][10]->GetY()+15, 30,30);
-	mPlayer->Init();
+	
+	Obj->AddObject(ObjectLayer::Player, new Player(30, 30, 30, 30));
+	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
+	Obj->Init();
+
+	CAMERA->ChangeMode(Camera::Mode::Follow);
+	CAMERA->SetTarget(Obj->FindObject("player"));
 }
 
 void GameScene::Update()
 {
-	mPlayer->Update();
+	ObjectManager::GetInstance()->Update();
 }
 
 void GameScene::Render(HDC hdc)
@@ -41,17 +29,15 @@ void GameScene::Render(HDC hdc)
 
 	for (int y = 0; y < mTileList.size(); y++)
 	{
-		for (int x = 0; x < mTileList[y].size(); x++)
+		for (int x = 0; x < mTileList.size(); x++)
 		{
 			mTileList[y][x]->Render(hdc);
 		}
 	}
 
-	mPlayer->Render(hdc);
-
 	SetBkMode(hdc, TRANSPARENT);
-	TextOut(hdc, 800, 100, L"이동: WASD", 8);
-	TextOut(hdc, 850, 150, L"타일맵 enum class 구현은 나중에", 22);
+	TextOut(hdc, 800, 100, L"이동: 우클릭, 꾹 누르고 있어도 됨.", 21);
+	ObjectManager::GetInstance()->Render(hdc);
 }
 
 void GameScene::Release()
@@ -64,13 +50,37 @@ void GameScene::Release()
 		}
 	}
 
-
-	SafeDelete(mPlayer);
+	Obj->Release();
+	
 }
 
 void GameScene:: MapLoad()
 {
-	ifstream loadStream(L"../04_Data/Test.txt");
+	for (int y = 0; y < 75; y++)
+	{
+		vector <Tile*> tmp;
+		for (int x = 0; x < 75; x++)
+		{
+			tmp.push_back
+			(
+				new Tile
+				(
+					IMAGEMANAGER->FindImage(L"Tiles"),
+					StartX + (x - y) * TileSizeX / 2,
+					StartY + (x + y) * TileSizeY / 2,
+					2,
+					3,
+					TileSizeX,
+					TileSizeY,
+					x,
+					y
+				)
+			);
+		}
+		mTileList.push_back(tmp);
+	}
+
+	ifstream loadStream(L"../04_Data/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -80,21 +90,51 @@ void GameScene:: MapLoad()
 				string key;
 				int frameX;
 				int frameY;
+				int type;
 				string buffer;
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer);
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
+				getline(loadStream, buffer);
+				type = stoi(buffer);
 
 				wstring wstr;
 				wstr.assign(key.begin(), key.end());
 				mTileList[y][x]->SetImage(IMAGEMANAGER->FindImage(wstr));
 				mTileList[y][x]->SetFrameX(frameX);
 				mTileList[y][x]->SetFrameY(frameY);
+				mTileList[y][x]->SetType((TileType)type);
 			}
 		}
 	}
+	loadStream.close();
+
+	loadStream.open(L"../04_Data/Object.txt");
+	if (loadStream.is_open())
+	{
+		while (loadStream.peek() != EOF) {
+			string key;
+			int x;
+			int y;
+			int type;
+			string buffer;
+			getline(loadStream, buffer, ',');
+			key = buffer;
+			getline(loadStream, buffer, ',');
+			x = stoi(buffer);
+			getline(loadStream, buffer);
+			y = stoi(buffer);
+			wstring wstr;
+			wstr.assign(key.begin(), key.end());
+			MapObject* mapObject = new MapObject(IMAGEMANAGER->FindImage(wstr), x, y);
+
+			Obj->AddObject(ObjectLayer::MapObject, mapObject);
+		}
+	}
+
+	TileList::GetInstance()->SetMap(mTileList);
 }

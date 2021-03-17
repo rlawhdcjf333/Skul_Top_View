@@ -6,8 +6,6 @@ class Player;
 class GameScene : public Scene
 {
 	vector <vector<Tile*>> mTileList;
-	Player* mPlayer;
-
 public:
 
 	void Init()override;

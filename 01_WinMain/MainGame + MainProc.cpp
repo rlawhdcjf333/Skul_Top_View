@@ -3,18 +3,22 @@
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
+	
 	switch (iMessage)
 	{
 	case WM_DESTROY:
-		//¸Þ¼¼ÁöÅ¥¿¡ WM_QUIT¶ó´Â ¸Þ¼¼Áö¸¦ º¸³» GetMessage°¡ false¸¦ ¹ÝÈ¯ÇÏ°Ô ¸¸µç´Ù. Áï ·çÇÁ¸¦ Á¾·á½ÃÅ²´Ù
+		//ë©”ì„¸ì§€íì— WM_QUITë¼ëŠ” ë©”ì„¸ì§€ë¥¼ ë³´ë‚´ GetMessageê°€ falseë¥¼ ë°˜í™˜í•˜ê²Œ ë§Œë“ ë‹¤. ì¦‰ ë£¨í”„ë¥¼ ì¢…ë£Œì‹œí‚¨ë‹¤
 		PostQuitMessage(0);
 		break;
-		//¸¶¿ì½º ¿òÁ÷¿´À» ‹š µé¾î¿À´Â ¸Þ¼¼Áö
+		//ë§ˆìš°ìŠ¤ ì›€ì§ì˜€ì„ Â‹Âš ë“¤ì–´ì˜¤ëŠ” ë©”ì„¸ì§€
 	case WM_MOUSEMOVE:
-		//lparam : ¸¶¿ì½º ÁÂÇ¥°¡ µé¾î¿Ã ‹š ÇØ´ç º¯¼ö(Á¤¼ö) ÇÏ³ª¿¡ x,y,°ªÀ» ´ã¾Æ º¸³½´Ù.
-		//¾Õ¿¡ 32ºñÆ®¿¡´Â y°ª, µÚ¿¡ 32ºñÆ®¿¡´Â x°ªÀ» ÀúÀå(<<,>> ½ÃÇÁÆ® ¿¬»êÀÚ·Î)
-		_mousePosition.x = LOWORD(lParam);
-		_mousePosition.y = HIWORD(lParam);
+		//lparam : ë§ˆìš°ìŠ¤ ì¢Œí‘œê°€ ë“¤ì–´ì˜¬ Â‹Âš í•´ë‹¹ ë³€ìˆ˜(ì •ìˆ˜) í•˜ë‚˜ì— x,y,ê°’ì„ ë‹´ì•„ ë³´ë‚¸ë‹¤.
+		//ì•žì— 32ë¹„íŠ¸ì—ëŠ” yê°’, ë’¤ì— 32ë¹„íŠ¸ì—ëŠ” xê°’ì„ ì €ìž¥(<<,>> ì‹œí”„íŠ¸ ì—°ì‚°ìžë¡œ)
+		_mousePosition.x = LOWORD(lParam) + mCamera->GetRect().left;
+		_mousePosition.y = HIWORD(lParam) + mCamera->GetRect().top;
+
+		nonC_mousePosition.x = LOWORD(lParam);
+		nonC_mousePosition.y = HIWORD(lParam);
 		break;
 	}
 
