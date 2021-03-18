@@ -17,6 +17,10 @@ void MainGame::Init()
 	//IMAGEMANAGER->LoadFromFile(L"Sans", Resources(L"Sans.bmp"), 92, 30, 4, 1, true);
 	//mImage = IMAGEMANAGER->GetInstance()->FindImage(L"Sans");
 	ImageManager::GetInstance()->LoadFromFile(L"Cursor", Resources(L"Cursor.bmp"), 21, 21, true);
+	IMAGEMANAGER->LoadFromFile(L"Tree2", ResourcesObject(L"Tree2.bmp"), 86, 142, true);
+	IMAGEMANAGER->LoadFromFile(L"Tree3", ResourcesObject(L"Tree3.bmp"), 92, 190, true);
+	IMAGEMANAGER->LoadFromFile(L"Tree9", ResourcesObject(L"Tree9.bmp"), 344, 290, true);
+	IMAGEMANAGER->LoadFromFile(L"Bush6", ResourcesObject(L"Bush6.bmp"), 57, 48, true);
 	mCursorImage = ImageManager::GetInstance()->FindImage(L"Cursor");
 	mCamera = new Camera;
 	mCamera->Init();
