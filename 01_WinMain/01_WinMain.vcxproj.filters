@@ -213,6 +213,9 @@
     <ClInclude Include="TileList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Sword.h">
+      <Filter>MainGame\Player\Skuls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -325,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="TileList.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>MainGame\Player\Skuls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

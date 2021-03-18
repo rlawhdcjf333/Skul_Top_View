@@ -179,6 +179,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoundPlayer.h" />
+    <ClInclude Include="Sword.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TileList.h" />
     <ClInclude Include="Time.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
+    <ClCompile Include="Sword.cpp" />
     <ClCompile Include="TileList.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Tile.cpp" />

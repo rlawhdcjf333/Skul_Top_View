@@ -53,7 +53,7 @@ void Camera::Update()
 		break;
 	}
 
-
+	Panning();
 }
 
 void Camera::Render(HDC hdc)
@@ -200,6 +200,20 @@ bool Camera::IsInCameraArea(RECT rc)
 	return true;
 }
 
+
+void Camera::Panning()
+{
+	if (mIsPanning)
+	{
+		mPanningTime -= dTime;
+
+		mX += mPanningPower * cosf(Random::GetInstance()->RandomInt(360) * PI2 / 360);
+		mY -= mPanningPower * sinf(Random::GetInstance()->RandomInt(360) * PI2 / 360);
+		mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
+
+		if (mPanningTime < 0) { mPanningTime = 0.5f; mIsPanning = false; }
+	}
+}
 
 LONG Camera::CameraMouseX() { return nonC_mousePosition.x + mRect.left; }
 LONG Camera::CameraMouseY() { return nonC_mousePosition.y + mRect.top; }

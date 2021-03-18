@@ -1,38 +1,32 @@
 #pragma once
 #include "Player.h"
+
 class Animation;
-class LittleBone :public Player
+class Sword :public Player
 {
 	Image* mHeadImage;
 
 	enum class Motion : int {
-		rightIdle=0,
+		rightIdle = 0,
 		leftIdle,
 		rightWalk,
 		leftWalk,
 		rightDash,
 		leftDash,
+
 		rightAttack1,
 		rightAttack2,
+		rightAttack3,
 		leftAttack1,
 		leftAttack2,
+		leftAttack3,
 
-		switchAttack,
+		rightSwitching,
+		leftSwitching,
 		rightSkill1,
 		leftSkill1,
-
-		rightIdleHeadless,
-		leftIdleHeadless,
-		rightWalkHeadless,
-		leftWalkHeadless,
-		rightDashHeadless,
-		leftDashHeadless,
-		rightAttack1Headless,
-		rightAttack2Headless,
-		leftAttack1Headless,
-		leftAttack2Headless,
-
-		respawning,
+		rightSkill2,
+		leftSkill2,
 
 		End
 	};
@@ -40,19 +34,17 @@ class LittleBone :public Player
 	Animation* mAnimationList[(int)Motion::End];
 	Animation* mCurrentAnimation;
 
-	int mRotationCount;
-	bool mIsHead;
-
 public:
-	LittleBone(int indexX, int indexY, float sizeX, float sizeY);
+	Sword(int indexX, int indexY, float sizeX, float sizeY);
 	void Init() override;
 	void Update() override;
 	void Release() override;
 	void Render(HDC hdc) override;
-	
-	void SetAnimation(int listNum);
 
+	void SetAnimation(int listNum);
 	void BasicAttack();
-	void Skill1();
+	void Skill1(); //µ¹Áø Âî¸£±â
+	void Skill2(); //¼¼¹ø Âî¸£±â
+
 };
 

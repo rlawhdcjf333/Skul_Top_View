@@ -142,9 +142,9 @@ void Player::Dash(int dist)
 	mPath.clear();
 	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 	
-	if (mAngle >= PI2-(PI/8) or mAngle <(PI/8)) //우향 ->등축투영 가로 길이 보정때문에 대쉬 거리 조정
+	if (mAngle >= PI2-(PI/8) or mAngle <(PI/8)) //우향
 	{
-		for (int i = 0; i < (dist+1)*2/3; i++) {
+		for (int i = 0; i < dist+1; i++) {
 			if (mIndexX + i < TILESizeX and mIndexY - i >= 0)
 			{
 				mPath.push_back(TILE[mIndexY - i][mIndexX + i]);
@@ -178,9 +178,9 @@ void Player::Dash(int dist)
 			}
 		}
 	}
-	else if (mAngle >= (7 * PI / 8) and mAngle < (9 * PI / 8)) //좌향  ->등축투영 가로 길이 보정때문에 대쉬거리 조정
+	else if (mAngle >= (7 * PI / 8) and mAngle < (9 * PI / 8)) //좌향
 	{
-		for (int i = 0; i < (dist+1)*2/3; i++) {
+		for (int i = 0; i < dist+1; i++) {
 			if (mIndexX - i >= 0 and mIndexY + i < TILESizeY)
 			{
 				mPath.push_back(TILE[mIndexY + i][mIndexX - i]);

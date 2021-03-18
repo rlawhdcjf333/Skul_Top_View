@@ -13,6 +13,11 @@ protected:
 	GameObject* mTarget;		//ÂÑ¾Æ°¡¾ßÇÒ Å¸°Ù
 
 	float mMoveSpeed;
+
+	int mPanningPower;
+	float mPanningTime = 0.5f;
+	bool mIsPanning = false;
+
 public:
 	void Init()override; 
 	void Release()override; 
@@ -41,6 +46,9 @@ public:
 
 	inline float GetMoveSpeed()const { return mMoveSpeed; }
 	inline void SetMoveSpeed(float speed) { mMoveSpeed = speed; }
+
+	void Panning();
+	void PanningOn(int power) { mPanningPower = power;  mIsPanning = true; }
 
 	LONG CameraMouseX();
 	LONG CameraMouseY();
