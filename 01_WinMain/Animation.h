@@ -23,6 +23,7 @@ class Animation
 	function<void(void)> mCallbackFunc;		//애니메이션이 전부 플레이되고 끝날 때 실행할 함수
 public:
 	Animation();
+	Animation(int startX, int startY, int endX, int endY, bool isReverse, bool isLoop, float updateTime, function <void(void)> func = []() {});
 
 	void Update();
 
@@ -40,7 +41,7 @@ public:
 
 	inline float GetFrameUpdateTime()const { return mFrameUpdateTime; }
 	inline int GetCurrentFrameIndex()const { return mCurrentFrameIndex; }
-	inline float GetCurrentFrameTIme()const { return mCurrentFrameTime; }
+	inline float GetCurrentFrameTime()const { return mCurrentFrameTime; }
 	inline bool GetIsLoop()const { return mIsLoop; }
 	inline bool GetIsPlay()const { return mIsPlay; }
 	inline pair<int, int> GetNowFrame()const { return mFrameList[mCurrentFrameIndex]; }

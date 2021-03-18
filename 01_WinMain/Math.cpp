@@ -31,6 +31,10 @@ float Math::GetDistance(float aX, float aY, float bX, float bY)
 ******************************************************************/
 float Math::GetAngle(float aX, float aY, float bX, float bY)
 {
+	if (aX == bX && aY == bY) {
+		return 0;
+	}
+
 	float width = bX - aX;
 	float height = bY - aY;
 

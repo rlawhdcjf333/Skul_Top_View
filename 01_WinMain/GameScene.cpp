@@ -4,6 +4,8 @@
 #include "Tile.h"
 #include "Dumb.h"
 #include "MapObject.h"
+#include "LittleBone.h"
+
 void GameScene::Init()
 {
 	IMAGEMANAGER->LoadFromFile(L"Tiles", Resources(L"tile_test.bmp"), 372, 372, 3, 6, true);
@@ -11,7 +13,7 @@ void GameScene::Init()
 	IMAGEMANAGER->LoadFromFile(L"Tree1", ResourcesObject(L"Tree1.bmp"), 200, 167, true);
 	MapLoad();
 	
-	Obj->AddObject(ObjectLayer::Player, new Player(30, 30, 30, 30));
+	Obj->AddObject(ObjectLayer::Player, new LittleBone(30, 30, 30, 30));
 	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
 	Obj->Init();
 

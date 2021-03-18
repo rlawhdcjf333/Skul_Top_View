@@ -2,7 +2,8 @@
 #include "GameObject.h"
 enum class BulletType : int {
 	Straight=1,
-	Trajectory
+	Trajectory,
+	SkulHead
 };
 
 class Bullet : public GameObject
@@ -12,7 +13,6 @@ class Bullet : public GameObject
 	BulletType mType;
 	float mSpeed;
 	float mRange;
-	Tile* mNextTile;
 
 public :
 	Bullet(Image* image,string name, GameObject* object,int damage, float speed , float range , float angle, BulletType type);

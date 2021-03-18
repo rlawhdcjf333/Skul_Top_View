@@ -13,6 +13,9 @@ public:
 	inline TileMap GetMap() { return mTileList; }
 	bool MapAreaCheck(float a, float b); //¸Ê ¿µ¿ª Ã¼Å©
 	bool MapAreaCheck(LONG a, LONG b); //¸Ê ¿µ¿ª Ã¼Å©
+	int CalcIndexX(float a, float b);
+	int CalcIndexY(float a, float b);
+
 };
 
 #define TILE  TileList::GetInstance()->GetMap()

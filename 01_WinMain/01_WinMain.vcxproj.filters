@@ -85,6 +85,9 @@
     <Filter Include="MainGame\Bullet">
       <UniqueIdentifier>{412150ea-7769-4e4b-8d14-73bc94d11d09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Player\Skuls">
+      <UniqueIdentifier>{fb2fdf9e-bc2b-49f5-890b-3da76e459800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -168,9 +171,6 @@
     <ClInclude Include="Gizmo.h">
       <Filter>FrameWork\Gizmo</Filter>
     </ClInclude>
-    <ClInclude Include="MapToolScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>FrameWork\MapTool</Filter>
     </ClInclude>
@@ -191,6 +191,27 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObjectPallete.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSelect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleBone.h">
+      <Filter>MainGame\Player\Skuls</Filter>
+    </ClInclude>
+    <ClInclude Include="TileList.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +284,6 @@
     <ClCompile Include="Gizmo.cpp">
       <Filter>FrameWork\Gizmo</Filter>
     </ClCompile>
-    <ClCompile Include="MapToolScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>FrameWork\MapTool</Filter>
     </ClCompile>
@@ -286,6 +304,27 @@
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersectManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObjectPallete.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TileSelect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleBone.cpp">
+      <Filter>MainGame\Player\Skuls</Filter>
+    </ClCompile>
+    <ClCompile Include="TileList.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
