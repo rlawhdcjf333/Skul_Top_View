@@ -6,13 +6,17 @@ enum class AttackType : int {
 	Whirlwind,
 	RangedAttack
 };
+
+class Animation;
 class TileSelect;
 class Tile;
 class Player : public GameObject
 {
+protected:
 	Image* mImage;
 	TileSelect* mTileSelect;
 	vector<Tile*> mPath;
+	
 	float mSpeed;
 	float mInitSpeed;
 	float mAngle;
@@ -34,3 +38,7 @@ public:
 	void Dash(int dist);
 	void Attack(int damage, int range, AttackType type);
 };
+
+#define M (int)Motion::
+#define LEFT (mAngle>PI/2 and mAngle<=3*PI/2)
+#define RIGHT (mAngle>3*PI/2 or mAngle<=PI/2)

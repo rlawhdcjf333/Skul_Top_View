@@ -1,25 +1,34 @@
 #include "pch.h"
 #include "Animation.h"
 
+Animation::Animation(int startX, int startY, int endX, int endY, bool isReverse, bool isLoop, float updateTime, function <void(void)> func)
+{
+	Animation();
+	InitFrameByStartEnd(startX, startY, endX, endY, isReverse);
+	SetIsLoop(isLoop);
+	SetFrameUpdateTime(updateTime);
+	SetCallbackFunc(func);
+
+}
+
 Animation::Animation()
 	:mIsPlay(false), mIsLoop(false), mCurrentFrameIndex(0),
 	mCurrentFrameTime(0.f), mFrameUpdateTime(0.f), mCallbackFunc(nullptr) {}
+
 
 void Animation::Update()
 {
 	if (mIsPlay == false)
 		return;
 
-	float deltaTime = Time::GetInstance()->DeltaTime();
-
-	mCurrentFrameTime += deltaTime;
+	mCurrentFrameTime += dTime;
 
 	if (mCurrentFrameTime >= mFrameUpdateTime)
 	{
 		//손실 다 없애준다
 		while (mCurrentFrameTime >= mFrameUpdateTime)
 		{
-			mCurrentFrameTime -= mFrameUpdateTime;
+			mCurrentFrameTime -=mFrameUpdateTime;
 		}
 
 		mCurrentFrameIndex++;
@@ -29,7 +38,7 @@ void Animation::Update()
 			if (mIsLoop == false)
 			{
 				mIsPlay = false;
-				--mCurrentFrameIndex;
+				mCurrentFrameIndex = 0;
 			}
 			else
 			{
@@ -69,15 +78,18 @@ void Animation::InitFrameByVector(const vector<pair<int, int>>& frameList)
 
 void Animation::InitFrameByStartEnd(int startX, int startY, int endX, int endY, bool isReverse)
 {
-	for (int y = startY; y <= endY; ++y)
+	if (!isReverse)
 	{
-		for (int x = startX; x <= endX; ++x)
+		for (int y = startY; y <= endY; ++y)
 		{
-			mFrameList.push_back(make_pair(x, y));
+			for (int x = startX; x <= endX; ++x)
+			{
+				mFrameList.push_back(make_pair(x, y));
+			}
 		}
 	}
 
-	if (isReverse)
+	else if (isReverse)
 	{
 		for (int y = endY; y >= startY; --y)
 		{

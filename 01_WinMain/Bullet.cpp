@@ -2,11 +2,11 @@
 #include "Bullet.h"
 
 Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type)
-	: GameObject(name), mNextTile(nullptr), mImage(image)
+	: GameObject(name), mImage(image)
 {
+	mImage = image;
 	mX = object->GetX();
 	mY = object->GetY();
-	//if (mImage->GetIsFrameImage()) {
 	if (mImage == nullptr) {
 		mSizeX = 10;
 		mSizeY = 10;
@@ -15,11 +15,7 @@ Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float s
 		mSizeX = mImage->GetFrameWidth();
 		mSizeY = mImage->GetFrameHeight();
 	}
-	//}
-	//else {
-	//	mSizeX = mImage->GetWidth();
-	//	mSizeY = mImage->GetHeight();
-	//}
+
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 	mDamage = damage;
 	mAngle = angle;
@@ -41,15 +37,28 @@ void Bullet::Release()
 
 void Bullet::Update()
 {
-	Move();
+	if (mRange > 0)
+	{
+		Move();
+	}
+
 	if (mRange <= 0) {
+		if (mType == BulletType::SkulHead) return;
+		
 		mIsDestroy = true;
 	}
 }
 
 void Bullet::Render(HDC hdc)
 {
-	CAMERA->RenderRect(hdc, mRect);
+	if (mImage == nullptr)
+	{
+		CAMERA->RenderRect(hdc, mRect);
+	}
+	else
+	{
+		CAMERA->Render(hdc, mImage, mRect.left, mRect.top);
+	}
 }
 
 
@@ -62,5 +71,6 @@ void Bullet::Move() {
 }
 
 void Bullet::Damage(int a) {
+	if (mType == BulletType::SkulHead) return;
 	mIsDestroy = true;
 }
