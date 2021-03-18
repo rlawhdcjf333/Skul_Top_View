@@ -14,9 +14,10 @@ void MainGame::Init()
 	ShowCursor(false);
 	mBackBuffer = new Image();
 	mBackBuffer->CreateEmpty(WINSIZEX, WINSIZEY);
-	//IMAGEMANAGER->LoadFromFile(L"Sans", Resources(L"Sans.bmp"), 92, 30, 4, 1, true);
-	//mImage = IMAGEMANAGER->GetInstance()->FindImage(L"Sans");
-	ImageManager::GetInstance()->LoadFromFile(L"Cursor", Resources(L"Cursor.bmp"), 21, 21, true);
+	IMAGEMANAGER->LoadFromFile(L"Cursor", Resources(L"Cursor.bmp"), 21, 21, true);
+	IMAGEMANAGER->LoadFromFile(L"Tiles", Resources(L"tile_test.bmp"), 372, 372, 3, 6, true);
+	IMAGEMANAGER->LoadFromFile(L"ForestObject", Resources(L"forestObject.bmp"), 360, 300, 3, 5, true);
+	IMAGEMANAGER->LoadFromFile(L"Tree1", ResourcesObject(L"Tree1.bmp"), 200, 167, true);
 	IMAGEMANAGER->LoadFromFile(L"Tree2", ResourcesObject(L"Tree2.bmp"), 86, 142, true);
 	IMAGEMANAGER->LoadFromFile(L"Tree3", ResourcesObject(L"Tree3.bmp"), 92, 190, true);
 	IMAGEMANAGER->LoadFromFile(L"Tree9", ResourcesObject(L"Tree9.bmp"), 344, 290, true);

@@ -76,6 +76,9 @@ void Sword::Init()
 	mAnimationList[M leftSkill2] = new Animation(0, 14, 11, 14, false, false, 0.1f);
 
 	SetAnimation(M rightIdle);
+
+	mSkill1CoolTime = 0;
+	mSkill2CoolTime = 0;
 }
 
 void Sword::Update()
@@ -100,7 +103,7 @@ void Sword::Update()
 		if (LEFT) { SetAnimation(M leftSwitching); }
 	}
 
-	if (INPUT->GetKey('X'))
+	if (INPUT->GetKey('X')) //3타 연계 기본공격
 	{
 		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) { SetAnimation(M rightAttack1); }
@@ -108,19 +111,35 @@ void Sword::Update()
 	}
 	BasicAttack();
 
-	if (INPUT->GetKeyDown('A'))
+	if (INPUT->GetKeyDown('A')) // 찌르기 돌진
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-		if (RIGHT) { SetAnimation(M rightSkill1); }
-		if (LEFT) { SetAnimation(M leftSkill1); }
+		if(mSkill1CoolTime==0)
+		{
+			mSkill1CoolTime = 11;
+			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			if (RIGHT) { SetAnimation(M rightSkill1); }
+			if (LEFT) { SetAnimation(M leftSkill1); }
+		}
+		else
+		{
+			CAMERA->PanningOn(3);
+		}
 	}
 	Skill1();
 
-	if (INPUT->GetKeyDown('S'))
+	if (INPUT->GetKeyDown('S')) // 세번 찌르기
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-		if (RIGHT) { SetAnimation(M rightSkill2); }
-		if (LEFT) { SetAnimation(M leftSkill2); }
+		if (mSkill2CoolTime == 0)
+		{
+			mSkill2CoolTime = 6;
+			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			if (RIGHT) { SetAnimation(M rightSkill2); }
+			if (LEFT) { SetAnimation(M leftSkill2); }
+		}
+		else
+		{
+			CAMERA->PanningOn(3);
+		}
 	}
 	Skill2();
 
@@ -221,6 +240,10 @@ void Sword::BasicAttack()
 
 void Sword::Skill1()
 {
+	mSkill1CoolTime -= dTime;
+	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
+
+
 	if ((mAnimationList[M rightSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill1]->GetNowFrameX() == 1)
 		or (mAnimationList[M leftSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill1]->GetNowFrameX() == 1))
 	{
@@ -233,6 +256,9 @@ void Sword::Skill1()
 
 void Sword::Skill2()
 {
+	mSkill2CoolTime -= dTime;
+	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
+
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)

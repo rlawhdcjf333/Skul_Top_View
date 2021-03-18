@@ -8,9 +8,7 @@
 
 void GameScene::Init()
 {
-	IMAGEMANAGER->LoadFromFile(L"Tiles", Resources(L"tile_test.bmp"), 372, 372, 3, 6, true);
-	IMAGEMANAGER->LoadFromFile(L"ForestObject", Resources(L"forestObject.bmp"), 360, 300, 3, 5, true);
-	IMAGEMANAGER->LoadFromFile(L"Tree1", ResourcesObject(L"Tree1.bmp"), 200, 167, true);
+	
 	MapLoad();
 	
 	Obj->AddObject(ObjectLayer::Player, new Sword(30, 30, 30, 30));
@@ -82,7 +80,7 @@ void GameScene:: MapLoad()
 		mTileList.push_back(tmp);
 	}
 
-	ifstream loadStream(L"../04_Data/Tile.txt");
+	ifstream loadStream(L"../04_Data/Stage1Map1/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -115,7 +113,7 @@ void GameScene:: MapLoad()
 	}
 	loadStream.close();
 
-	loadStream.open(L"../04_Data/Object.txt");
+	loadStream.open(L"../04_Data/Stage1Map1/Object.txt");
 	if (loadStream.is_open())
 	{
 		while (loadStream.peek() != EOF) {

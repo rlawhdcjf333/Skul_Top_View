@@ -128,6 +128,7 @@ void LittleBone::Update()
 	if (INPUT->GetKeyDown(VK_SPACE) and mIsHead)
 	{
 		SetAnimation(M switchAttack);
+		CAMERA->PanningOn(5);
 	}
 
 	if (INPUT->GetKey('X')) //기본공격
