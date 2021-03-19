@@ -34,6 +34,7 @@ void ObjectManager::Release()
 			SafeDelete(iter->second[i]);
 		}
 	}
+	mObjectList.clear();
 }
 
 void ObjectManager::Update()

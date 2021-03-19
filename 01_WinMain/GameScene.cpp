@@ -4,14 +4,17 @@
 #include "Tile.h"
 #include "Dumb.h"
 #include "MapObject.h"
-#include "Sword.h"
 
 void GameScene::Init()
 {
-	
 	MapLoad();
-	
-	Obj->AddObject(ObjectLayer::Player, new Sword(30, 30, 30, 30));
+	GameObject* little = new LittleBone(30, 30, 30, 30);
+	GameObject* werewolf = new Werewolf(30, 30, 30, 30);
+	werewolf->SetIsActive(false);
+	Obj->AddObject(ObjectLayer::Player, little);
+	Obj->AddObject(ObjectLayer::Player, werewolf);
+	SKUL->SetCurrentSkul((Player*)werewolf);
+	SKUL->NewSkulGet((Player*)little);
 	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
 	Obj->Init();
 
@@ -26,7 +29,6 @@ void GameScene::Update()
 
 void GameScene::Render(HDC hdc)
 {
-
 	for (int y = 0; y < mTileList.size(); y++)
 	{
 		for (int x = 0; x < mTileList.size(); x++)

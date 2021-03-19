@@ -189,6 +189,9 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TileSelect.h" />
+    <ClInclude Include="SkulManager.h" />
+    <ClInclude Include="Werewolf.h" />
+    <ClInclude Include="Skuls.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -234,6 +237,8 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TileSelect.cpp" />
+    <ClCompile Include="SkulManager.cpp" />
+    <ClCompile Include="Werewolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

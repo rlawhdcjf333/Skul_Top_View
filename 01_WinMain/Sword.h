@@ -44,10 +44,12 @@ public:
 	void Release() override;
 	void Render(HDC hdc) override;
 
-	void SetAnimation(int listNum);
+	void SetAnimation(int listNum) override;
 	void BasicAttack();
 	void Skill1(); //돌진 찌르기
 	void Skill2(); //세번 찌르기
 
+	void SkulSwitch(int indexX, int indexY) override;
+	void SkulReset() override;
 };
 

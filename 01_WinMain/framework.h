@@ -49,6 +49,7 @@ using namespace std;
 #include "TileList.h"
 #include "PathFinder.h"
 #include "Tile.h"
+#include "SkulManager.h"
 
 //#ifdef UNICODE
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")

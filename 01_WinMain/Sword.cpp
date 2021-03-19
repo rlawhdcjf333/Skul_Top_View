@@ -65,7 +65,6 @@ void Sword::Init()
 		});
 	mAnimationList[M leftAttack3] = new Animation(0, 10, 5, 10, false, false, 0.1f);
 
-
 	mAnimationList[M rightSwitching] = new Animation(2, 4, 2, 4, false, false, 0.5f);
 	mAnimationList[M leftSwitching] = new Animation(3, 4, 3, 4, false, false, 0.5f);
 
@@ -74,8 +73,6 @@ void Sword::Init()
 
 	mAnimationList[M rightSkill2] = new Animation(0, 13, 11, 13, false, false, 0.1f);
 	mAnimationList[M leftSkill2] = new Animation(0, 14, 11, 14, false, false, 0.1f);
-
-	SetAnimation(M rightIdle);
 
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
@@ -96,12 +93,6 @@ void Sword::Update()
 	}
 
 	mTileSelect->Update();
-
-	if (INPUT->GetKeyDown(VK_SPACE))
-	{
-		if (RIGHT) { SetAnimation(M rightSwitching); }
-		if (LEFT) { SetAnimation(M leftSwitching); }
-	}
 
 	if (INPUT->GetKey('X')) //3타 연계 기본공격
 	{
@@ -143,11 +134,30 @@ void Sword::Update()
 	}
 	Skill2();
 
+	mDashCoolTime -= dTime;
+	if (mDashCoolTime < 0) mDashCoolTime = 0;
+
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
-		Dash(5);
-		if (LEFT) SetAnimation(M leftDash);
-		if (RIGHT) SetAnimation(M rightDash);
+		if (mDashCoolTime == 0)
+		{
+			Dash(5);
+			if (LEFT) SetAnimation(M leftDash);
+			if (RIGHT) SetAnimation(M rightDash);
+			mDashCount = 1;
+			mDashCoolTime = mInitDashCoolTime;
+		}
+		else if (mAnimationList[M leftDash]->GetIsPlay() or mAnimationList[M rightDash]->GetIsPlay())
+		{
+
+			if (mDashCount == 1)
+			{
+				Dash(5);
+				if (LEFT) SetAnimation(M leftDash);
+				if (RIGHT) SetAnimation(M rightDash);
+				mDashCount = 0;
+			}
+		}
 	}
 
 	if (mIsDash)
@@ -271,4 +281,14 @@ void Sword::Skill2()
 			}
 		}
 	}
+}
+
+void Sword::SkulSwitch(int indexX, int indexY)
+{
+	Player::SkulSwitch(indexX, indexY);
+	if (LEFT) SetAnimation(M leftSwitching);
+	if (RIGHT) SetAnimation(M rightSwitching);
+}
+void Sword::SkulReset() {
+	mCurrentAnimation->Stop();
 }

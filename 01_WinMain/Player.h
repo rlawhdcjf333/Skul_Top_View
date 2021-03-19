@@ -16,16 +16,22 @@ protected:
 	Image* mImage;
 	TileSelect* mTileSelect;
 	vector<Tile*> mPath;
-	
+
+	Player* mAlterSkul; //Ã¼ÀÎÂ¡ ½ºÄÃ
+
 	float mSpeed;
 	float mInitSpeed;
 	float mAngle;
-	float mTime;
-	int mFrameX;
 
+	float mInitDashCoolTime;
+	float mDashCoolTime;
 	bool mIsDash;
+	int mDashCount;
+
 	int mPathIndex = 0;
 
+	int mAddHp;
+	int mAddDamage;
 public:
 
 	Player(int indexX, int indexY, float sizeX, float sizeY);
@@ -36,7 +42,15 @@ public:
 
 	void Move(float speed);
 	void Dash(int dist);
+	void SetInitDashCoolTime(float val) { mInitDashCoolTime = val; }
+	float GetInitDashCoolTime() { return mInitDashCoolTime; }
+
 	void Attack(int damage, int range, AttackType type);
+
+	virtual void SkulSwitch(int indexX, int indexY);
+	virtual void SkulReset() {};
+
+	virtual void SetAnimation(int listNum) {};
 };
 
 #define M (int)Motion::

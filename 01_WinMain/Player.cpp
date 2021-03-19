@@ -4,7 +4,7 @@
 #include "Bullet.h"
 
 Player::Player(int indexX, int indexY, float sizeX, float sizeY)
-	:GameObject("Player"), mTime(0), mFrameX(0)  
+	:GameObject("Player")
 {
 	mIndexX = indexX;
 	mIndexY = indexY;
@@ -15,7 +15,12 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mSizeX = sizeX;
 	mSizeY = sizeY;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+
 	mIsDash = false;
+	mDashCoolTime = 0;
+	mInitDashCoolTime=2.f;
+	mDashCount = 0;
+
 	mName = "player";
 }
 
@@ -28,16 +33,6 @@ void Player::Init()
 
 void Player::Update()
 {
-	mTime += dTime;
-
-	if (mTime > 0.2)
-	{
-		mTime = 0;
-		mFrameX++;
-	}
-	if (mFrameX > 3) mFrameX = 0;
-
- 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
 	{
@@ -92,7 +87,7 @@ void Player::Release()
 
 void Player::Render(HDC hdc)
 {
-	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, mFrameX, 0, mSizeX, mSizeY);
+	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, 0, 0, mSizeX, mSizeY);
 	//mImage->ScaleFrameRender(hdc, mX-mSizeX/2, mY-mSizeY, mFrameX, 0, mSizeX, mSizeY);
 	mTileSelect->Render(hdc);
 
@@ -375,4 +370,15 @@ void Player::Attack(int damage, int range, AttackType type)
 			new Bullet(nullptr,"Bullet",this,damage,300,range,mAngle,BulletType::Straight);
 		break;
 	}
+}
+
+void Player::SkulSwitch(int indexX, int indexY)
+{
+	mIndexX = indexX;
+	mIndexY = indexY;
+	mX = TILE[mIndexY][mIndexX]->GetX() + TileSizeX / 2;
+	mY = TILE[mIndexY][mIndexX]->GetY() + TileSizeY / 2;
+	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+	mPath.clear();
+	mPathIndex = 1;
 }

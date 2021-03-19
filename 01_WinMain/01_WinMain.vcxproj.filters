@@ -88,6 +88,21 @@
     <Filter Include="MainGame\Player\Skuls">
       <UniqueIdentifier>{fb2fdf9e-bc2b-49f5-890b-3da76e459800}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Player\SkulManager">
+      <UniqueIdentifier>{f9621100-4df5-4a29-acfe-c2c743f56560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Player\Skuls\NormalS">
+      <UniqueIdentifier>{55d4073f-f91d-47b7-9236-8e715f92cd8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Player\Skuls\RareS">
+      <UniqueIdentifier>{3dadd5f1-6dd6-4ebe-bc41-8ebc7b8a845c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Player\Skuls\UniqueS">
+      <UniqueIdentifier>{8ae86afb-ad63-4086-9fa8-39f22a97396b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Player\Skuls\LegendaryS">
+      <UniqueIdentifier>{3face1f9-c12f-4dbc-806c-1451abf9d5a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -183,9 +198,6 @@
     <ClInclude Include="GameScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>MainGame\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Dumb.h">
       <Filter>MainGame\Enemy</Filter>
     </ClInclude>
@@ -213,8 +225,20 @@
     <ClInclude Include="TileList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SkulManager.h">
+      <Filter>MainGame\Player\SkulManager</Filter>
+    </ClInclude>
     <ClInclude Include="Sword.h">
-      <Filter>MainGame\Player\Skuls</Filter>
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClInclude>
+    <ClInclude Include="Werewolf.h">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>MainGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Skuls.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -329,8 +353,14 @@
     <ClCompile Include="TileList.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SkulManager.cpp">
+      <Filter>MainGame\Player\SkulManager</Filter>
+    </ClCompile>
     <ClCompile Include="Sword.cpp">
-      <Filter>MainGame\Player\Skuls</Filter>
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClCompile>
+    <ClCompile Include="Werewolf.cpp">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

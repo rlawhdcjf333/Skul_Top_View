@@ -89,7 +89,7 @@ void LittleBone::Init()
 	//리스폰
 	mAnimationList[M respawning] = new Animation(0, 23, 26, 23, false, false, 0.1f, [this]() {SetAnimation(M rightIdle);});
 
-	SetAnimation(M respawning);
+	SetAnimation(M respawning);// 첫 스타트 리스폰
 }
 
 void LittleBone::Update()
@@ -125,11 +125,7 @@ void LittleBone::Update()
 
 	mTileSelect->Update();
 
-	if (INPUT->GetKeyDown(VK_SPACE) and mIsHead)
-	{
-		SetAnimation(M switchAttack);
-		CAMERA->PanningOn(5);
-	}
+
 
 	if (INPUT->GetKey('X')) //기본공격
 	{
@@ -152,9 +148,31 @@ void LittleBone::Update()
 		Skill1();
 		mIsHead = !mIsHead;
 	}
+
+	mDashCoolTime -= dTime;
+	if (mDashCoolTime < 0) mDashCoolTime = 0;
+
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
-		Dash(5);
+		if (mDashCoolTime == 0)
+		{
+			Dash(5);
+			if (LEFT) SetAnimation(M leftDash);
+			if (RIGHT) SetAnimation(M rightDash);
+			mDashCount = 1;
+			mDashCoolTime = mInitDashCoolTime;
+		}
+		else if (mAnimationList[M leftDash]->GetIsPlay() or mAnimationList[M rightDash]->GetIsPlay())
+		{
+		
+			if (mDashCount == 1)
+			{
+				Dash(5);
+				if (LEFT) SetAnimation(M leftDash);
+				if (RIGHT) SetAnimation(M rightDash);
+				mDashCount = 0;
+			}
+		}
 	}
 
 	if (mIsDash)
@@ -273,4 +291,12 @@ void LittleBone::BasicAttack()
 		}
 	}
 
+}
+void LittleBone::SkulSwitch(int indexX, int indexY)
+{
+	SetAnimation(M switchAttack);// 일단 변경되서 들어오면 빙글빙글
+	Player::SkulSwitch(indexX, indexY);
+}
+void LittleBone::SkulReset() {
+	mCurrentAnimation->Stop();
 }
