@@ -4,7 +4,7 @@ enum class AttackType : int {
 	Side= 1,
 	Stab,
 	Whirlwind,
-	RangedAttack
+	RangedAttack,
 };
 
 class Animation;
@@ -30,6 +30,7 @@ protected:
 
 	int mPathIndex = 0;
 
+	bool mInvincibility;
 	int mAddHp;
 	int mAddDamage;
 public:
@@ -41,11 +42,11 @@ public:
 	void Render(HDC hdc);
 
 	void Move(float speed);
-	void Dash(int dist);
+	void Dash(int dist, bool isBack = false);
 	void SetInitDashCoolTime(float val) { mInitDashCoolTime = val; }
 	float GetInitDashCoolTime() { return mInitDashCoolTime; }
 
-	void Attack(int damage, int range, AttackType type);
+	void Attack(int damage, int range, AttackType type, bool isBack = false);
 
 	virtual void SkulSwitch(int indexX, int indexY);
 	virtual void SkulReset() {};

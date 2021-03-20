@@ -14,6 +14,7 @@ void SkulManager::ChangeSkul()
 {
 	if (mAlterSkul)
 	{
+		mCurrentSkul->SkulReset();
 		mCurrentSkul->SetIsActive(false);
 		Player* tmp = mCurrentSkul;
 		mCurrentSkul = mAlterSkul;

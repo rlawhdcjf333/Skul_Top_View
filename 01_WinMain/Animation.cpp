@@ -2,13 +2,13 @@
 #include "Animation.h"
 
 Animation::Animation(int startX, int startY, int endX, int endY, bool isReverse, bool isLoop, float updateTime, function <void(void)> func)
+	:mIsPlay(false), mIsLoop(false), mCurrentFrameIndex(0),
+	mCurrentFrameTime(0.f), mFrameUpdateTime(0.f), mCallbackFunc(nullptr)
 {
-	Animation();
 	InitFrameByStartEnd(startX, startY, endX, endY, isReverse);
 	SetIsLoop(isLoop);
 	SetFrameUpdateTime(updateTime);
 	SetCallbackFunc(func);
-
 }
 
 Animation::Animation()

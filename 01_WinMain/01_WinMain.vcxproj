@@ -193,6 +193,10 @@
     <ClInclude Include="SkulManager.h" />
     <ClInclude Include="Werewolf.h" />
     <ClInclude Include="Skuls.h" />
+    <ClInclude Include="PettyThief.h" />
+    <ClInclude Include="Ent.h" />
+    <ClInclude Include="Warrior.h" />
+    <ClInclude Include="Mino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -241,6 +245,10 @@
     <ClCompile Include="TileSelect.cpp" />
     <ClCompile Include="SkulManager.cpp" />
     <ClCompile Include="Werewolf.cpp" />
+    <ClCompile Include="PettyThief.cpp" />
+    <ClCompile Include="Ent.cpp" />
+    <ClCompile Include="Warrior.cpp" />
+    <ClCompile Include="Mino.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

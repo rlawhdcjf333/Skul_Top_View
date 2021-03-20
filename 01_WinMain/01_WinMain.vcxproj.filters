@@ -219,9 +219,6 @@
     <ClInclude Include="TileSelect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="LittleBone.h">
-      <Filter>MainGame\Player\Skuls</Filter>
-    </ClInclude>
     <ClInclude Include="TileList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -237,8 +234,26 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Skuls.h">
+    <ClInclude Include="Enemy.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PettyThief.h">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClInclude>
+    <ClInclude Include="Skuls.h">
+      <Filter>MainGame\Player\Skuls</Filter>
+    </ClInclude>
+    <ClInclude Include="Ent.h">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleBone.h">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClInclude>
+    <ClInclude Include="Warrior.h">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
+    <ClInclude Include="Mino.h">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,9 +362,6 @@
     <ClCompile Include="TileSelect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="LittleBone.cpp">
-      <Filter>MainGame\Player\Skuls</Filter>
-    </ClCompile>
     <ClCompile Include="TileList.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -361,6 +373,24 @@
     </ClCompile>
     <ClCompile Include="Werewolf.cpp">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PettyThief.cpp">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClCompile>
+    <ClCompile Include="Ent.cpp">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleBone.cpp">
+      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+    </ClCompile>
+    <ClCompile Include="Warrior.cpp">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="Mino.cpp">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

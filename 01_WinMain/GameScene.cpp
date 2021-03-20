@@ -9,11 +9,11 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(30, 30, 30, 30);
-	GameObject* werewolf = new Werewolf(30, 30, 30, 30);
-	werewolf->SetIsActive(false);
+	GameObject* mino = new Mino(30, 30, 30, 30);
+	mino->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
-	Obj->AddObject(ObjectLayer::Player, werewolf);
-	SKUL->SetCurrentSkul((Player*)werewolf);
+	Obj->AddObject(ObjectLayer::Player, mino);
+	SKUL->SetCurrentSkul((Player*)mino);
 	SKUL->NewSkulGet((Player*)little);
 	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
 	Obj->Init();
@@ -29,7 +29,7 @@ void GameScene::Update()
 
 void GameScene::Render(HDC hdc)
 {
-	for (int y = 0; y < mTileList.size(); y++)
+	for (int y = 0; y <mTileList.size(); y++)
 	{
 		for (int x = 0; x < mTileList.size(); x++)
 		{

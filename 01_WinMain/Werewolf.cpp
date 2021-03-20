@@ -119,8 +119,38 @@ void Werewolf::Update()
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
 	BasicAttack();
+	
+	if (INPUT->GetKeyDown('A')) // Âõ±â
+	{
+		if (mSkill1CoolTime == 0)
+		{
+			mSkill1CoolTime = 4;
+			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			if (RIGHT) { SetAnimation(M rightSkill1); }
+			if (LEFT) { SetAnimation(M leftSkill1); }
+		}
+		else
+		{
+			CAMERA->PanningOn(3);
+		}
+	}
+	Skill1();
 
-
+	if (INPUT->GetKeyDown('S')) // Æ÷½Ä
+	{
+		if (mSkill2CoolTime == 0)
+		{
+			mSkill2CoolTime = 15;
+			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			if (RIGHT) { SetAnimation(M rightSkill2); }
+			if (LEFT) { SetAnimation(M leftSkill2); }
+		}
+		else
+		{
+			CAMERA->PanningOn(3);
+		}
+	}
+	Skill2();
 
 
 
@@ -167,14 +197,19 @@ void Werewolf::SetAnimation(int listNum)
 	if (mAnimationList[M leftAttack1]->GetIsPlay()) return;
 	if (mAnimationList[M leftAttack2]->GetIsPlay()) return;
 
+	if (mAnimationList[M leftSkill1]->GetIsPlay()) return;
+	if (mAnimationList[M leftSkill2]->GetIsPlay()) return;
+	if (mAnimationList[M rightSkill1]->GetIsPlay()) return;
+	if (mAnimationList[M rightSkill2]->GetIsPlay()) return;
+
 	mCurrentAnimation = mAnimationList[listNum];
 	mCurrentAnimation->Play();
 }
 
 void Werewolf::BasicAttack()
 {
-	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]
-		or mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2])
+	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay()
+		or mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
@@ -185,11 +220,28 @@ void Werewolf::BasicAttack()
 
 void Werewolf::Skill1()
 {
+	mSkill1CoolTime -= dTime;
+	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
+	if ((mAnimationList[M rightSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill1]->GetNowFrameX() == 3)
+		or (mAnimationList[M leftSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill1]->GetNowFrameX() == 3))
+	{
+		Attack(1, 2, AttackType::Whirlwind);
+		CAMERA->PanningOn(5);
+	}
 }
 
 void Werewolf::Skill2()
 {
+	mSkill2CoolTime -= dTime;
+	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
+
+	if ((mAnimationList[M rightSkill2]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill2]->GetNowFrameX() == 4)
+		or (mAnimationList[M leftSkill2]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill2]->GetNowFrameX() == 4))
+	{
+		Attack(1, 2, AttackType::Whirlwind);
+		CAMERA->PanningOn(5);
+	}
 }
 
 void Werewolf::SkulSwitch(int indexX, int indexY)

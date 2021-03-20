@@ -21,6 +21,7 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mInitDashCoolTime=2.f;
 	mDashCount = 0;
 
+	mInvincibility = false;
 	mName = "player";
 }
 
@@ -40,27 +41,6 @@ void Player::Update()
 	}
 
 	mTileSelect->Update();
-
-	if (INPUT->GetKeyDown('D'))
-	{
-		Attack(1,2,AttackType::Whirlwind);
-	}
-	if (INPUT->GetKeyDown('A'))
-	{
-		Attack(1, 2, AttackType::Side);
-	}
-	if (INPUT->GetKeyDown('S'))
-	{
-		Attack(1, 2, AttackType::Stab);
-	}
-	if (INPUT->GetKeyDown('F')) {
-		Attack(1, 300, AttackType::RangedAttack);
-	}
-
-	if (INPUT->GetKeyDown(VK_SPACE))
-	{
-		Dash(5);
-	}
 
 	if (mIsDash)
 	{
@@ -131,12 +111,18 @@ void Player::Move(float speed)
 	}
 }
 
-void Player::Dash(int dist)
+void Player::Dash(int dist, bool isBack)
 {
 	//커서 방향으로 int dist의 타일 블록 크기만큼 대쉬
 	mPath.clear();
 	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-	
+
+	if (isBack)
+	{
+		if(mAngle< PI) mAngle += PI;
+		else if (mAngle >= PI) mAngle -= PI;
+	}
+
 	if (mAngle >= PI2-(PI/8) or mAngle <(PI/8)) //우향
 	{
 		for (int i = 0; i < dist+1; i++) {
@@ -223,49 +209,51 @@ void Player::Dash(int dist)
 
 }
 
-void Player::Attack(int damage, int range, AttackType type)
+
+void Player::Attack(int damage, int range, AttackType type, bool isBack)
 {
 	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 
-	switch (type) {
-		case AttackType::Side:
-		if (mAngle > 7 * PI / 4 or mAngle <= PI / 4) //우측
-		{
-			TILE[mIndexY - 1][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY - 1][mIndexX]->AttackDamage(damage);
-			TILE[mIndexY - 1][mIndexX + 1]->AttackDamage(damage);
-			TILE[mIndexY][mIndexX + 1]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX + 1]->AttackDamage(damage);
-		}
-		else if (mAngle > PI / 4 and mAngle <= 3 * PI / 4) //상방
-		{
-			TILE[mIndexY - 1][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY - 1][mIndexX]->AttackDamage(damage);
-			TILE[mIndexY - 1][mIndexX + 1]->AttackDamage(damage);
-			TILE[mIndexY][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX - 1]->AttackDamage(damage);
+	if (isBack)
+	{
+		if (mAngle < PI) mAngle += PI;
+		else if (mAngle >= PI) mAngle -= PI;
+	}
 
-		}
-		else if (mAngle > 3 * PI / 4 and mAngle <= 5 * PI / 4) //좌측
-		{
-			TILE[mIndexY - 1][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX + 1]->AttackDamage(damage);
-		}
-		else if (mAngle > 5 * PI / 4 and mAngle <= 7 * PI / 4)//하방
-		{
-			TILE[mIndexY + 1][mIndexX - 1]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX]->AttackDamage(damage);
-			TILE[mIndexY + 1][mIndexX + 1]->AttackDamage(damage);
-			TILE[mIndexY][mIndexX + 1]->AttackDamage(damage);
-			TILE[mIndexY - 1][mIndexX + 1]->AttackDamage(damage);
-		}
+	switch (type) {
+		case AttackType::Side: //당신이 선형계획법이나 해석기하를 조금이라도 안다면 바로 이해할 수 있다.
+			for (int y = mIndexY - range; y <= mIndexY + range; y++) {
+				for (int x = mIndexX - range; x <= mIndexX + range; x++) {
+					if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
+						continue;
+					}
+
+					if (mAngle > 7 * PI / 4 or mAngle <= PI / 4) //우측
+					{
+						if (y - x > mIndexY - mIndexX) continue;
+						TILE[y][x]->AttackDamage(damage);
+					}
+					else if (mAngle > 3 * PI / 4 and mAngle <= 5 * PI / 4) //좌측
+					{
+						if (y - x < mIndexY - mIndexX) continue;
+						TILE[y][x]->AttackDamage(damage);
+					}
+					else if (mAngle > PI / 4 and mAngle <= 3 * PI / 4) //상방
+					{
+						if (y + x > mIndexY + mIndexX) continue;
+						TILE[y][x]->AttackDamage(damage);
+					}
+					else if (mAngle > 5 * PI / 4 and mAngle <= 7 * PI / 4)//하방
+					{
+						if (y + x < mIndexY + mIndexX) continue;
+						TILE[y][x]->AttackDamage(damage);
+					}
+				}
+			}
 		break;
 
 		case AttackType::Stab:
-		if (mAngle >= PI2 - (PI / 8) or mAngle < (PI / 8)) //우향 ->등축투영 가로 길이 보정때문에 대쉬 거리 조정
+		if (mAngle >= PI2 - (PI / 8) or mAngle < (PI / 8)) //우향
 		{
 			for (int i = 0; i < range + 1; i++) {
 				if (mIndexX + i < TILESizeX and mIndexY - i >= 0)
@@ -309,7 +297,7 @@ void Player::Attack(int damage, int range, AttackType type)
 				}
 			}
 		}
-		else if (mAngle >= (7 * PI / 8) and mAngle < (9 * PI / 8)) //좌향  ->등축투영 가로 길이 보정때문에 대쉬거리 조정
+		else if (mAngle >= (7 * PI / 8) and mAngle < (9 * PI / 8)) //좌향
 		{
 			for (int i = 0; i < range + 1; i++) {
 				if (mIndexX - i >= 0 and mIndexY + i < TILESizeY)
@@ -369,6 +357,7 @@ void Player::Attack(int damage, int range, AttackType type)
 		case AttackType::RangedAttack:
 			new Bullet(nullptr,"Bullet",this,damage,300,range,mAngle,BulletType::Straight);
 		break;
+
 	}
 }
 
