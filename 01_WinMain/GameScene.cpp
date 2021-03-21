@@ -9,7 +9,7 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(30, 30, 30, 30);
-	GameObject* mino = new Mino(30, 30, 30, 30);
+	GameObject* mino = new Alchemist(30, 30, 30, 30);
 	mino->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, mino);
@@ -29,16 +29,31 @@ void GameScene::Update()
 
 void GameScene::Render(HDC hdc)
 {
+
+	//대충 최적화
 	for (int y = 0; y <mTileList.size(); y++)
 	{
 		for (int x = 0; x < mTileList.size(); x++)
 		{
-			mTileList[y][x]->Render(hdc);
+			if (x + y > 39 and x + y<110 and y - x>-42 and y - x < 42)
+			{
+				mTileList[y][x]->Render(hdc);
+			}
+			else if (y - x <= -42 or y+x>=110)
+			{
+				break;
+			}
+			else if ( y + x <= 39)
+			{
+				x = 39 - y;
+			}
+			else if (y - x >= 42)
+			{
+				x = y - 42;
+			}
 		}
 	}
 
-	SetBkMode(hdc, TRANSPARENT);
-	TextOut(hdc, 800, 100, L"이동: 우클릭, 꾹 누르고 있어도 됨.", 21);
 	ObjectManager::GetInstance()->Render(hdc);
 }
 

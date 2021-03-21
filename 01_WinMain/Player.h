@@ -17,8 +17,6 @@ protected:
 	TileSelect* mTileSelect;
 	vector<Tile*> mPath;
 
-	Player* mAlterSkul; //체인징 스컬
-
 	float mSpeed;
 	float mInitSpeed;
 	float mAngle;

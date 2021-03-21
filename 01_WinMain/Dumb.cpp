@@ -18,7 +18,17 @@ void Dumb::Init()
 
 void Dumb::Update()
 {
-	TILE[mIndexY][mIndexX]->SetObject(this);
+	if (mHp <= 0)
+	{
+		this->SetIsDestroy(true);
+		TILE[mIndexY][mIndexX]->SetObject(nullptr);
+
+	}
+	else
+	{
+		TILE[mIndexY][mIndexX]->SetObject(this);
+	}
+
 }
 
 void Dumb::Render(HDC hdc)

@@ -255,6 +255,12 @@
     <ClInclude Include="Mino.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClInclude>
+    <ClInclude Include="Hunter.h">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
+    <ClInclude Include="Alchemist.h">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -390,6 +396,12 @@
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Mino.cpp">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="Hunter.cpp">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="Alchemist.cpp">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
   </ItemGroup>

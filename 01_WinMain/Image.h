@@ -73,5 +73,6 @@ public:// 접근 관련~
 	inline int GetWidth()const { return mImageBuffer->width; }
 	inline int GetHeight()const { return mImageBuffer->height; }
 	inline wstring GetKeyName()const { return mKeyName; }
+	
 };
 

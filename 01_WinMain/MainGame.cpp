@@ -73,7 +73,7 @@ void MainGame::Render(HDC hdc)
 	{
 		SceneManager::GetInstance()->Render(backDC);
 		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
-		//RenderTime(backDC);
+		RenderTime(backDC);
 	}
 	//====================================================
 	//후면버퍼 내용을 윈도우 창에 고속 복사

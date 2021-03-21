@@ -37,6 +37,7 @@ void Bullet::Release()
 
 void Bullet::Update()
 {
+
 	if (mRange > 0)
 	{
 		Move();
@@ -44,7 +45,7 @@ void Bullet::Update()
 
 	if (mRange <= 0) {
 		if (mType == BulletType::SkulHead) return;
-		
+		if (mType == BulletType::Flask) Explosion(mDamage);
 		mIsDestroy = true;
 	}
 }
@@ -57,7 +58,15 @@ void Bullet::Render(HDC hdc)
 	}
 	else
 	{
-		CAMERA->Render(hdc, mImage, mRect.left, mRect.top);
+		if (mImage->GetFrameX() != 0)
+		{
+			if (RIGHT) CAMERA->ScaleFrameRender(hdc, mImage, mX,mY, 0, 0, 30, 15);
+			else if (LEFT) CAMERA->ScaleFrameRender(hdc, mImage,mX, mY, 0, 1, 30, 15);
+		}
+		else
+		{
+			CAMERA->Render(hdc, mImage, mRect.left, mRect.top);
+		}
 	}
 }
 
@@ -72,5 +81,22 @@ void Bullet::Move() {
 
 void Bullet::Damage(int a) {
 	if (mType == BulletType::SkulHead) return;
+	if (mType == BulletType::Piercing) return;
+	if (mType == BulletType::Flask) Explosion(mDamage);
 	mIsDestroy = true;
+}
+
+void Bullet::Explosion(int damage)
+{
+	int indexX = TILELIST->CalcIndexX(mX, mY);
+	int indexY = TILELIST->CalcIndexY(mX, mY);
+
+	for (int y = indexY - 3; y <= indexY + 3; y++) {
+		for (int x = indexX - 3; x <= indexX + 3; x++) {
+			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
+				continue;
+			}
+			TILE[y][x]->AttackDamage(damage);
+		}
+	}
 }

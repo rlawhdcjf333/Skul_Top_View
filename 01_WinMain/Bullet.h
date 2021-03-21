@@ -3,7 +3,9 @@
 enum class BulletType : int {
 	Straight=1,
 	Trajectory,
-	SkulHead
+	SkulHead,
+	Piercing,
+	Flask
 };
 
 class Bullet : public GameObject
@@ -14,8 +16,8 @@ class Bullet : public GameObject
 	float mSpeed;
 	float mRange;
 
-public :
-	Bullet(Image* image,string name, GameObject* object,int damage, float speed , float range , float angle, BulletType type);
+public:
+	Bullet(Image* image, string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type);
 	void Init();
 	void Release();
 	void Update();
@@ -23,5 +25,7 @@ public :
 	void Move();
 
 	void Damage(int a);
+	void Explosion(int damage);
+
 };
 

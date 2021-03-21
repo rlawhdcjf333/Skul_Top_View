@@ -68,7 +68,6 @@ void Player::Release()
 void Player::Render(HDC hdc)
 {
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, 0, 0, mSizeX, mSizeY);
-	//mImage->ScaleFrameRender(hdc, mX-mSizeX/2, mY-mSizeY, mFrameX, 0, mSizeX, mSizeY);
 	mTileSelect->Render(hdc);
 
 	//{{ 개발자용 타일 체크 렌더링
@@ -104,6 +103,7 @@ void Player::Move(float speed)
 				mY = pathY;
 				mIndexX = mPath[mPathIndex]->GetIndexX();
 				mIndexY = mPath[mPathIndex]->GetIndexY();
+				TILE[mIndexY][mIndexX]->SetObject(this);
 				mPathIndex++;
 			}
 

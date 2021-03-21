@@ -6,3 +6,5 @@
 #include "Ent.h"
 #include "Warrior.h"
 #include "Mino.h"
+#include "Hunter.h"
+#include "Alchemist.h"
