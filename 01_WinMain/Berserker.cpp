@@ -177,8 +177,6 @@ void Berserker::Render(HDC hdc)
 
 	mTileSelect->Render(hdc);
 
-	TextOut(hdc, 0, 0, to_wstring(mAttackSpeed).c_str(), to_wstring(mAttackSpeed).length());
-
 	//{{ 개발자용 타일 체크 렌더링
 	//TILE[mIndexY][mIndexX]->SelectRender(hdc);
 	//

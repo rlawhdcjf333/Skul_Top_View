@@ -9,7 +9,7 @@ void SkulManager::Update() {
 		CAMERA->SetTarget(mCurrentSkul);
 	}
 
-	for (int i = 0; i < mBuffList.size(); i++) 
+	for (int i = 0; i < mBuffList.size(); i++)  //버프 관리
 	{
 		mBuffList[i].mDuration -= dTime;
 		if (mBuffList[i].mDuration <= 0)
