@@ -103,6 +103,9 @@
     <Filter Include="MainGame\Player\Skuls\LegendaryS">
       <UniqueIdentifier>{3face1f9-c12f-4dbc-806c-1451abf9d5a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy\Stage1">
+      <UniqueIdentifier>{b7185ca5-e34d-4a59-bb54-e7e450f05535}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -234,9 +237,6 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PettyThief.h">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClInclude>
@@ -260,6 +260,12 @@
     </ClInclude>
     <ClInclude Include="Alchemist.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_SwordMan.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -380,9 +386,6 @@
     <ClCompile Include="Werewolf.cpp">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="PettyThief.cpp">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClCompile>
@@ -403,6 +406,12 @@
     </ClCompile>
     <ClCompile Include="Alchemist.cpp">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_SwordMan.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
