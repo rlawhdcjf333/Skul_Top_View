@@ -32,6 +32,12 @@ void Enemy::Damage(int damage)
 {
 	
 }
+void Enemy::setEnemyRect(int x, int y)
+{
+	mX = x;
+	mY = y;
+	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);
+}
 //void Enemy::AnimationSet() {
 //	//¿ÞÂÊ
 //	for (int a = 0; a < (int)StateType::End; a++) {

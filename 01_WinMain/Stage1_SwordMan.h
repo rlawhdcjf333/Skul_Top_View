@@ -24,6 +24,7 @@ public :
 	void Idle();
 	void Hit();
 	void Damage(int Damage)override;
+	void move();
 
 	void AnimationSet();
 	void CurrentSet(StateType type, Direction direction);
