@@ -15,6 +15,7 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mSizeX = sizeX;
 	mSizeY = sizeY;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 	mIsDash = false;
 	mDashCoolTime = 0;
@@ -23,6 +24,10 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 
 	mInvincibility = false;
 	mName = "player";
+
+	mPhysicalAttackPower = 1;
+	mMagicalAttackPower = 1;
+	mAttackSpeed = 0.1f;
 }
 
 void Player::Init()
@@ -214,6 +219,7 @@ void Player::Dash(int dist, bool isBack)
 void Player::Attack(int damage, int range, AttackType type, bool isBack)
 {
 	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+	damage = mPhysicalAttackPower * damage;
 
 	if (isBack)
 	{
@@ -222,7 +228,7 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 	}
 
 	switch (type) {
-		case AttackType::Side: //당신이 선형계획법이나 해석기하를 조금이라도 안다면 바로 이해할 수 있다.
+		case AttackType::Side:
 			for (int y = mIndexY - range; y <= mIndexY + range; y++) {
 				for (int x = mIndexX - range; x <= mIndexX + range; x++) {
 					if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
@@ -360,6 +366,29 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 		break;
 
 	}
+}
+
+void Player::PhysicalAttackBuff(int percentage, float buffDuration) //물리공격력 버프
+{
+	int plus = mPhysicalAttackPower * percentage / 100;
+	mPhysicalAttackPower += plus;
+	SKUL->RegBuff([this, plus]() {mPhysicalAttackPower -= plus;}, buffDuration);
+
+}
+
+void Player::AttackSpeedBuff(int percentage, float buffDuration) //공속버프
+{
+	float upSpeed = (mAttackSpeed * percentage) / (100+percentage);
+	mAttackSpeed -= upSpeed;
+	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed);
+
+	SKUL->GetCurrentSkul()->SetAttackSpeed();
+	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+
+	SKUL->RegBuff([this, upSpeed]() {
+		mAttackSpeed += upSpeed; SKUL->GetCurrentSkul()->AttackSpeedSet(mAttackSpeed); if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed);
+		SKUL->GetCurrentSkul()->SetAttackSpeed(); if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();}, buffDuration);
+
 }
 
 void Player::SkulSwitch(int indexX, int indexY)

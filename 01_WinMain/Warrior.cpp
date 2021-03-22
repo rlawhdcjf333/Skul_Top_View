@@ -26,7 +26,7 @@ void Warrior::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 2, 4, false, false, 0.2f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 2, 5, true, false, 0.2f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 8, 6, false, false, 0.1f,
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 8, 6, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -35,8 +35,8 @@ void Warrior::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 8, 10, 8, false, false, 0.1f);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 8, 7, true, false, 0.1f,
+	mAnimationList[M rightAttack2] = new Animation(0, 8, 10, 8, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 8, 7, true, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -45,7 +45,7 @@ void Warrior::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 9, 10, 9, true, false, 0.1f);
+	mAnimationList[M leftAttack2] = new Animation(0, 9, 10, 9, true, false, mAttackSpeed);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 10, 8, 10, false, false, 0.1f);
 	mAnimationList[M leftSkill1] = new Animation(0, 11, 8, 11, true, false, 0.1f);
@@ -157,7 +157,7 @@ void Warrior::Update()
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 }
 
@@ -277,4 +277,12 @@ void Warrior::SkulSwitch(int indexX, int indexY)
 void Warrior::SkulReset()
 {
 	mCurrentAnimation->Stop();
+}
+
+void Warrior::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }

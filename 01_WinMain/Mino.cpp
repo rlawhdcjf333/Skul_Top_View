@@ -26,7 +26,7 @@ void Mino::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 0, 4, false, false, 0.35f);
 	mAnimationList[M leftDash] = new Animation(1, 4, 1, 4, false, false, 0.35f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 5, 5, 5, false, false, 0.1f,
+	mAnimationList[M rightAttack1] = new Animation(0, 5, 5, 5, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -35,8 +35,8 @@ void Mino::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 7, 4, 7, false, false, 0.1f);
-	mAnimationList[M leftAttack1] = new Animation(0, 6, 5, 6, true, false, 0.1f,
+	mAnimationList[M rightAttack2] = new Animation(0, 7, 4, 7, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 6, 5, 6, true, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -45,7 +45,7 @@ void Mino::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 8, 4, 8, true, false, 0.1f);
+	mAnimationList[M leftAttack2] = new Animation(0, 8, 4, 8, true, false, mAttackSpeed);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 4, 0, 4, false, false, 0.2f,
 		[this]() {
@@ -191,7 +191,7 @@ void Mino::Update()
 	mCurrentAnimation->Update();
 	
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 }
 
@@ -313,4 +313,12 @@ void Mino::SkulSwitch(int indexX, int indexY)
 void Mino::SkulReset()
 {
 	mCurrentAnimation->Stop();
+}
+
+void Mino::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }

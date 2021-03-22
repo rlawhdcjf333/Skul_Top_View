@@ -26,7 +26,7 @@ void Ent::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 0, 4, false, false, 0.2f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 0, 5, false, false, 0.2f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 8, 5, 8, false, false, 0.1f,
+	mAnimationList[M rightAttack1] = new Animation(0, 8, 5, 8, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -35,8 +35,8 @@ void Ent::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 10, 4, 10, false, false, 0.1f);
-	mAnimationList[M leftAttack1] = new Animation(0, 9, 5, 9, false, false, 0.1f,
+	mAnimationList[M rightAttack2] = new Animation(0, 10, 4, 10, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 9, 5, 9, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -45,7 +45,7 @@ void Ent::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 11, 4, 11, false, false, 0.1f);
+	mAnimationList[M leftAttack2] = new Animation(0, 11, 4, 11, false, false, mAttackSpeed);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 12, 3, 12, false, false, 0.1f,
 		[this]() {
@@ -123,6 +123,7 @@ void Ent::Update()
 
 	if (mIsDash)
 	{
+		if (mCurrentAnimation != mAnimationList[M rightSwitching] and mCurrentAnimation != mAnimationList[M leftSwitching])
 		Move(5 * mInitSpeed);
 	}
 	else
@@ -195,6 +196,8 @@ void Ent::Update()
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
+
 
 
 }
@@ -354,4 +357,13 @@ void Ent::SwitchAttack()
 		}
 	}
 	
+}
+
+
+void Ent::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }

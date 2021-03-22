@@ -9,3 +9,4 @@
 #include "Hunter.h"
 #include "Alchemist.h"
 #include "clown.h"
+#include "Berserker.h"

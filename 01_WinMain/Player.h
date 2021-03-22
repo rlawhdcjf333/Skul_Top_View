@@ -17,6 +17,8 @@ protected:
 	TileSelect* mTileSelect;
 	vector<Tile*> mPath;
 
+	RECT mHitBox;
+
 	float mSpeed;
 	float mInitSpeed;
 	float mAngle;
@@ -28,9 +30,11 @@ protected:
 
 	int mPathIndex = 0;
 
+	int mPhysicalAttackPower;
+	int mMagicalAttackPower;
+	float mAttackSpeed;
+
 	bool mInvincibility;
-	int mAddHp;
-	int mAddDamage;
 public:
 
 	Player(int indexX, int indexY, float sizeX, float sizeY);
@@ -46,10 +50,18 @@ public:
 
 	void Attack(int damage, int range, AttackType type, bool isBack = false);
 
+	virtual void Skill1() {};
+	virtual void Skill2() {};
+
+	void PhysicalAttackBuff(int percentage, float buffDuration);
+	void AttackSpeedBuff(int percentage, float buffDuration);
+	void AttackSpeedSet(float val) { mAttackSpeed = val; }
+
 	virtual void SkulSwitch(int indexX, int indexY);
 	virtual void SkulReset() {};
 
 	virtual void SetAnimation(int listNum) {};
+	virtual void SetAttackSpeed() {};
 };
 
 #define M (int)Motion::

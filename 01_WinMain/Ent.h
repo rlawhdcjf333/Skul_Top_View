@@ -56,4 +56,5 @@ public:
 
 	void SwitchAttack();
 
+	void SetAttackSpeed()override;
 };

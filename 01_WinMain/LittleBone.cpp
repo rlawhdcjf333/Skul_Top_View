@@ -31,7 +31,7 @@ void LittleBone::Init()
 	mAnimationList[M leftWalk] = new Animation(0, 12, 7, 12, true, true, 0.2f);
 	mAnimationList[M rightDash] = new Animation(0, 2, 0, 2, false, false, 0.5f);
 	mAnimationList[M leftDash] = new Animation(0, 13, 0, 13, true, false, 0.5f);
-	mAnimationList[M rightAttack1] = new Animation(0, 3, 4, 3, false, false, 0.1f, 
+	mAnimationList[M rightAttack1] = new Animation(0, 3, 4, 3, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -40,8 +40,8 @@ void LittleBone::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 4, 3, 4, false, false, 0.1f);
-	mAnimationList[M leftAttack1] = new Animation(0, 14, 4, 14, true, false, 0.1f, 
+	mAnimationList[M rightAttack2] = new Animation(0, 4, 3, 4, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 14, 4, 14, true, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -50,7 +50,7 @@ void LittleBone::Init()
 				if (LEFT)SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 15, 3, 15, true, false, 0.1f);
+	mAnimationList[M leftAttack2] = new Animation(0, 15, 3, 15, true, false, mAttackSpeed);
 
 	mAnimationList[M switchAttack] = new Animation(0, 22, 6, 22, false, false, 0.05f,
 		[this]() {Attack(1, 2, AttackType::Whirlwind); mRotationCount++; if (mRotationCount < 6) SetAnimation(M switchAttack);
@@ -65,7 +65,7 @@ void LittleBone::Init()
 	mAnimationList[M leftWalkHeadless] = new Animation(0, 18, 7, 18, true, true, 0.2f);
 	mAnimationList[M rightDashHeadless] = new Animation(0, 8, 0, 8, false, true, 0.2f);
 	mAnimationList[M leftDashHeadless] = new Animation(0, 19, 0, 19, true, true, 0.2f);
-	mAnimationList[M rightAttack1Headless] = new Animation(0, 9, 4, 9, false, false, 0.1f,
+	mAnimationList[M rightAttack1Headless] = new Animation(0, 9, 4, 9, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -74,8 +74,8 @@ void LittleBone::Init()
 				if (LEFT) SetAnimation(M leftAttack2Headless);
 			}
 		});
-	mAnimationList[M rightAttack2Headless] = new Animation(0, 10, 3, 10, false, false, 0.1f);
-	mAnimationList[M leftAttack1Headless] = new Animation(0, 20, 4, 20, true, false, 0.1f,
+	mAnimationList[M rightAttack2Headless] = new Animation(0, 10, 3, 10, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1Headless] = new Animation(0, 20, 4, 20, true, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -84,7 +84,7 @@ void LittleBone::Init()
 				if (LEFT) SetAnimation(M leftAttack2Headless);
 			}
 		});
-	mAnimationList[M leftAttack2Headless] = new Animation(0, 21, 3, 21, true, false, 0.1f);
+	mAnimationList[M leftAttack2Headless] = new Animation(0, 21, 3, 21, true, false, mAttackSpeed);
 
 	//리스폰
 	mAnimationList[M respawning] = new Animation(0, 23, 26, 23, false, false, 0.1f, [this]() {SetAnimation(M rightIdle);});
@@ -143,9 +143,26 @@ void LittleBone::Update()
 	}
 	BasicAttack();
 
-	if (INPUT->GetKeyDown('A')) //머가리 던지기
+	if (INPUT->GetKeyDown('A') and mIsHead) //머가리 던지기
 	{
-		Skill1();
+		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		if (RIGHT) SetAnimation(M rightSkill1);
+		if (LEFT) SetAnimation(M leftSkill1);
+		mIsHead = !mIsHead;
+	}
+	Skill1();
+
+	if (INPUT->GetKeyDown('S') and !mIsHead) //머가리 줍기
+	{
+		GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "skulHead");
+		if (head == nullptr) {mIsHead = !mIsHead; return;}
+
+		mX = head->GetX();
+		mY = head->GetY();
+		mIndexX = TileList::GetInstance()->CalcIndexX(mX, mY);
+		mIndexY = TileList::GetInstance()->CalcIndexY(mX, mY);
+		mPath.clear(); mPathIndex = 1;
+		head->SetIsDestroy(true);
 		mIsHead = !mIsHead;
 	}
 
@@ -175,24 +192,26 @@ void LittleBone::Update()
 		}
 	}
 
-	if (mIsDash)
+	if (mCurrentAnimation != mAnimationList[M respawning])
 	{
-		Move(5 * mInitSpeed); 
-	}
-	else
-	{
-		if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
+		if (mIsDash)
 		{
-			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
-				mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
+			Move(5 * mInitSpeed);
 		}
-		Move(mSpeed);
+		else
+		{
+			if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
+			{
+				if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
+					mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
+			}
+			Move(mSpeed);
+		}
 	}
-
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 }
 
 void LittleBone::Release()
@@ -208,7 +227,7 @@ void LittleBone::Release()
 void LittleBone::Render(HDC hdc)
 {
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top+25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
-	
+
 	mTileSelect->Render(hdc);
 
 	//{{ 개발자용 타일 체크 렌더링
@@ -247,33 +266,13 @@ void LittleBone::SetAnimation(int listNum)
 
 void LittleBone::Skill1()
 {
-	if (mIsHead)
+	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-		new Bullet(mHeadImage, "skulHead", this, 1, 500, 500, mAngle, BulletType::SkulHead);
-
-		if (RIGHT) SetAnimation(M rightSkill1);
-		if (LEFT) SetAnimation(M leftSkill1);
-	}
-	else
-	{
-		GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "skulHead");
-
-		if (head->GetX() >= CAMERA->GetRect().right
-			or head->GetX() <= CAMERA->GetRect().left
-			or head->GetY() >= CAMERA->GetRect().bottom
-			or head->GetY() <= CAMERA->GetRect().top)
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			head->SetIsDestroy(true);
-			return;
+			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			new Bullet(mHeadImage, "skulHead", this, 2 * mPhysicalAttackPower, 500, 500, mAngle, BulletType::SkulHead);
 		}
-
-		mX = head->GetX();
-		mY = head->GetY();
-		mIndexX = TileList::GetInstance()->CalcIndexX(mX, mY);
-		mIndexY = TileList::GetInstance()->CalcIndexY(mX, mY);
-		mPath.clear(); mPathIndex = 1;
-		head->SetIsDestroy(true);
 	}
 }
 
@@ -298,4 +297,12 @@ void LittleBone::SkulSwitch(int indexX, int indexY)
 }
 void LittleBone::SkulReset() {
 	mCurrentAnimation->Stop();
+}
+
+void LittleBone::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }

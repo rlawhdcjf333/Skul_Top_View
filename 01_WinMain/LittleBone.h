@@ -57,5 +57,9 @@ public:
 
 	void BasicAttack();
 	void Skill1();
+	void Skill2() {};
+
+	void SetAttackSpeed()override;
+
 };
 

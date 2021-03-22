@@ -168,7 +168,7 @@ void Alchemist::Update()
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 }
 
@@ -220,12 +220,12 @@ void Alchemist::BasicAttack()
 		if (mAttackTarget)
 		{
 			mAngle = Math::GetAngle(mX, mY, mAttackTarget->GetX(), mAttackTarget->GetY());
-			new Bullet(mProjectile, "Projectile", this, 1, 300, 500, mAngle, BulletType::Straight);
+			new Bullet(mProjectile, "Projectile", this, 1*mMagicalAttackPower, 300, 500, mAngle, BulletType::Straight);
 		}
 		else
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mProjectile, "Projectile", this, 1, 300, 500, mAngle, BulletType::Straight);
+			new Bullet(mProjectile, "Projectile", this, 1* mMagicalAttackPower, 300, 500, mAngle, BulletType::Straight);
 		}
 	}
 }
@@ -239,7 +239,7 @@ void Alchemist::Skill1()
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 3)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mFlask1, "DiseaseFlask", this, 5, 600, 400, mAngle, BulletType::Flask);
+			new Bullet(mFlask1, "DiseaseFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
 			CAMERA->PanningOn(5);
 
 		}
@@ -257,7 +257,7 @@ void Alchemist::Skill2()
 			if (mCurrentAnimation->GetNowFrameX() == 3)
 			{
 				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-				new Bullet(mFlask2, "FireFlask", this, 5, 600, 400, mAngle, BulletType::Flask);
+				new Bullet(mFlask2, "FireFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
 				CAMERA->PanningOn(5);
 			}
 		}

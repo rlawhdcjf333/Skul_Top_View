@@ -2,7 +2,7 @@
 #include "Player.h"
 
 class Animation;
-class Werewolf : public Player
+class Berserker: public Player
 {
 	enum class Motion : int {
 		rightIdle = 0,
@@ -32,7 +32,7 @@ class Werewolf : public Player
 	float mSkill2CoolTime;
 
 public:
-	Werewolf(int indexX, int indexY, float sizeX, float sizeY);
+	Berserker(int indexX, int indexY, float sizeX, float sizeY);
 	void Init() override;
 	void Update() override;
 	void Release() override;
@@ -40,13 +40,11 @@ public:
 
 	void SetAnimation(int listNum) override;
 	void BasicAttack();
-	void Skill1();
-	void Skill2();
+	void Skill1(); //뼈의 울음
+	void Skill2(); //레이지 태클
 
 	void SkulSwitch(int indexX, int indexY) override;
 	void SkulReset() override;
-
+	
 	void SetAttackSpeed()override;
-
-
 };

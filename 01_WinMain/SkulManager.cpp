@@ -8,6 +8,23 @@ void SkulManager::Update() {
 		ChangeSkul();
 		CAMERA->SetTarget(mCurrentSkul);
 	}
+
+	for (int i = 0; i < mBuffList.size(); i++) 
+	{
+		mBuffList[i].mDuration -= dTime;
+		if (mBuffList[i].mDuration <= 0)
+		{
+			mBuffList[i].mBuffFunc();
+			mBuffList.erase(mBuffList.begin() + i);
+			i--;
+		}
+	}
+
+	if (mAlterSkul) //교대 스컬 쿨타임 돌리기
+	{
+		mAlterSkul->Skill1();
+		mAlterSkul->Skill2();
+	}
 }
 
 void SkulManager::ChangeSkul()
@@ -24,6 +41,14 @@ void SkulManager::ChangeSkul()
 	}
 }
 
+
+void SkulManager::RegBuff(function<void()> func, float duration)
+{
+	Buff tmp;
+	tmp.mBuffFunc = func;
+	tmp.mDuration = duration;
+	mBuffList.push_back(tmp);
+}
 
 Player* SkulManager::NewSkulGet(Player* skul)
 {

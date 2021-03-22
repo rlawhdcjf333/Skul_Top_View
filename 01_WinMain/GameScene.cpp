@@ -9,11 +9,11 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(30, 30, 30, 30);
-	GameObject* mino = new Clown(30, 30, 30, 30);
-	mino->SetIsActive(false);
+	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
+	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
-	Obj->AddObject(ObjectLayer::Player, mino);
-	SKUL->SetCurrentSkul((Player*)mino);
+	Obj->AddObject(ObjectLayer::Player, alterSkul);
+	SKUL->SetCurrentSkul((Player*)alterSkul);
 	SKUL->NewSkulGet((Player*)little);
 	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
 	Obj->Init();

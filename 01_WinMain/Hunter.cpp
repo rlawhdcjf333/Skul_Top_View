@@ -29,8 +29,8 @@ void Hunter::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 6, 6, false, false, 0.03f);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 6, 7, true, false, 0.03f);
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 6, 6, false, false, (float)mAttackSpeed/3);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 6, 7, true, false, (float)mAttackSpeed/3);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 8, 6, 8, false, false, 0.03f);
 	mAnimationList[M leftSkill1] = new Animation(0, 9, 6, 9, true, false, 0.03f);
@@ -147,7 +147,7 @@ void Hunter::Update()
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 }
 
@@ -204,7 +204,7 @@ void Hunter::BasicAttack()
 		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle, BulletType::Straight);
+			new Bullet(mArrow, "Bullet", this, 1*mPhysicalAttackPower, 300, 500, mAngle, BulletType::Straight);
 		}
 	}
 }
@@ -218,11 +218,9 @@ void Hunter::Skill1()
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 3)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle, BulletType::Straight);
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle-PI/6, BulletType::Straight);
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle-PI/3, BulletType::Straight);
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle+PI/6, BulletType::Straight);
-			new Bullet(mArrow, "Bullet", this, 3, 300, 500, mAngle+PI/3, BulletType::Straight);
+
+			for(int i=0; i<5; i++)
+			new Bullet(mArrow, "Bullet", this, 3* mPhysicalAttackPower, 300, 500, mAngle-PI/3+i*PI/6, BulletType::Straight);
 
 			CAMERA->PanningOn(5);
 
@@ -241,7 +239,7 @@ void Hunter::Skill2()
 			if (mCurrentAnimation->GetNowFrameX() == 3)
 			{
 				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-				new Bullet(mArrow, "Bullet", this, 5, 600, 1000, mAngle, BulletType::Piercing);
+				new Bullet(mArrow, "Bullet", this, 3*mPhysicalAttackPower, 600, 1000, mAngle, BulletType::Piercing);
 				CAMERA->PanningOn(5);
 			}
 		}
@@ -266,4 +264,10 @@ void Hunter::SkulSwitch(int indexX, int indexY)
 void Hunter::SkulReset()
 {
 	mCurrentAnimation->Stop();
+}
+
+void Hunter::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
 }

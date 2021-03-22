@@ -47,4 +47,7 @@ public:
 	void SkulSwitch(int indexX, int indexY) override;
 	void SkulReset() override;
 
+	void SetAttackSpeed()override;
+
+
 };

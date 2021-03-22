@@ -234,9 +234,6 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PettyThief.h">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClInclude>
@@ -261,8 +258,17 @@
     <ClInclude Include="Alchemist.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClInclude>
-    <ClInclude Include="clown.h">
+    <ClInclude Include="Clown.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_SwordMan.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Berserker.h">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -383,9 +389,6 @@
     <ClCompile Include="Werewolf.cpp">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="PettyThief.cpp">
       <Filter>MainGame\Player\Skuls\NormalS</Filter>
     </ClCompile>
@@ -407,8 +410,17 @@
     <ClCompile Include="Alchemist.cpp">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
-    <ClCompile Include="clown.cpp">
+    <ClCompile Include="Clown.cpp">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_SwordMan.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Berserker.cpp">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

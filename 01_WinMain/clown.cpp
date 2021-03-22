@@ -32,8 +32,8 @@ void Clown::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, 0.05f);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, true, false, 0.05f);
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, (float)mAttackSpeed/2);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, true, false, (float)mAttackSpeed/2);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 10, 5, 10, false, false, 0.05f);
 	mAnimationList[M leftSkill1] = new Animation(0, 11, 5, 11, true, false, 0.05f);
@@ -160,7 +160,7 @@ void Clown::Update()
 	mCurrentAnimation->Update();
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
+	mHitBox = RectMakeBottom(mX, mY, 30, 30);
 
 }
 
@@ -217,7 +217,7 @@ void Clown::BasicAttack()
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mDagger, "Bullet", this, 3, 500, 500, mAngle, BulletType::Straight);
+			new Bullet(mDagger, "Bullet", this, 1*mPhysicalAttackPower, 500, 500, mAngle, BulletType::Straight);
 		}
 	}
 }
@@ -232,7 +232,7 @@ void Clown::Skill1()
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for(int i=0; i<2; i++)
-			new Bullet(mDagger, "ExplosiveDagger", this, 2, 500, 500, mAngle+PI/12-i*PI/6, BulletType::Flask);
+			new Bullet(mDagger, "ExplosiveDagger", this, 2*mMagicalAttackPower, 500, 500, mAngle+PI/12-i*PI/6, BulletType::Flask);
 
 			CAMERA->PanningOn(5);
 
@@ -255,7 +255,7 @@ void Clown::Skill2()
 			}
 			
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mBox, "Box", this, 3, 60, 30, PI/2, BulletType::Flask);
+			new Bullet(mBox, "Box", this, 2* mMagicalAttackPower, 60, 30, PI/2, BulletType::Flask);
 			
 			
 		}
@@ -280,4 +280,10 @@ void Clown::SkulSwitch(int indexX, int indexY)
 void Clown::SkulReset()
 {
 	mCurrentAnimation->Stop();
+}
+
+void Clown::SetAttackSpeed()
+{
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
 }
