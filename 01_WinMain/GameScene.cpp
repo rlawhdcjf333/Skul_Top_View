@@ -9,7 +9,7 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(30, 30, 30, 30);
-	GameObject* mino = new Alchemist(30, 30, 30, 30);
+	GameObject* mino = new Clown(30, 30, 30, 30);
 	mino->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, mino);

@@ -261,6 +261,9 @@
     <ClInclude Include="Alchemist.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClInclude>
+    <ClInclude Include="clown.h">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -402,6 +405,9 @@
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Alchemist.cpp">
+      <Filter>MainGame\Player\Skuls\RareS</Filter>
+    </ClCompile>
+    <ClCompile Include="clown.cpp">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClCompile>
   </ItemGroup>

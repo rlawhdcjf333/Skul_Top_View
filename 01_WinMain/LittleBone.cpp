@@ -250,7 +250,6 @@ void LittleBone::Skill1()
 	if (mIsHead)
 	{
 		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-
 		new Bullet(mHeadImage, "skulHead", this, 1, 500, 500, mAngle, BulletType::SkulHead);
 
 		if (RIGHT) SetAnimation(M rightSkill1);

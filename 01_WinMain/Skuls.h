@@ -8,3 +8,4 @@
 #include "Mino.h"
 #include "Hunter.h"
 #include "Alchemist.h"
+#include "clown.h"

@@ -37,6 +37,11 @@ void Bullet::Release()
 
 void Bullet::Update()
 {
+	if (mType == BulletType::SkulHead)
+	{
+		if(TILE[TILELIST->CalcIndexY(mX,mY)][TILELIST->CalcIndexX(mX,mY)]->GetType() == TileType::Block)
+		mRange = 0;
+	}
 
 	if (mRange > 0)
 	{
@@ -91,8 +96,8 @@ void Bullet::Explosion(int damage)
 	int indexX = TILELIST->CalcIndexX(mX, mY);
 	int indexY = TILELIST->CalcIndexY(mX, mY);
 
-	for (int y = indexY - 3; y <= indexY + 3; y++) {
-		for (int x = indexX - 3; x <= indexX + 3; x++) {
+	for (int y = indexY - 2; y <= indexY + 2; y++) {
+		for (int x = indexX - 2; x <= indexX + 2; x++) {
 			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
 				continue;
 			}

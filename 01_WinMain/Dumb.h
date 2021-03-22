@@ -6,6 +6,7 @@ class Dumb : public GameObject {
 	bool mIsHit;
 public :
 	Dumb();
+
 	void Init();
 	void Update();
 	void Render(HDC hdc);

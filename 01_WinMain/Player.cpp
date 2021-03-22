@@ -34,6 +34,7 @@ void Player::Init()
 
 void Player::Update()
 {
+	
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
 	{

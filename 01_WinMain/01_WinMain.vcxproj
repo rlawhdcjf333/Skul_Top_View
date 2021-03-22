@@ -199,6 +199,7 @@
     <ClInclude Include="Mino.h" />
     <ClInclude Include="Hunter.h" />
     <ClInclude Include="Alchemist.h" />
+    <ClInclude Include="clown.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="Mino.cpp" />
     <ClCompile Include="Hunter.cpp" />
     <ClCompile Include="Alchemist.cpp" />
+    <ClCompile Include="clown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />
