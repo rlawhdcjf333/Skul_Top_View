@@ -15,6 +15,7 @@ enum class ObjectLayer : int
 	Player_Bullet = 4,
 	Enemy_Bullet,
 	MapObject,
+	Effect,
 	End
 };
 
