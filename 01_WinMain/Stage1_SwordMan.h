@@ -12,6 +12,7 @@ class Stage1_SwordMan : public Enemy
 	};
 	wstring mStateType[(int)StateType::End] = { L"Attack",L"Idle",L"Walk",L"Hit"};
 	map<StateType, AnimationPair> mAnimationMap[2];
+	StateType mType;
 public :
 	Stage1_SwordMan(int indexX, int indexY);
 	void Init() override;
@@ -24,9 +25,15 @@ public :
 	void Idle();
 	void Hit();
 	void Damage(int Damage)override;
-	void move();
+	void Move(int speed);
+	void AttackDamage(); //공격 모션 데미지 판정
+	
 
 	void AnimationSet();
 	void CurrentSet(StateType type, Direction direction);
+	void MoveReset();
+	void EnemyInTileCheck(); //타일안 보정 체크
+	bool AttackCheck(int area); //공격 가능 여부 체크
+	bool WalkCheck();
 };
 

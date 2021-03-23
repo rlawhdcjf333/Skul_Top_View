@@ -155,6 +155,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="DefineHeader.h" />
     <ClInclude Include="Dumb.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="framework.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="IntersectManager.h" />
     <ClInclude Include="LittleBone.h" />
     <ClInclude Include="LoadingScene.h" />
+    <ClInclude Include="LoopEffect.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="MapObjectPallete.h" />
@@ -213,6 +215,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Dumb.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="GameEventManager.cpp" />
@@ -224,6 +227,7 @@
     <ClCompile Include="IntersectManager.cpp" />
     <ClCompile Include="LittleBone.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="LoopEffect.cpp" />
     <ClCompile Include="MainGame + MainProc.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MapObject.cpp" />

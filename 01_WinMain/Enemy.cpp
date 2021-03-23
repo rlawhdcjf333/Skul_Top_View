@@ -4,7 +4,7 @@
 
 
 Enemy::Enemy(int indexX, int indexY)
-	:GameObject(), mCurrentAnimation(nullptr), mCurrentImage(nullptr), mAngle(0)
+	:GameObject(), mCurrentAnimation(nullptr), mCurrentImage(nullptr), mAngle(0), mAttackReadyDelay(0), mAttackEnd(true), mPathIndex(0)
 {
 	mIndexX = indexX;
 	mIndexY = indexY;
@@ -38,23 +38,12 @@ void Enemy::setEnemyRect(int x, int y)
 	mY = y;
 	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);
 }
-//void Enemy::AnimationSet() {
-//	//¿ÞÂÊ
-//	for (int a = 0; a < (int)StateType::End; a++) {
-//		StateType type = (StateType)a;
-//		Image* image = IMAGEMANAGER->FindImage(Resources(mResources+mStateType[a]));
-//		Animation* animation = new Animation();
-//		animation->InitFrameByStartEnd(0,(int)Direction::left,image->GetFrameX(),image->GetFrameY(),false);
-//		AnimationPair aPair = {image,animation};
-//		mAnimationMap[(int)Direction::left].insert(make_pair(type, aPair));
-//	}
-//	//¿À¸¥ÂÊ
-//	for (int a = 0; a < (int)StateType::End; a++) {
-//		StateType type = (StateType)a;
-//		Image* image = IMAGEMANAGER->FindImage(Resources(mResources + mStateType[a]));
-//		Animation* animation = new Animation();
-//		animation->InitFrameByStartEnd(0, (int)Direction::right, image->GetFrameX(), image->GetFrameY(), false);
-//		AnimationPair aPair = { image,animation };
-//		mAnimationMap[(int)Direction::right].insert(make_pair(type, aPair));
-//	}
-//}
+
+
+void Enemy::Mark(int damage) {
+	mMark++;
+	mHp -= damage;
+	if (mMark >= 3 && mHp > 0) {
+		mHp -= damage;
+	}
+}

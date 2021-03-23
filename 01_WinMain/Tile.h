@@ -27,9 +27,11 @@ class Tile
 	bool mAttackTest = false;
 	int mTestTime= 0;
 
+	bool mIsTileEmpty; // 오브젝트가 비여 있으면 true;
 	GameObject* mObject;
 public:
 	Tile(Image* pImage,  float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY);
+	void Update();
 	void Render(HDC hdc);
 	void AlphaRender(HDC hdc);
 	void SelectRender(HDC hdc);
@@ -56,6 +58,7 @@ public:
 	float GetY() { return mY; }
 
 	void SetObject(GameObject* object) { mObject = object;}
+	bool GetTileEmpty() const { return mIsTileEmpty; }
 	void SetType(TileType val) { mTileType = val; }
 	TileType GetType() { return mTileType; }
 

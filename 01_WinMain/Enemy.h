@@ -31,6 +31,12 @@ protected:
 	int mHp;
 	float mAttackDelay;
 	Direction mDirection;
+	int mMark; //표식
+	float mAttackReadyDelay; //공격 대기 모션 시간
+	bool mAttackEnd; //공격 대미지 여부 체크
+	vector<Tile*> mPath; //이동할 타일 스택
+	Tile* mTargetTile; //타겟 타일
+	int mPathIndex;
 
 public :
 	Enemy(int indexX, int indexY);
@@ -40,7 +46,9 @@ public :
 	virtual void Release() override;
 	
 	virtual void Damage(int damage) override;
-
+	
+	
+	void Mark(int damage);
 	void setEnemyRect(int x, int y); //Rect 생성 및 mX mY 값 셋팅
 };
 

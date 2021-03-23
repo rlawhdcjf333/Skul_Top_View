@@ -4,12 +4,22 @@
 #include "GameObject.h"
 
 Tile::Tile(Image* pImage, float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY)
-	:mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY), mImage(pImage), mIndexX(indexX), mIndexY(indexY), mObject(nullptr)
+	:mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY), mImage(pImage), mIndexX(indexX), mIndexY(indexY), mObject(nullptr), mIsTileEmpty(false)
 {
 	mTileType = TileType::Normal;
 
 	mRect = RectMake(mX, mY, mSizeX, mSizeY);
 	mDiam = DiamMake(mX, mY, mSizeX, mSizeY);
+}
+
+void Tile::Update()
+{
+	if (!mObject) {
+		mIsTileEmpty = true;
+	}
+	else {
+		mIsTileEmpty = false;
+	}
 }
 
 
