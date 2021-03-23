@@ -202,6 +202,7 @@
     <ClInclude Include="Alchemist.h" />
     <ClInclude Include="Clown.h" />
     <ClInclude Include="Berserker.h" />
+    <ClInclude Include="HighWarlock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -259,6 +260,7 @@
     <ClCompile Include="Alchemist.cpp" />
     <ClCompile Include="Clown.cpp" />
     <ClCompile Include="Berserker.cpp" />
+    <ClCompile Include="HighWarlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

@@ -270,6 +270,9 @@
     <ClInclude Include="Berserker.h">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClInclude>
+    <ClInclude Include="HighWarlock.h">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -420,6 +423,9 @@
       <Filter>MainGame\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Berserker.cpp">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClCompile>
+    <ClCompile Include="HighWarlock.cpp">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
   </ItemGroup>

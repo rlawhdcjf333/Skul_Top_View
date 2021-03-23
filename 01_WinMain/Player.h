@@ -53,6 +53,8 @@ public:
 	virtual void Skill1() {};
 	virtual void Skill2() {};
 
+	int const GetPhysicalAttackPower() { return mPhysicalAttackPower; }
+	int const GetMagicalAttackPower() { return mMagicalAttackPower; }
 	void PhysicalAttackBuff(int percentage, float buffDuration);
 	void AttackSpeedBuff(int percentage, float buffDuration);
 	void AttackSpeedSet(float val) { mAttackSpeed = val; }

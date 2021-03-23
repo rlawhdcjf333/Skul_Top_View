@@ -16,12 +16,28 @@ Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float s
 		mSizeY = mImage->GetFrameHeight();
 	}
 
-	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 	mDamage = damage;
 	mAngle = angle;
 	mType = type;
 	mSpeed = speed;
 	mRange = range;
+	mCurrentFrameX = 0;
+	mCurrentFrameY = 0;
+	mFrameTick = 0.1f;
+	
+	if (mType == BulletType::MeteorStrike)
+	{
+		mX = object->GetX() + 600;
+		mY = object->GetY() - 600;
+		mRange = 1200;
+		mAngle = Math::GetAngle(mX, mY, object->GetX(), object->GetY());
+	}
+
+
+	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
+
+
+
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player_Bullet, this);
 }
 
@@ -37,6 +53,62 @@ void Bullet::Release()
 
 void Bullet::Update()
 {
+	if (mType == BulletType::FrameProjectile)
+	{
+		mFrameTick-= dTime;
+		if (mFrameTick < 0)
+		{
+			mFrameTick = 0.1f;
+			mCurrentFrameX++;
+			if (mCurrentFrameX >= mImage->GetFrameX())
+			{
+				mCurrentFrameX = 0;
+			}
+		}
+
+	}
+
+	if (mType == BulletType::Barricade)
+	{
+		mFrameTick -= dTime;
+		if (mFrameTick < 0)
+		{
+			mFrameTick = 0.1f;
+			mCurrentFrameX++;
+			if (mCurrentFrameX >= mImage->GetFrameX())
+			{
+				Explosion(SKUL->GetCurrentSkul()->GetMagicalAttackPower(), 3);
+				mCurrentFrameY++;
+				mCurrentFrameX = 0;
+			}
+			if (mCurrentFrameY >= mImage->GetFrameY())
+			{
+				mIsDestroy = true;
+			}
+		}
+
+	}
+
+	if (mType == BulletType::MeteorStrike)
+	{
+		mFrameTick -= dTime;
+		if (mFrameTick < 0)
+		{
+			mFrameTick = 0.1f;
+			mCurrentFrameX++;
+			if (mCurrentFrameX >= mImage->GetFrameX())
+			{
+				mCurrentFrameY++;
+				mCurrentFrameX = 0;
+			}
+			if (mCurrentFrameY >= mImage->GetFrameY())
+			{
+				mCurrentFrameX==mImage->GetFrameX()-1;
+				mCurrentFrameY--;
+			}
+		}
+	}
+
 	if (mType == BulletType::SkulHead)
 	{
 		if(TILE[TILELIST->CalcIndexY(mX,mY)][TILELIST->CalcIndexX(mX,mY)]->GetType() == TileType::Block)
@@ -51,6 +123,11 @@ void Bullet::Update()
 	if (mRange <= 0) {
 		if (mType == BulletType::SkulHead) return;
 		if (mType == BulletType::Flask) Explosion(mDamage);
+		if (mType == BulletType::MeteorStrike)
+		{
+			Explosion(mDamage, 5);
+			CAMERA->PanningOn(10);
+		}
 		mIsDestroy = true;
 	}
 }
@@ -63,6 +140,28 @@ void Bullet::Render(HDC hdc)
 	}
 	else
 	{
+		if (mType == BulletType::FrameProjectile)
+		{
+			if (RIGHT) CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top-20, mCurrentFrameX, 0, 30, 15);
+			else if (LEFT) CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top-20, mCurrentFrameX, 1, 30, 15);
+			return;
+		}
+
+		if (mType == BulletType::Barricade)
+		{
+			int indexX = TILELIST->CalcIndexX(mX, mY);
+			int indexY = TILELIST->CalcIndexY(mX, mY);
+			CAMERA->AlphaScaleFrameRender(hdc, mImage, TILE[indexY][indexX]->GetX() + TileSizeX / 2 -200, TILE[indexY][indexX]->GetY() + TileSizeY / 2 -150, 
+				mCurrentFrameX, mCurrentFrameY, 400,200, 0.5f);
+			return;
+		}
+
+		if (mType == BulletType::MeteorStrike)
+		{
+			CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top,mCurrentFrameX,mCurrentFrameY,200,200);
+			return;
+		}
+
 		if (mImage->GetFrameX() != 0)
 		{
 			if (RIGHT) CAMERA->ScaleFrameRender(hdc, mImage, mX,mY, 0, 0, 30, 15);
@@ -87,17 +186,18 @@ void Bullet::Move() {
 void Bullet::Damage(int a) {
 	if (mType == BulletType::SkulHead) return;
 	if (mType == BulletType::Piercing) return;
+	if (mType == BulletType::Barricade) return;
 	if (mType == BulletType::Flask) Explosion(mDamage);
 	mIsDestroy = true;
 }
 
-void Bullet::Explosion(int damage)
+void Bullet::Explosion(int damage, int range) //기본 폭발반경 2타일
 {
 	int indexX = TILELIST->CalcIndexX(mX, mY);
 	int indexY = TILELIST->CalcIndexY(mX, mY);
 
-	for (int y = indexY - 2; y <= indexY + 2; y++) {
-		for (int x = indexX - 2; x <= indexX + 2; x++) {
+	for (int y = indexY - range; y <= indexY + range; y++) {
+		for (int x = indexX - range; x <= indexX + range; x++) {
 			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
 				continue;
 			}

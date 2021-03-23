@@ -10,3 +10,4 @@
 #include "Alchemist.h"
 #include "clown.h"
 #include "Berserker.h"
+#include "HighWarlock.h"

@@ -119,8 +119,12 @@ void ObjectManager::IntersectObject()
 
 	for (GameObject* elem : mObjectList[ObjectLayer::Player_Bullet])
 	{
+		Bullet* downcast = (Bullet*)elem;
+		if (downcast->GetType() == BulletType::Barricade) continue;
+
 		for (GameObject* elemelem : mObjectList[ObjectLayer::Enemy])
 		{
+			
 
 			RECT playerBullet = elem->GetRect();
 			RECT enemy = elemelem->GetRect();

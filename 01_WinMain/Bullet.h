@@ -1,11 +1,14 @@
 #pragma once
 #include "GameObject.h"
 enum class BulletType : int {
-	Straight=1,
+	Straight = 1,
 	Trajectory,
 	SkulHead,
 	Piercing,
-	Flask
+	Flask,
+	FrameProjectile,
+	Barricade,
+	MeteorStrike
 };
 
 class Bullet : public GameObject
@@ -15,6 +18,9 @@ class Bullet : public GameObject
 	BulletType mType;
 	float mSpeed;
 	float mRange;
+	int mCurrentFrameX;
+	int mCurrentFrameY;
+	float mFrameTick;
 
 public:
 	Bullet(Image* image, string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type);
@@ -25,7 +31,8 @@ public:
 	void Move();
 
 	void Damage(int a);
-	void Explosion(int damage);
+	void Explosion(int damage, int range = 2);
+	BulletType GetType() { return mType; }
 
 };
 
