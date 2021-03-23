@@ -1,14 +1,23 @@
 #pragma once
 #include "GameObject.h"
+
+enum class EffectType : int
+{
+	Normal,
+	Follow
+};
+
+class Animation;
 class Effect : public GameObject
 {
 	Image* mImage;
-	class Animation* mAnimation;
+	Animation* mAnimation;
 	wstring mNextImageKeyname;
 	float mNextX;
 	float mNextY;
+	EffectType mType;
 public :
-	Effect(wstring keyname,float x, float y);
+	Effect(wstring keyname,float x, float y, EffectType type);
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
@@ -16,5 +25,6 @@ public :
 
 	virtual void SetNextEffect(wstring keyname);
 	virtual void SetNextEffect(wstring keyname, float x, float y);
+	void SetUpdateTime(float val); 
 };
 

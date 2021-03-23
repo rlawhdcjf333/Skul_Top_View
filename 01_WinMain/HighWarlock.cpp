@@ -3,6 +3,7 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Effect.h"
 
 HighWarlock::HighWarlock(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -18,6 +19,12 @@ HighWarlock::HighWarlock(int indexX, int indexY, float sizeX, float sizeY)
 
 	IMAGEMANAGER->LoadFromFile(L"MeteorComp", Resources(L"/skul/meteorComp.bmp"), 2000, 1000, 4, 2, true);
 	mMeteorComp = IMAGEMANAGER->FindImage(L"MeteorComp");
+
+	IMAGEMANAGER->LoadFromFile(L"MeteorIncomp", Resources(L"/skul/meteorIncomp.bmp"), 1800, 400, 9, 2, true);
+	mMeteorIncomp = IMAGEMANAGER->FindImage(L"MeteorIncomp");
+
+	IMAGEMANAGER->LoadFromFile(L"CastingEffect", Resources(L"/skul/castingEffect.bmp"), 2400, 100, 24, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"CastingDone", Resources(L"/skul/castingDone.bmp"), 5000, 200, 25, 1, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -55,9 +62,19 @@ void HighWarlock::Init()
 			}
 		});
 	mAnimationList[M leftAttack2] = new Animation(0, 9, 3, 9, true, false, mAttackSpeed);
+	
+	mAnimationList[M rightCasting] = new Animation(0, 10, 5, 10, false, false, 0.2f,
+		[this]() {
+			mCurrentAnimation->Play(), mCurrentAnimation->SetCurrentFrameIndex(5);
+		});
+	mAnimationList[M leftCasting] = new Animation(10, 11, 15, 11, true, false, 0.2f,
+		[this]() {
+			mCurrentAnimation->Play(), mCurrentAnimation->SetCurrentFrameIndex(5);
+		});
 
-	mAnimationList[M rightSkill1] = new Animation(0, 10, 15, 10, false, false, 0.1f);
-	mAnimationList[M leftSkill1] = new Animation(0, 11, 15, 11, true, false, 0.1f);
+
+	mAnimationList[M rightSkill1] = new Animation(6, 10, 15, 10, false, false, 0.1f);
+	mAnimationList[M leftSkill1] = new Animation(0, 11, 9, 11, true, false, 0.1f);
 	mAnimationList[M rightSkill2] = new Animation(0, 12, 7, 12, false, false, 0.1f);
 	mAnimationList[M leftSkill2] = new Animation(0, 13, 7, 13, true, false, 0.1f);
 
@@ -87,15 +104,29 @@ void HighWarlock::Update()
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
-		if (mDashCoolTime == 0)
+		if (!mAnimationList[M rightCasting]->GetIsPlay() and !mAnimationList[M leftCasting]->GetIsPlay()) //캐스팅 중 대쉬 불가
 		{
-			Dash(5);
-			Attack(1, 5, AttackType::Stab);
+			if (mDashCoolTime == 0)
+			{
+				Dash(5);
+				Attack(1, 5, AttackType::Stab);
 
-			if (LEFT) SetAnimation(M leftDash);
-			if (RIGHT) SetAnimation(M rightDash);
-			mDashCount = 1;
-			mDashCoolTime = mInitDashCoolTime;
+				if (LEFT) SetAnimation(M leftDash);
+				if (RIGHT) SetAnimation(M rightDash);
+				mDashCount = 1;
+				mDashCoolTime = mInitDashCoolTime;
+			}
+			else if (mAnimationList[M leftDash]->GetIsPlay() or mAnimationList[M rightDash]->GetIsPlay())
+			{
+
+				if (mDashCount == 1)
+				{
+					Dash(5);
+					if (LEFT) SetAnimation(M leftDash);
+					if (RIGHT) SetAnimation(M rightDash);
+					mDashCount = 0;
+				}
+			}
 		}
 	}
 
@@ -126,32 +157,42 @@ void HighWarlock::Update()
 		if (mSkill1CoolTime == 0)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			if (RIGHT) { SetAnimation(M leftSkill1); }
-			if (LEFT) { SetAnimation(M leftSkill1); }
+			if (RIGHT) { SetAnimation(M rightCasting); }
+			if (LEFT) { SetAnimation(M leftCasting); }
+			mCastingEffect = new Effect(L"CastingEffect", mX, mY - 15, EffectType::Follow);
+			mCastingEffect->SetUpdateTime(0.0416f);
+			mCastingEffect->SetNextEffect(L"CastingDone");
 		}
 		else
 		{
 			CAMERA->PanningOn(3);
 		}
 	}
-	if (INPUT->GetKeyUp('A'))
+	if (INPUT->GetKeyUp('A') and mSkill1CoolTime==0)
 	{
-		if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
+		if (!mAnimationList[M rightSkill2]->GetIsPlay() and !mAnimationList[M leftSkill2]->GetIsPlay())
 		{
-			if (mCurrentAnimation->GetCurrentFrameIndex() < 6)
+			if (mAnimationList[M rightCasting]->GetIsPlay() or mAnimationList[M leftCasting]->GetIsPlay())
 			{
+				
+				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
+				{
+					new Bullet(mMeteorIncomp, "MeteorIncomp", this, 5, 400, 1200, 0, BulletType::MeteorStrike);
+				}
+				else
+				{
+					new Bullet(mMeteorComp, "MeteorComp", this, 10, 400, 1200, 0, BulletType::MeteorStrike);
+				}
 
+				if(Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
+				if(Obj->FindObject(ObjectLayer::Effect,"CastingEffect")) Obj->FindObject(ObjectLayer::Effect, "CastingEffect")->SetIsDestroy(true);
+				mCurrentAnimation->Stop();
+				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+				if (RIGHT) { SetAnimation(M rightSkill1); }
+				if (LEFT) { SetAnimation(M leftSkill1); }
+				mSkill1CoolTime = 20;
 			}
-			else
-			{
-				new Bullet(mMeteorComp, "MeteorComp", this, 10, 300, 1200, 0, BulletType::MeteorStrike);
-
-			}
-
-			mSkill1CoolTime = 20;
 		}
-
-
 	}
 	Skill1();
 
@@ -214,6 +255,12 @@ void HighWarlock::SetAnimation(int listNum)
 	if (mAnimationList[M leftAttack1]->GetIsPlay()) return;
 	if (mAnimationList[M leftAttack2]->GetIsPlay()) return;
 
+	if (mAnimationList[M rightCasting]->GetIsPlay() or mAnimationList[M leftCasting]->GetIsPlay())
+	{
+		mSpeed = mInitSpeed / 2;
+		return;
+	}
+
 	if (mAnimationList[M leftSkill1]->GetIsPlay()) return;
 	if (mAnimationList[M leftSkill2]->GetIsPlay()) return;
 	if (mAnimationList[M rightSkill1]->GetIsPlay()) return;
@@ -257,34 +304,6 @@ void HighWarlock::Skill2()
 {
 	mSkill2CoolTime -= dTime;
 	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
-
-	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
-	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
-		{
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 1 or mAnimationList[M leftSkill2]->GetNowFrameX() == 6)
-			{
-				Dash(5);
-				CAMERA->PanningOn(5);
-			}
-
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() > 0 and mAnimationList[M rightSkill2]->GetNowFrameX() < 5)
-			{
-				Attack(1, 2, AttackType::Whirlwind); //애들 모으는 함수가 필요해
-			}
-			else if (mAnimationList[M leftSkill2]->GetNowFrameX() < 7 and mAnimationList[M leftSkill2]->GetNowFrameX() > 2)
-			{
-				Attack(1, 2, AttackType::Whirlwind); //애들 모으는 함수가 필요해
-			}
-
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 5 or mAnimationList[M leftSkill2]->GetNowFrameX() == 2)
-			{
-				Attack(1, 1, AttackType::Side, true);
-				Attack(2, 3, AttackType::Side);
-				CAMERA->PanningOn(5);
-			}
-		}
-	}
 }
 
 void HighWarlock::SkulSwitch(int indexX, int indexY)

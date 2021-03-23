@@ -273,6 +273,15 @@
     <ClInclude Include="Stage1_SwordMan.h">
       <Filter>MainGame\Enemy\Stage1</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LoopEffect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HighWarlock.h">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -424,6 +433,15 @@
     </ClCompile>
     <ClCompile Include="Stage1_SwordMan.cpp">
       <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="LoopEffect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HighWarlock.cpp">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -103,8 +103,8 @@ void Bullet::Update()
 			}
 			if (mCurrentFrameY >= mImage->GetFrameY())
 			{
-				mCurrentFrameX==mImage->GetFrameX()-1;
-				mCurrentFrameY--;
+				mCurrentFrameX = 0;
+				mCurrentFrameY = 0;
 			}
 		}
 	}
@@ -158,7 +158,7 @@ void Bullet::Render(HDC hdc)
 
 		if (mType == BulletType::MeteorStrike)
 		{
-			CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top,mCurrentFrameX,mCurrentFrameY,200,200);
+			CAMERA->ScaleFrameRender(hdc, mImage, mX, mRect.top,mCurrentFrameX,mCurrentFrameY,200,200);
 			return;
 		}
 

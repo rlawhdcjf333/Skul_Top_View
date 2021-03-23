@@ -2,11 +2,14 @@
 #include "Player.h"
 
 class Animation;
+class Effect;
 class HighWarlock: public Player
 {
 	Image* mWarlockProjectile;
 	Image* mWarlockBarricade;
-	Image* mMeteorComp;
+	Image* mMeteorComp;	
+	Image* mMeteorIncomp;
+	Effect* mCastingEffect;
 
 	enum class Motion : int {
 		rightIdle = 0,
@@ -15,6 +18,10 @@ class HighWarlock: public Player
 		leftWalk,
 		rightDash,
 		leftDash,
+
+		rightCasting,
+		leftCasting,
+
 
 		rightAttack1,
 		rightAttack2,

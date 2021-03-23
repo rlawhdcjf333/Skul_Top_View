@@ -145,6 +145,7 @@ void LittleBone::Update()
 
 	if (INPUT->GetKeyDown('A') and mIsHead) //머가리 던지기
 	{
+		mCurrentAnimation->Stop();
 		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) SetAnimation(M rightSkill1);
 		if (LEFT) SetAnimation(M leftSkill1);

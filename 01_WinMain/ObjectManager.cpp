@@ -63,7 +63,8 @@ void ObjectManager::Update()
 	mRenderList.clear();
 	for (int i = 0; i < (int)ObjectLayer::End; i++)
 	{
-		if (i == 0) continue;
+		if (i == (int)ObjectLayer::Background) continue;
+		if (i == (int)ObjectLayer::Effect) continue;
 
 		for (GameObject* elem : mObjectList[(ObjectLayer)i])
 		{
@@ -84,19 +85,19 @@ void ObjectManager::Update()
 
 void ObjectManager::Render(HDC hdc)
 {
-	ObjectIter iter = mObjectList.begin();
-	for (; iter != mObjectList.end(); ++iter)
-	{
-		for (int i = 0; i < iter->second.size(); ++i)
-		{
-			if (iter->second[i]->GetIsActive() == true)
-			{	
-				iter->second[i]->Render(hdc);
-			}
-		}
-	}
+	//ObjectIter iter = mObjectList.begin();
+	//for (; iter != mObjectList.end(); ++iter)
+	//{
+	//	for (int i = 0; i < iter->second.size(); ++i)
+	//	{
+	//		if (iter->second[i]->GetIsActive() == true)
+	//		{	
+	//			iter->second[i]->Render(hdc);
+	//		}
+	//	}
+	//}
 
-	for (GameObject* elem : mObjectList[ObjectLayer::Background])
+	for (GameObject* elem : mObjectList[ObjectLayer::Background]) //반드시 뒤에 와야되는 오브젝트의 렌더링
 	{
 		if (elem->GetIsActive() == true)
 		{
@@ -110,7 +111,13 @@ void ObjectManager::Render(HDC hdc)
 			elem->Render(hdc);
 		}
 	}
-
+	for (GameObject* elem : mObjectList[ObjectLayer::Effect]) //반드시 앞에 와야되는 오브젝트의 렌더링
+	{
+		if (elem->GetIsActive() == true)
+		{
+			elem->Render(hdc);
+		}
+	}
 }
 
 void ObjectManager::IntersectObject()
@@ -121,6 +128,7 @@ void ObjectManager::IntersectObject()
 	{
 		Bullet* downcast = (Bullet*)elem;
 		if (downcast->GetType() == BulletType::Barricade) continue;
+		if (downcast->GetType() == BulletType::MeteorStrike) continue;
 
 		for (GameObject* elemelem : mObjectList[ObjectLayer::Enemy])
 		{
