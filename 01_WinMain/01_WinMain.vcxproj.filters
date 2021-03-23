@@ -103,6 +103,9 @@
     <Filter Include="MainGame\Player\Skuls\LegendaryS">
       <UniqueIdentifier>{3face1f9-c12f-4dbc-806c-1451abf9d5a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy\Stage1">
+      <UniqueIdentifier>{a19767d8-2af7-4fb1-aab6-d17d739e6654}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -261,17 +264,14 @@
     <ClInclude Include="Clown.h">
       <Filter>MainGame\Player\Skuls\RareS</Filter>
     </ClInclude>
-    <ClInclude Include="Stage1_SwordMan.h">
-      <Filter>MainGame\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Berserker.h">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClInclude>
-    <ClInclude Include="HighWarlock.h">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    <ClInclude Include="Stage1_SwordMan.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -419,14 +419,11 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Stage1_SwordMan.cpp">
-      <Filter>MainGame\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Berserker.cpp">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
-    <ClCompile Include="HighWarlock.cpp">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    <ClCompile Include="Stage1_SwordMan.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
