@@ -213,7 +213,7 @@ void HighWarlock::Update()
 				mCurrentAnimation->Stop();
 				if (RIGHT) { SetAnimation(M rightSkill2); }
 				if (LEFT) { SetAnimation(M leftSkill2); }
-				mSkill2CoolTime = 1;
+				mSkill2CoolTime = 14;
 			}
 		}
 	}
