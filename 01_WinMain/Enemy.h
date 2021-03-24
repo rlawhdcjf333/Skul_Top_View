@@ -37,7 +37,7 @@ protected:
 	vector<Tile*> mPath; //이동할 타일 스택
 	Tile* mTargetTile; //타겟 타일
 	int mPathIndex;
-
+	float mHitTime; //경직 시간
 public :
 	Enemy(int indexX, int indexY);
 	virtual void Init() override;

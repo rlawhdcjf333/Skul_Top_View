@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include "Dumb.h"
 #include "MapObject.h"
+#include "Stage1_SwordMan.h"
 
 void GameScene::Init()
 {
@@ -16,6 +17,10 @@ void GameScene::Init()
 	SKUL->SetCurrentSkul((Player*)alterSkul);
 	SKUL->NewSkulGet((Player*)little);
 	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45,45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(47, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 45));
 	Obj->Init();
 
 	CAMERA->ChangeMode(Camera::Mode::Follow);

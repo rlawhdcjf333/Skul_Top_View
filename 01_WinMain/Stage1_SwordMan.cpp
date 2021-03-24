@@ -33,6 +33,23 @@ void Stage1_SwordMan::Init()
 
 void Stage1_SwordMan::Update()
 {
+	if (mHp <= 0) {
+		mIsDestroy = true;
+		return;
+	}
+
+
+	if (mType == StateType::Hit) {
+		mHitTime -= dTime;
+		if (mHitTime < 0) {
+			mHitTime = 0;
+			CurrentSet(StateType::Idle, mDirection);
+		}
+		else {
+			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+			return;
+		}
+	}
 	mCurrentSkul = SKUL->GetCurrentSkul();
 	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
 	if (mType == StateType::Idle) {
@@ -53,7 +70,7 @@ void Stage1_SwordMan::Update()
 		}
 	}
 	if (mType == StateType::Walk) {
-		Move(500);
+		Move(300);
 	}
 	if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetNowFrameX() == 0) {
@@ -128,12 +145,25 @@ void Stage1_SwordMan::Idle()
 
 void Stage1_SwordMan::Hit()
 {
-	CurrentSet(StateType::Hit, mDirection);
+	if (mHitTime > 0) {
+		mCurrentAnimation->Play();
+		mCurrentAnimation->SetFrameUpdateTime(0.01f);
+		mCurrentAnimation->Update();
+		mCurrentAnimation->Pause();
+		mHitTime = 1.f;
+	}
+	else{
+		CurrentSet(StateType::Hit, mDirection);
+		mCurrentAnimation->Pause();
+		mCurrentAnimation->SetFrameUpdateTime(0.01f);
+		mHitTime = 1.f;
+	}
 }
 
 void Stage1_SwordMan::Damage(int Damage)
 {
-	
+	mHp -= Damage;
+	Hit();
 }
 
 void Stage1_SwordMan::Move(int speed)
@@ -154,8 +184,6 @@ void Stage1_SwordMan::Move(int speed)
 			float mAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
 			mX += speed * cosf(mAngle) * dTime;
 			mY -= speed * sinf(mAngle) * dTime;
-			
-
 			if (abs(mX - pathX) < speed * dTime and abs(mY - pathY) < speed * dTime) //오차 보정
 			{
 				mX = pathX;
@@ -173,6 +201,13 @@ void Stage1_SwordMan::Move(int speed)
 
 void Stage1_SwordMan::AttackDamage()
 {
+}
+
+void Stage1_SwordMan::ReMove()
+{
+	if (WalkCheck()) {
+		CurrentSet(StateType::Walk, mDirection);
+	}
 }
 
 void Stage1_SwordMan::CurrentSet(StateType type, Direction direction)

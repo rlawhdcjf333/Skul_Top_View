@@ -27,7 +27,7 @@ public :
 	void Damage(int Damage)override;
 	void Move(int speed);
 	void AttackDamage(); //공격 모션 데미지 판정
-	
+	void ReMove(); //타일에서 밀려났을 때
 
 	void AnimationSet();
 	void CurrentSet(StateType type, Direction direction);

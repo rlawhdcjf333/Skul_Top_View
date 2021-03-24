@@ -2,6 +2,8 @@
 #include "pch.h"
 #include "Tile.h"
 #include "GameObject.h"
+#include "Enemy.h"
+#include "Player.h"
 
 Tile::Tile(Image* pImage, float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY)
 	:mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY), mImage(pImage), mIndexX(indexX), mIndexY(indexY), mObject(nullptr), mIsTileEmpty(false)
@@ -12,13 +14,31 @@ Tile::Tile(Image* pImage, float x, float y, int frameX, int frameY, int sizeX, i
 	mDiam = DiamMake(mX, mY, mSizeX, mSizeY);
 }
 
-void Tile::Update()
+void Tile::Update() //업데이트를 통해 내용 여부 체크
 {
-	if (!mObject) {
+	if (!mObjects.empty()) {
 		mIsTileEmpty = true;
+		for (int a = 0; a < mObjects.size(); a++) {
+			if (mObjects[a] == nullptr) {
+				mObjects.erase(mObjects.begin() + a);
+				--a;
+				continue;
+			}
+			int x = mObjects[a]->GetIndexX();
+			int y = mObjects[a]->GetIndexY();
+			if (x != mIndexX || y != mIndexY) {
+				mObjects.erase(mObjects.begin()+a);
+				--a;
+				continue;
+			}
+			Enemy* dumpEnemy =  dynamic_cast<Enemy*>(mObjects[a]);
+			if (!dumpEnemy) {
+					mIsTileEmpty = false;
+			}
+		}
 	}
 	else {
-		mIsTileEmpty = false;
+		mIsTileEmpty = true;
 	}
 }
 
@@ -81,4 +101,25 @@ void Tile::SelectRenderMargenta(HDC hdc)
 	if (mTileType != TileType::Normal) {
 		Gizmo::GetInstance()->DrawDiam(hdc, mDiam, Gizmo::Color::Margenta);
 	}
+}
+
+void Tile::AttackDamage(int damage) {
+	Update();
+	for (GameObject* elem : mObjects) {
+		Enemy* dumpEnemy = dynamic_cast<Enemy*> (elem);
+		if (dumpEnemy != nullptr) {
+			elem->Damage(damage);
+		}
+	}
+	mAttackTest = true;
+}
+void Tile::EnemyAttack(int damage) {
+	Update();
+	for (GameObject* elem : mObjects) {
+		Player* dumpEnemy = dynamic_cast<Player*> (elem);
+		if (dumpEnemy != nullptr) {
+			elem->Damage(damage);
+		}
+	}
+	mAttackTest = true;
 }

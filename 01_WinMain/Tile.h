@@ -29,6 +29,7 @@ class Tile
 
 	bool mIsTileEmpty; // 오브젝트가 비여 있으면 true;
 	GameObject* mObject;
+	vector<GameObject*> mObjects; //오브젝트를 담는 곳
 public:
 	Tile(Image* pImage,  float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY);
 	void Update();
@@ -57,15 +58,12 @@ public:
 	float GetX() { return mX; }
 	float GetY() { return mY; }
 
-	void SetObject(GameObject* object) { mObject = object;}
+	//void SetObject(GameObject* object) { mObject = object;}
+	void SetObject(GameObject* object) { mObjects.push_back(object); }
 	bool GetTileEmpty() const { return mIsTileEmpty; }
 	void SetType(TileType val) { mTileType = val; }
 	TileType GetType() { return mTileType; }
 
-	void AttackDamage(int damage) {
-		if (mObject != nullptr) {
-			mObject->Damage(damage);
-		}
-		mAttackTest = true;
-	}
+	void AttackDamage(int damage);
+	void EnemyAttack(int damage);
 };
