@@ -32,7 +32,9 @@ class Alchemist : public Player
 	Animation* mCurrentAnimation;
 
 	float mSkill1CoolTime;
+	int mSkill1Count; 
 	float mSkill2CoolTime;
+	int mSkill2Count;
 
 public:
 	Alchemist(int indexX, int indexY, float sizeX, float sizeY);
@@ -43,8 +45,8 @@ public:
 
 	void SetAnimation(int listNum) override;
 	void BasicAttack();
-	void Skill1(); // 역병 플라스크
-	void Skill2(); // 불지옥 플라스크
+	void Skill1(); // 역병 플라스크 최대 충전 3
+	void Skill2(); // 불지옥 플라스크 최대 충전 3
 
 	void SkulSwitch(int indexX, int indexY) override;
 	void SkulReset() override;

@@ -219,7 +219,6 @@ void Player::Dash(int dist, bool isBack)
 void Player::Attack(int damage, int range, AttackType type, bool isBack)
 {
 	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-	damage = mPhysicalAttackPower * damage;
 
 	if (isBack)
 	{

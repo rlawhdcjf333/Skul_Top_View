@@ -41,7 +41,10 @@ void Alchemist::Init()
 	mAnimationList[M leftSkill2] = new Animation(0, 11, 7, 11, true, false, 0.03f);
 
 	mSkill1CoolTime = 0;
+	mSkill1Count = 8;
 	mSkill2CoolTime = 0;
+	mSkill2Count = 5;
+
 	mAttackCoolTime = 0;
 
 }
@@ -85,12 +88,13 @@ void Alchemist::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -102,6 +106,7 @@ void Alchemist::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -126,17 +131,16 @@ void Alchemist::Update()
 
 	mAttackCoolTime -= dTime;
 	if (mAttackCoolTime < 0) mAttackCoolTime = 0;
-	if (INPUT->GetKey('X') or INPUT->GetKeyDown('X'))
+	if (INPUT->GetKey('X'))
 	{
 		BasicAttack();
 	}
 
 	if (INPUT->GetKeyDown('A')) // 역병 플라스크
 	{
-		if (mSkill1CoolTime == 0)
+		if (mSkill1Count>0)
 		{
-			mSkill1CoolTime = 4;
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			UpdateAngle();
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
 		}
@@ -149,10 +153,9 @@ void Alchemist::Update()
 
 	if (INPUT->GetKeyDown('S')) // 불지옥 플라스크
 	{
-		if (mSkill2CoolTime == 0)
+		if (mSkill2Count>0)
 		{
-			mSkill2CoolTime = 13;
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			UpdateAngle();
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
 		}
@@ -233,7 +236,8 @@ void Alchemist::BasicAttack()
 void Alchemist::Skill1()
 {
 	mSkill1CoolTime -= dTime;
-	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
+	if (mSkill1CoolTime < 0) {mSkill1Count++; mSkill1CoolTime = 4;}
+	if (mSkill1Count > 8) { mSkill1Count = 8; mSkill1CoolTime = 4;}
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 3)
@@ -248,7 +252,8 @@ void Alchemist::Skill1()
 void Alchemist::Skill2()
 {
 	mSkill2CoolTime -= dTime;
-	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
+	if (mSkill2CoolTime < 0) { mSkill2Count++; mSkill2CoolTime = 13; }
+	if (mSkill2Count > 5) { mSkill2Count = 5; mSkill2CoolTime = 13; }
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
@@ -277,7 +282,7 @@ void Alchemist::SkulSwitch(int indexX, int indexY)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		new Bullet(Random::GetInstance()->RandomInt(50) > 25 ? mFlask1 : mFlask2, "Flask", this, 1, 300, 30, PI*i/2, BulletType::Flask);
+		new Bullet(Random::GetInstance()->RandomInt(50) > 25 ? mFlask1 : mFlask2, "Flask", this, mMagicalAttackPower, 300, 30, PI*i/2, BulletType::Flask);
 	}
 }
 

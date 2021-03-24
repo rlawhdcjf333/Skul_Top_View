@@ -73,12 +73,13 @@ void Werewolf::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //´ë½¬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -90,6 +91,7 @@ void Werewolf::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -124,7 +126,6 @@ void Werewolf::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime = 4;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -140,7 +141,6 @@ void Werewolf::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mSkill2CoolTime = 15;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -213,7 +213,7 @@ void Werewolf::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 1, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 }
@@ -223,11 +223,17 @@ void Werewolf::Skill1()
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
-	if ((mAnimationList[M rightSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill1]->GetNowFrameX() == 3)
-		or (mAnimationList[M leftSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill1]->GetNowFrameX() == 3))
+
+	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		Attack(1, 2, AttackType::Whirlwind);
-		CAMERA->PanningOn(5);
+		mSkill1CoolTime = 4;
+
+		if (mCurrentAnimation->GetCurrentFrameTime()<dTime and mCurrentAnimation->GetCurrentFrameIndex()==3)
+		{
+			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+			CAMERA->PanningOn(5);
+		}
+
 	}
 }
 
@@ -236,11 +242,16 @@ void Werewolf::Skill2()
 	mSkill2CoolTime -= dTime;
 	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
 
-	if ((mAnimationList[M rightSkill2]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill2]->GetNowFrameX() == 4)
-		or (mAnimationList[M leftSkill2]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill2]->GetNowFrameX() == 4))
+	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		Attack(1, 2, AttackType::Whirlwind);
-		CAMERA->PanningOn(5);
+		mSkill2CoolTime = 15;
+
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 3)
+		{
+			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+			CAMERA->PanningOn(5);
+		}
+
 	}
 }
 
@@ -250,13 +261,13 @@ void Werewolf::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M leftDash);
 	}
 	if (RIGHT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M rightDash);
 	}
 }

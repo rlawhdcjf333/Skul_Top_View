@@ -143,13 +143,12 @@ void LittleBone::Update()
 	}
 	BasicAttack();
 
-	if (INPUT->GetKeyDown('A') and mIsHead) //머가리 던지기
+	if (INPUT->GetKeyDown('A') and mIsHead and mSkill1CoolTime==0) //머가리 던지기
 	{
 		mCurrentAnimation->Stop();
 		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) SetAnimation(M rightSkill1);
 		if (LEFT) SetAnimation(M leftSkill1);
-		mIsHead = !mIsHead;
 	}
 	Skill1();
 
@@ -168,12 +167,13 @@ void LittleBone::Update()
 	}
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -185,6 +185,7 @@ void LittleBone::Update()
 		
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -267,12 +268,19 @@ void LittleBone::SetAnimation(int listNum)
 
 void LittleBone::Skill1()
 {
+	mSkill1CoolTime -= dTime;
+	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
+
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
+		mSkill1CoolTime = 4;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			mIsHead = !mIsHead;
+			UpdateAngle();
 			new Bullet(mHeadImage, "skulHead", this, 2 * mPhysicalAttackPower, 500, 500, mAngle, BulletType::SkulHead);
+
 		}
 	}
 }
@@ -286,7 +294,7 @@ void LittleBone::BasicAttack()
 	{
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(1, 1, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 

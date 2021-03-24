@@ -206,6 +206,9 @@
     <ClInclude Include="Berserker.h" />
     <ClInclude Include="HighWarlock.h" />
     <ClInclude Include="WarlockOrb.h" />
+    <ClInclude Include="Ninja.h" />
+    <ClInclude Include="Hwadun.h" />
+    <ClInclude Include="Shuriken.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -267,6 +270,9 @@
     <ClCompile Include="Berserker.cpp" />
     <ClCompile Include="HighWarlock.cpp" />
     <ClCompile Include="WarlockOrb.cpp" />
+    <ClCompile Include="Ninja.cpp" />
+    <ClCompile Include="Hwadun.cpp" />
+    <ClCompile Include="Shuriken.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

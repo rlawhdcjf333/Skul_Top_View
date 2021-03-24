@@ -42,6 +42,7 @@ class LittleBone :public Player
 
 	int mRotationCount;
 	bool mIsHead;
+	float mSkill1CoolTime;
 
 public:
 	LittleBone(int indexX, int indexY, float sizeX, float sizeY);

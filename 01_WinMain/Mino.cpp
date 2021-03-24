@@ -47,28 +47,8 @@ void Mino::Init()
 		});
 	mAnimationList[M leftAttack2] = new Animation(0, 8, 4, 8, true, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 4, 0, 4, false, false, 0.2f,
-		[this]() {
-			if (mSkill1CoolTime > 9.f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill1);
-				if (LEFT) SetAnimation(M leftSkill1);
-				Dash(2);
-				Attack(1, 2, AttackType::Side);
-				CAMERA->PanningOn(5);
-			}
-		});
-	mAnimationList[M leftSkill1] = new Animation(1, 4, 1, 4, false, false, 0.2f,
-		[this]() {
-			if (mSkill1CoolTime > 9.f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill1);
-				if (LEFT) SetAnimation(M leftSkill1);
-				Dash(2);
-				Attack(1, 2, AttackType::Side);
-				CAMERA->PanningOn(5);
-			}
-		});
+	mAnimationList[M rightSkill1] = new Animation(0, 7, 4, 7, false, false, 0.05f);
+	mAnimationList[M leftSkill1] = new Animation(0, 8, 4, 8, true, false, 0.05f);
 	mAnimationList[M rightSkill2] = new Animation(0, 4, 0, 4, false, false, 0.2f,
 		[this]() {
 			if (mSkill2CoolTime > 13.f)
@@ -123,11 +103,11 @@ void Mino::Update()
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			Attack(1, 5, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
-			mDashCount = 1;
 			mDashCoolTime = mInitDashCoolTime;
 		}
 	}
@@ -158,7 +138,6 @@ void Mino::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime = 10;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -175,6 +154,7 @@ void Mino::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			mSkill2CoolTime = 14;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
@@ -272,6 +252,23 @@ void Mino::Skill1()
 {
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
+
+	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
+	{
+		mSkill1CoolTime = 10;
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		{
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
+			{
+				Dash(5);
+				CAMERA->PanningOn(5);
+			}
+			else
+			{
+				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			}
+		}
+	}
 }
 
 void Mino::Skill2()
@@ -287,7 +284,7 @@ void Mino::Skill2()
 			if (RIGHT) mCurrentAnimation = mAnimationList[M rightAttack2];
 			if (LEFT) mCurrentAnimation = mAnimationList[M rightAttack2];
 			mCurrentAnimation->Play();
-			Attack(1, 2, AttackType::Whirlwind);
+			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
 			CAMERA->PanningOn(5);
 
 			//기절 함수 필요

@@ -101,7 +101,7 @@ void HighWarlock::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
@@ -109,8 +109,8 @@ void HighWarlock::Update()
 		{
 			if (mDashCoolTime == 0)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
-				Attack(1, 5, AttackType::Stab);
 
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -122,6 +122,7 @@ void HighWarlock::Update()
 
 				if (mDashCount == 1)
 				{
+					mCurrentAnimation->Stop();
 					Dash(5);
 					if (LEFT) SetAnimation(M leftDash);
 					if (RIGHT) SetAnimation(M rightDash);
@@ -155,7 +156,7 @@ void HighWarlock::Update()
 
 	if ((INPUT->GetKeyDown('A') and mSkill1CoolTime==0) or (INPUT->GetKeyDown('S') and mSkill2CoolTime==0)) //캐스팅
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		UpdateAngle();
 		if (RIGHT) { SetAnimation(M rightCasting); }
 		if (LEFT) { SetAnimation(M leftCasting); }
 		mCastingEffect = new Effect(L"CastingEffect", mX, mY - 15, EffectType::Follow);
@@ -172,11 +173,11 @@ void HighWarlock::Update()
 				
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
-					new Bullet(mMeteorIncomp, "MeteorIncomp", this, 5, 400, 1200, 0, BulletType::MeteorStrike);
+					new Bullet(mMeteorIncomp, "MeteorIncomp", this, 5*mMagicalAttackPower, 400, 1200, 0, BulletType::MeteorStrike);
 				}
 				else
 				{
-					new Bullet(mMeteorComp, "MeteorComp", this, 10, 400, 1200, 0, BulletType::MeteorStrike);
+					new Bullet(mMeteorComp, "MeteorComp", this, 10*mMagicalAttackPower, 400, 1200, 0, BulletType::MeteorStrike);
 				}
 
 				if(Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
@@ -185,7 +186,6 @@ void HighWarlock::Update()
 				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 				if (RIGHT) { SetAnimation(M rightSkill1); }
 				if (LEFT) { SetAnimation(M leftSkill1); }
-				mSkill1CoolTime = 20;
 			}
 		}
 	}
@@ -201,11 +201,11 @@ void HighWarlock::Update()
 				UpdateAngle();
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 5, false);
+					new WarlockOrb(this, 100, mAngle, 800, 5*mMagicalAttackPower, false);
 				}
 				else
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 10, true);
+					new WarlockOrb(this, 100, mAngle, 800, 10*mMagicalAttackPower, true);
 				}
 
 				if (Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
@@ -213,7 +213,6 @@ void HighWarlock::Update()
 				mCurrentAnimation->Stop();
 				if (RIGHT) { SetAnimation(M rightSkill2); }
 				if (LEFT) { SetAnimation(M leftSkill2); }
-				mSkill2CoolTime = 14;
 			}
 		}
 	}
@@ -305,12 +304,22 @@ void HighWarlock::Skill1()
 {
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
+
+	if (mAnimationList[M leftSkill1]->GetIsPlay() or mAnimationList[M rightSkill1]->GetIsPlay())
+	{
+		mSkill2CoolTime = 20;
+	}
 }
 
 void HighWarlock::Skill2()
 {
 	mSkill2CoolTime -= dTime;
 	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
+
+	if (mAnimationList[M leftSkill2]->GetIsPlay() or mAnimationList[M rightSkill2]->GetIsPlay())
+	{
+		mSkill2CoolTime = 14;
+	}
 }
 
 void HighWarlock::SkulSwitch(int indexX, int indexY)

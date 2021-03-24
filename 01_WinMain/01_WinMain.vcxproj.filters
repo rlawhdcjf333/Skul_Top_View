@@ -285,6 +285,15 @@
     <ClInclude Include="WarlockOrb.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Ninja.h">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClInclude>
+    <ClInclude Include="Hwadun.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Shuriken.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -447,6 +456,15 @@
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
     <ClCompile Include="WarlockOrb.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Ninja.cpp">
+      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClCompile>
+    <ClCompile Include="Hwadun.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Shuriken.cpp">
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>

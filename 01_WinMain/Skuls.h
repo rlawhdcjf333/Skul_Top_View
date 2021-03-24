@@ -11,3 +11,4 @@
 #include "clown.h"
 #include "Berserker.h"
 #include "HighWarlock.h"
+#include "Ninja.h"

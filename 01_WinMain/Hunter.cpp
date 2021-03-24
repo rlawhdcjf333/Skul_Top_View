@@ -63,12 +63,13 @@ void Hunter::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //´ë½¬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -80,6 +81,7 @@ void Hunter::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -114,7 +116,6 @@ void Hunter::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime = 8;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -130,7 +131,6 @@ void Hunter::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mSkill2CoolTime = 14;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -215,16 +215,20 @@ void Hunter::Skill1()
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 3)
+	{
+		mSkill1CoolTime = 8;
+
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 3)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 
-			for(int i=0; i<5; i++)
-			new Bullet(mArrow, "Bullet", this, 3* mPhysicalAttackPower, 300, 500, mAngle-PI/3+i*PI/6, BulletType::Straight);
+			for (int i = 0; i < 5; i++)
+				new Bullet(mArrow, "Bullet", this, 3 * mPhysicalAttackPower, 300, 500, mAngle - PI / 3 + i * PI / 6, BulletType::Straight);
 
 			CAMERA->PanningOn(5);
 
 		}
+	}
 }
 
 void Hunter::Skill2()
@@ -234,6 +238,8 @@ void Hunter::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
+		mSkill2CoolTime = 14;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			if (mCurrentAnimation->GetNowFrameX() == 3)

@@ -73,12 +73,13 @@ void Warrior::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0;}
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -90,6 +91,7 @@ void Warrior::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -124,7 +126,6 @@ void Warrior::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime = 4;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -140,7 +141,6 @@ void Warrior::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mSkill2CoolTime = 5;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -223,13 +223,17 @@ void Warrior::Skill1()
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
-	if(mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
-	if (mCurrentAnimation->GetCurrentFrameTime()<dTime and mCurrentAnimation->GetNowFrameX() ==4)
+	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		//넉백 함수 필요함!!
-		Attack(1, 3, AttackType::Side);
-		Attack(1, 1, AttackType::Side, true);
-		CAMERA->PanningOn(5);
+		mSkill1CoolTime = 4;
+
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 4)
+		{
+			//넉백 함수 필요함!!
+			Attack(1, 3, AttackType::Side);
+			Attack(1, 1, AttackType::Side, true);
+			CAMERA->PanningOn(5);
+		}
 	}
 }
 
@@ -240,6 +244,8 @@ void Warrior::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay()) 
 	{
+		mSkill2CoolTime = 5;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 1 or mAnimationList[M leftSkill2]->GetNowFrameX() == 7)

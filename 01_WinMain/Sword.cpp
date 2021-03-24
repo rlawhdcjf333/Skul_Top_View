@@ -106,7 +106,6 @@ void Sword::Update()
 	{
 		if(mSkill1CoolTime==0)
 		{
-			mSkill1CoolTime = 11;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -122,7 +121,6 @@ void Sword::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mSkill2CoolTime = 6;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -135,12 +133,13 @@ void Sword::Update()
 	Skill2();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //´ë½¬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -152,6 +151,7 @@ void Sword::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -236,14 +236,14 @@ void Sword::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 1, AttackType::Side); 
+			Attack(mPhysicalAttackPower, 1, AttackType::Side); 
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 2, AttackType::Stab); 
+			Attack(mPhysicalAttackPower, 2, AttackType::Stab);
 			Dash(2);
 		}
 	}
@@ -254,15 +254,17 @@ void Sword::Skill1()
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
-
-	if ((mAnimationList[M rightSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M rightSkill1]->GetNowFrameX() == 1)
-		or (mAnimationList[M leftSkill1]->GetCurrentFrameTime() < dTime and mAnimationList[M leftSkill1]->GetNowFrameX() == 1))
+	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		Attack(1, 3, AttackType::Stab);
-		Dash(3);
-		CAMERA->PanningOn(5);
+		mSkill1CoolTime = 11;
+
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 1)
+		{
+			Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+			Dash(3);
+			CAMERA->PanningOn(5);
+		}
 	}
-	
 }
 
 void Sword::Skill2()
@@ -272,11 +274,13 @@ void Sword::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
+		mSkill2CoolTime = 6;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			if (mCurrentAnimation->GetNowFrameX() == 2 or mCurrentAnimation->GetNowFrameX() == 5 or mCurrentAnimation->GetNowFrameX() == 8)
 			{
-				Attack(1, 3, AttackType::Stab);
+				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
 				Dash(3);
 				CAMERA->PanningOn(5);
 			}

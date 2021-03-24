@@ -116,7 +116,6 @@ void Ent::Update()
 			Attack(1, 5, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
-			mDashCount = 1;
 			mDashCoolTime = mInitDashCoolTime;
 		}
 	}
@@ -149,7 +148,6 @@ void Ent::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime =11;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -178,7 +176,6 @@ void Ent::Update()
 	{
 		if (mAnimationList[M rightCharging]->GetIsPlay() or mAnimationList[M leftCharging]->GetIsPlay())
 		{
-			mSkill2CoolTime = 13;
 
 			if (mCurrentAnimation->GetNowFrameX() < 3)
 			{
@@ -261,14 +258,14 @@ void Ent::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 1, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 	if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 1, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 
@@ -281,17 +278,18 @@ void Ent::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		
+		mSkill1CoolTime = 11;
+
 		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Dash(2);
-			Attack(1, 1, AttackType::Whirlwind);
+			Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
 			CAMERA->PanningOn(5);
 		}
-		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		else if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Dash(2);
-			Attack(1, 1, AttackType::Whirlwind);
+			Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
 		}
 	}
 }
@@ -303,16 +301,20 @@ void Ent::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
+		mSkill2CoolTime = 13;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(1, 2, AttackType::Whirlwind);
+			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
 		}
 	}
 	else if (mAnimationList[M rightSkill2Full]->GetIsPlay() or mAnimationList[M leftSkill2Full]->GetIsPlay())
 	{
+		mSkill2CoolTime = 13;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(2, 4, AttackType::Whirlwind);
+			Attack(2*mPhysicalAttackPower, 4, AttackType::Whirlwind);
 		}
 	}
 

@@ -76,12 +76,13 @@ void Clown::Update()
 	mTileSelect->Update();
 
 	mDashCoolTime -= dTime;
-	if (mDashCoolTime < 0) mDashCoolTime = 0;
+	if (mDashCoolTime < 0) { mDashCoolTime = 0, mDashCount = 0; }
 
 	if (INPUT->GetKeyDown('Z')) //´ë½¬
 	{
 		if (mDashCoolTime == 0)
 		{
+			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -93,6 +94,7 @@ void Clown::Update()
 
 			if (mDashCount == 1)
 			{
+				mCurrentAnimation->Stop();
 				Dash(5);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -127,7 +129,6 @@ void Clown::Update()
 	{
 		if (mSkill1CoolTime == 0)
 		{
-			mSkill1CoolTime = 12;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill1); }
 			if (LEFT) { SetAnimation(M leftSkill1); }
@@ -143,7 +144,6 @@ void Clown::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mSkill2CoolTime = 14;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -228,15 +228,19 @@ void Clown::Skill1()
 	if (mSkill1CoolTime < 0) mSkill1CoolTime = 0;
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
+	{
+		mSkill1CoolTime = 12;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 2)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			for(int i=0; i<2; i++)
-			new Bullet(mDagger, "ExplosiveDagger", this, 2*mMagicalAttackPower, 500, 500, mAngle+PI/12-i*PI/6, BulletType::Flask);
+			for (int i = 0; i < 2; i++)
+				new Bullet(mDagger, "ExplosiveDagger", this, 2 * mMagicalAttackPower, 500, 500, mAngle + PI / 12 - i * PI / 6, BulletType::Flask);
 
 			CAMERA->PanningOn(5);
 
 		}
+	}
 }
 
 void Clown::Skill2()
@@ -246,15 +250,17 @@ void Clown::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
+		mSkill2CoolTime = 14;
+
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 0 or mAnimationList[M leftSkill2]->GetNowFrameX() == 5)
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
 			{
 				Dash(5);
 				CAMERA->PanningOn(5);
 			}
 			
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			UpdateAngle();
 			new Bullet(mBox, "Box", this, 2* mMagicalAttackPower, 60, 30, PI/2, BulletType::Flask);
 			
 			
