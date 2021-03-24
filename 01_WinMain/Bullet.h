@@ -8,11 +8,13 @@ enum class BulletType : int {
 	Flask,
 	FrameProjectile,
 	Barricade,
-	MeteorStrike
+	MeteorStrike,
+	Protect,
 };
 
 class Bullet : public GameObject
 {
+protected:
 	Image* mImage;
 	float mAngle;
 	BulletType mType;
@@ -23,13 +25,14 @@ class Bullet : public GameObject
 	float mFrameTick;
 
 public:
+	Bullet() {};
 	Bullet(Image* image, string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type);
 	void Init();
-	void Release();
-	void Update();
-	void Render(HDC hdc);
+	virtual void Release();
+	virtual void Update();
+	virtual void Render(HDC hdc);
+	
 	void Move();
-
 	void Damage(int a);
 	void Explosion(int damage, int range = 2);
 	BulletType GetType() { return mType; }

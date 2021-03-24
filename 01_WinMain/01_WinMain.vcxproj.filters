@@ -282,6 +282,9 @@
     <ClInclude Include="HighWarlock.h">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClInclude>
+    <ClInclude Include="WarlockOrb.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -442,6 +445,9 @@
     </ClCompile>
     <ClCompile Include="HighWarlock.cpp">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+    </ClCompile>
+    <ClCompile Include="WarlockOrb.cpp">
+      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

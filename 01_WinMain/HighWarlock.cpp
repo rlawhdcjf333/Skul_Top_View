@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "Animation.h"
 #include "Effect.h"
+#include "WarlockOrb.h"
 
 HighWarlock::HighWarlock(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -152,23 +153,17 @@ void HighWarlock::Update()
 	}
 	BasicAttack();
 
-	if (INPUT->GetKeyDown('A')) //메테오
+	if ((INPUT->GetKeyDown('A') and mSkill1CoolTime==0) or (INPUT->GetKeyDown('S') and mSkill2CoolTime==0)) //캐스팅
 	{
-		if (mSkill1CoolTime == 0)
-		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			if (RIGHT) { SetAnimation(M rightCasting); }
-			if (LEFT) { SetAnimation(M leftCasting); }
-			mCastingEffect = new Effect(L"CastingEffect", mX, mY - 15, EffectType::Follow);
-			mCastingEffect->SetUpdateTime(0.0416f);
-			mCastingEffect->SetNextEffect(L"CastingDone");
-		}
-		else
-		{
-			CAMERA->PanningOn(3);
-		}
+		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		if (RIGHT) { SetAnimation(M rightCasting); }
+		if (LEFT) { SetAnimation(M leftCasting); }
+		mCastingEffect = new Effect(L"CastingEffect", mX, mY - 15, EffectType::Follow);
+		mCastingEffect->SetUpdateTime(0.0416f);
+		mCastingEffect->SetNextEffect(L"CastingDone");
 	}
-	if (INPUT->GetKeyUp('A') and mSkill1CoolTime==0)
+
+	if (INPUT->GetKeyUp('A') and mSkill1CoolTime==0) //메테오
 	{
 		if (!mAnimationList[M rightSkill2]->GetIsPlay() and !mAnimationList[M leftSkill2]->GetIsPlay())
 		{
@@ -196,18 +191,30 @@ void HighWarlock::Update()
 	}
 	Skill1();
 
-	if (INPUT->GetKeyDown('S')) // 어비스 오브
+	if (INPUT->GetKeyUp('S') and mSkill2CoolTime == 0) //오브
 	{
-		if (mSkill2CoolTime == 0)
+		if (!mAnimationList[M rightSkill1]->GetIsPlay() and !mAnimationList[M leftSkill1]->GetIsPlay())
 		{
-			mSkill2CoolTime = 12;
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			if (RIGHT) { SetAnimation(M rightSkill2); }
-			if (LEFT) { SetAnimation(M leftSkill2); }
-		}
-		else
-		{
-			CAMERA->PanningOn(3);
+			if (mAnimationList[M rightCasting]->GetIsPlay() or mAnimationList[M leftCasting]->GetIsPlay())
+			{
+
+				UpdateAngle();
+				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
+				{
+					new WarlockOrb(this, 100, mAngle, 800, 5, false);
+				}
+				else
+				{
+					new WarlockOrb(this, 100, mAngle, 800, 10, true);
+				}
+
+				if (Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
+				if (Obj->FindObject(ObjectLayer::Effect, "CastingEffect")) Obj->FindObject(ObjectLayer::Effect, "CastingEffect")->SetIsDestroy(true);
+				mCurrentAnimation->Stop();
+				if (RIGHT) { SetAnimation(M rightSkill2); }
+				if (LEFT) { SetAnimation(M leftSkill2); }
+				mSkill2CoolTime = 1;
+			}
 		}
 	}
 	Skill2();

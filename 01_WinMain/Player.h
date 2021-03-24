@@ -54,16 +54,20 @@ public:
 	virtual void Skill2() {};
 
 	int const GetPhysicalAttackPower() { return mPhysicalAttackPower; }
+	void SetPhysicalAttackPower(int val) { mPhysicalAttackPower = val; }
+
 	int const GetMagicalAttackPower() { return mMagicalAttackPower; }
 	void PhysicalAttackBuff(int percentage, float buffDuration);
 	void AttackSpeedBuff(int percentage, float buffDuration);
 	void AttackSpeedSet(float val) { mAttackSpeed = val; }
+	void UpdateAngle() { mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY()); }
 
 	virtual void SkulSwitch(int indexX, int indexY);
 	virtual void SkulReset() {};
 
 	virtual void SetAnimation(int listNum) {};
 	virtual void SetAttackSpeed() {};
+	
 };
 
 #define M (int)Motion::

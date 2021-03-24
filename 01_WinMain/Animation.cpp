@@ -19,7 +19,7 @@ Animation::Animation()
 void Animation::Update()
 {
 	if (mIsPlay == false)
-		return;
+		return;	
 
 	mCurrentFrameTime += dTime;
 

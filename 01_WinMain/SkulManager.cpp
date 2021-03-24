@@ -52,6 +52,13 @@ void SkulManager::RegBuff(function<void()> func, float duration)
 
 Player* SkulManager::NewSkulGet(Player* skul)
 {
+	for (Buff elem : mBuffList) //새로운 스컬을 얻을 경우 모든 버프 초기화 ->버그방지
+	{
+		elem.mBuffFunc();
+	}
+	mBuffList.clear();
+
+
 	if (mAlterSkul) {
 		Player* temp = mCurrentSkul;
 		mCurrentSkul = skul;

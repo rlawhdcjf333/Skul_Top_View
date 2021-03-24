@@ -205,6 +205,7 @@
     <ClInclude Include="Clown.h" />
     <ClInclude Include="Berserker.h" />
     <ClInclude Include="HighWarlock.h" />
+    <ClInclude Include="WarlockOrb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Clown.cpp" />
     <ClCompile Include="Berserker.cpp" />
     <ClCompile Include="HighWarlock.cpp" />
+    <ClCompile Include="WarlockOrb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

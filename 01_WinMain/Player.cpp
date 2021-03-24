@@ -372,7 +372,11 @@ void Player::PhysicalAttackBuff(int percentage, float buffDuration) //물리공격력
 {
 	int plus = mPhysicalAttackPower * percentage / 100;
 	mPhysicalAttackPower += plus;
-	SKUL->RegBuff([this, plus]() {mPhysicalAttackPower -= plus;}, buffDuration);
+	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetPhysicalAttackPower(SKUL->GetAlterSkul()->GetPhysicalAttackPower()+plus);
+
+	SKUL->RegBuff([this, plus]() {
+		mPhysicalAttackPower -= plus; if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetPhysicalAttackPower(SKUL->GetAlterSkul()->GetPhysicalAttackPower() - plus);
+		}, buffDuration);
 
 }
 
@@ -380,7 +384,7 @@ void Player::AttackSpeedBuff(int percentage, float buffDuration) //공속버프
 {
 	float upSpeed = (mAttackSpeed * percentage) / (100+percentage);
 	mAttackSpeed -= upSpeed;
-	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed);
+	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed); 
 
 	SKUL->GetCurrentSkul()->SetAttackSpeed();
 	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
