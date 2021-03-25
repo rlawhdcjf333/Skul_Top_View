@@ -364,7 +364,7 @@ void Yaksha::Skill2()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 0:
-
+				break;
 
 
 

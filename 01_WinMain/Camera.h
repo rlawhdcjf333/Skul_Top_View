@@ -36,7 +36,7 @@ public:
 	void ScaleFrameRender(HDC hdc,class Image* image, int x, int y, int frameX, int frameY, int width, int height);
 	void AlphaScaleRender(HDC hdc,class Image* image, int x, int y, int width, int height, float alpha);
 	void AlphaScaleFrameRender(HDC hdc, class Image* image, int x, int y, int frameX, int frameY, int width, int height, float alpha);
-
+	void CenterBottomFrameRender(HDC hdc , class Image* image, int x, int y, int frameX, int frameY);
 	void RenderRect(HDC hdc, RECT rc);
 	void RenderPolygon(HDC hdc, POINT points[], int pointsNum);
 	void RenderEllipse(HDC hdc, float x, float y, float radius);

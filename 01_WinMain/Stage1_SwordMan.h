@@ -33,6 +33,8 @@ public :
 	void CurrentSet(StateType type, Direction direction);
 	void MoveReset();
 	void EnemyInTileCheck(); //타일안 보정 체크
+	void KnockBack();
+	void KnockBackMove();
 	bool AttackCheck(int area); //공격 가능 여부 체크
 	bool WalkCheck();
 };

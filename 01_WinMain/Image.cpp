@@ -457,4 +457,12 @@ void Image::AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY,
 	}
 }
 
+void Image::CenterBottomFrameRender(HDC hdc, int x, int y, int frameX, int frameY)
+{
+	int changeX = x - mImageBuffer->frameWidth / 2;
+	int changeY = y - mImageBuffer->frameHeight;
+
+	FrameRender(hdc, changeX,changeY,frameX,frameY);
+}
+
 

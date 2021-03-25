@@ -6,7 +6,7 @@
 Stage1_SwordMan::Stage1_SwordMan(int indexX, int indexY)
 	:Enemy(indexX,indexY)
 {
-	mHp = 500;
+	mHp = 60;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);
@@ -37,12 +37,17 @@ void Stage1_SwordMan::Update()
 		mIsDestroy = true;
 		return;
 	}
-
-
 	if (mType == StateType::Hit) {
+		if (mIsKnockBack) {
+			KnockBackMove();
+		}
 		mHitTime -= dTime;
-		if (mHitTime < 0) {
+		if (mHitTime < 0 && !mIsKnockBack) {
 			mHitTime = 0;
+			mPath.clear();
+			mPathIndex = 1;
+			mTargetTile = nullptr;
+			mTargetSkulTile = nullptr;
 			CurrentSet(StateType::Idle, mDirection);
 		}
 		else {
@@ -51,6 +56,7 @@ void Stage1_SwordMan::Update()
 		}
 	}
 	mCurrentSkul = SKUL->GetCurrentSkul();
+	mTargetSkulTile = TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()];
 	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
 	if (mType == StateType::Idle) {
 		if (mType != StateType::Walk) {
@@ -70,7 +76,16 @@ void Stage1_SwordMan::Update()
 		}
 	}
 	if (mType == StateType::Walk) {
-		Move(300);
+		float mAngle = Math::GetAngle(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY());
+		if (LEFT && mDirection == Direction::right) {
+			mDirection = Direction::left;
+			Walk();
+		}
+		else if(RIGHT && mDirection == Direction::left) {
+			mDirection = Direction::right;
+			Walk();
+		}
+		Move(150);
 	}
 	if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetNowFrameX() == 0) {
@@ -106,9 +121,9 @@ void Stage1_SwordMan::Release()
 
 void Stage1_SwordMan::Render(HDC hdc)
 {
-	CAMERA->RenderRect(hdc, mRect);
+	//CAMERA->RenderRect(hdc, mRect);
 	if (mCurrentImage) {
-		CAMERA->FrameRender(hdc,mCurrentImage,mRect.left,mRect.top,mCurrentAnimation->GetNowFrameX(),mCurrentAnimation->GetNowFrameY());
+		CAMERA->CenterBottomFrameRender(hdc,mCurrentImage,mX,mY,mCurrentAnimation->GetNowFrameX(),mCurrentAnimation->GetNowFrameY());
 	}
 }
 
@@ -117,7 +132,12 @@ void Stage1_SwordMan::Walk()
 	//int skulX = SkulManager::GetInstance()->GetCurrentSkul()->GetX();
 	//int skulY = SkulManager::GetInstance()->GetCurrentSkul()->GetY();
 	//float angle = Math::GetAngle(mX,mY,skulX,skulY);
+	int dumpIndex = 0;
+	if (mType == StateType::Walk) {
+		dumpIndex = mCurrentAnimation->GetCurrentFrameIndex();
+	}
 	CurrentSet(StateType::Walk, mDirection);
+	mCurrentAnimation->SetCurrentFrameIndex(dumpIndex);
 	mCurrentAnimation->SetIsLoop(true);
 }
 
@@ -126,10 +146,9 @@ void Stage1_SwordMan::Attack()
 	//0번 대기 후 공격
 	float x = mCurrentSkul->GetX();
 	float y = mCurrentSkul->GetY();
-	
-	float angle = Math::GetAngle(mX,mY,x,y);
+	float mAngle = Math::GetAngle(mX,mY,x,y);
 
-	if (angle >= PI/2 && angle < 3*PI/2) {
+	if (LEFT) {
 		mDirection = Direction::left;
 	}
 	else {
@@ -141,6 +160,7 @@ void Stage1_SwordMan::Attack()
 void Stage1_SwordMan::Idle()
 {
 	CurrentSet(StateType::Idle, mDirection);
+	mCurrentAnimation->SetIsLoop(true);
 }
 
 void Stage1_SwordMan::Hit()
@@ -150,14 +170,15 @@ void Stage1_SwordMan::Hit()
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
 		mCurrentAnimation->Update();
 		mCurrentAnimation->Pause();
-		mHitTime = 1.f;
+		mHitTime = 0.6f;
 	}
 	else{
 		CurrentSet(StateType::Hit, mDirection);
 		mCurrentAnimation->Pause();
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
-		mHitTime = 1.f;
+		mHitTime = 0.6f;
 	}
+	KnockBack();
 }
 
 void Stage1_SwordMan::Damage(int Damage)
@@ -170,15 +191,20 @@ void Stage1_SwordMan::Move(int speed)
 {
 	
 	if (!mPath.empty()) {
-		if (mPath.size() <= mPathIndex) //목적지까지 이동 완료
+		mTargetTile->Update();
+		if (mPath.size() <= mPathIndex || !mTargetTile->GetTileEmpty()
+			|| mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()]) //목적지까지 이동 완료
 		{
 			mPath.clear();
 			mPathIndex = 1;
 			mTargetTile = nullptr;
+			mTargetSkulTile = nullptr;
 			Idle();
 		}
 		else //이동 중
 		{
+			mPath[mPathIndex]->Update();
+
 			int pathX = mPath[mPathIndex]->GetX() + TileSizeX / 2;
 			int pathY = mPath[mPathIndex]->GetY() + TileSizeY / 2;
 			float mAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
@@ -235,6 +261,103 @@ void Stage1_SwordMan::EnemyInTileCheck()
 	mY = TILE[mIndexY][mIndexX]->GetY() + TileSizeY / 2;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 }
+void Stage1_SwordMan::KnockBack()
+{
+	if (mIsKnockBack) {
+		return;
+	}
+	float mAngle = Math::GetAngle(mCurrentSkul->GetX(), mCurrentSkul->GetY(), mX, mY);
+
+	if (mAngle >= PI2 - (PI / 8) or mAngle < (PI / 8)) //우향
+	{
+		if (mIndexX + 1 < TILESizeX and mIndexY - 1 >= 0)
+		{
+			mKnockTile = TILE[mIndexY - 1][mIndexX + 1];
+		}
+	}
+	else if (mAngle >= (PI / 8) and mAngle < (3 * PI / 8)) //우상향
+	{
+
+		if (mIndexY - 1 >= 0 and mIndexY - 1 < TILESizeY)
+		{
+			mKnockTile = TILE[mIndexY - 1][mIndexX];
+		}
+	}
+	else if (mAngle >= (3 * PI / 8) and mAngle < (5 * PI / 8)) //상향
+	{
+		if (mIndexX - 1 >= 0 and mIndexY - 1 >= 0)
+		{
+			mKnockTile = TILE[mIndexY - 1][mIndexX - 1];
+		}
+	}
+	else if (mAngle >= (5 * PI / 8) and mAngle < (7 * PI / 8)) //좌상향
+	{
+		if (mIndexX - 1 >= 0)
+		{
+			mKnockTile = TILE[mIndexY][mIndexX - 1];
+		}
+	}
+	else if (mAngle >= (7 * PI / 8) and mAngle < (9 * PI / 8)) //좌향
+	{
+		if (mIndexX - 1 >= 0 and mIndexY + 1 < TILESizeY)
+		{
+			mKnockTile = TILE[mIndexY + 1][mIndexX - 1];
+		}
+	}
+	else if (mAngle >= (9 * PI / 8) and mAngle < (11 * PI / 8)) //좌하향
+	{
+		if (mIndexY + 1 < TILESizeY)
+		{
+			mKnockTile = TILE[mIndexY + 1][mIndexX];
+		}
+	}
+	else if (mAngle >= (11 * PI / 8) and mAngle < (13 * PI / 8)) //하향
+	{
+		if (mIndexX + 1 < TILESizeX and mIndexY + 1 < TILESizeY)
+		{
+			mKnockTile = TILE[mIndexY + 1][mIndexX + 1];
+		}
+	}
+	else if (mAngle >= (13 * PI / 8) and mAngle < (15 * PI / 8)) //우하향
+	{
+		if (mIndexX + 1 < TILESizeX)
+		{
+			mKnockTile = TILE[mIndexY][mIndexX + 1];
+		}
+	}
+	EnemyInTileCheck();
+	mIsKnockBack = true; //넉백이 일어났을 때
+}
+void Stage1_SwordMan::KnockBackMove()
+{
+	if (!mKnockTile) {
+		return;
+	}
+
+	if (mKnockTile->GetIndexX() == mIndexX && mKnockTile->GetIndexY() == mIndexY) {
+		mIsKnockBack = false;
+		mKnockTile = nullptr;
+		return;
+	}
+	else //이동 중
+	{
+		float speed = 200.f;
+		int pathX = mKnockTile->GetX() + TileSizeX / 2;
+		int pathY = mKnockTile->GetY() + TileSizeY / 2;
+		float mAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
+		mX += speed * cosf(mAngle) * dTime;
+		mY -= speed * sinf(mAngle) * dTime;
+		if (abs(mX - pathX) < speed * dTime and abs(mY - pathY) < speed * dTime) //오차 보정
+		{
+			mX = pathX;
+			mY = pathY;
+			mIndexX = mKnockTile->GetIndexX();
+			mIndexY = mKnockTile->GetIndexY();
+			mKnockTile->SetObject(this);
+			mKnockTile->Update();
+		}
+	}
+}
 bool Stage1_SwordMan::AttackCheck(int area)
 {
 	int indexX = mCurrentSkul->GetIndexX();
@@ -256,7 +379,7 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 		}
 	}
 	float m = Math::GetDistance(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY()); //거리
-	if (m > 350.f) {
+	if (m > 800.f) {
 		return false;
 	}
 	int indexX = mCurrentSkul->GetIndexX();
@@ -264,8 +387,8 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 	vector<Tile*> moveTileList;
 	for (int y = indexY - 1; y < indexY + 2; y++) {
 		for (int x = indexX - 1; x < indexX + 2; x++) {
-			if ((y >= 0 &&y<TILESizeY)&&(x >=0 && y< TILESizeY)
-				&&(x != indexX && y != indexY)) {
+			if ((y >= 0 &&y<TILESizeY)&&(x >=0 && x< TILESizeX)
+				&&!(x == indexX && y == indexY)) {
 				if (TILE[y][x]->GetType() != TileType::Block) {
 					TILE[y][x]->Update();
 					if (TILE[y][x]->GetTileEmpty()) {
@@ -288,8 +411,8 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 		}
 	}
 	moveTileList.clear();
-	if (mTargetTile->GetIndexX() != mCurrentSkul->GetIndexX() &&
-		mTargetTile->GetIndexY() != mCurrentSkul->GetIndexY()) {
+	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
+		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE,mPath,mIndexX,mIndexY,mTargetTile->GetIndexX(),mTargetTile->GetIndexY())) {
 			return true;
 		}

@@ -64,6 +64,8 @@ public://렌더링 관련 ~
 	void AlphaScaleRender(HDC hdc, int x, int y, int width, int height, float alpha);
 	//알파값 + 프레임렌더링 + 크기 조정
 	void AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int width, int height, float alpha);
+
+	void CenterBottomFrameRender(HDC hdc, int x, int y, int frameX, int frameY);
 public:// 접근 관련~
 	inline HDC GetHDC()const { return mImageBuffer->hdc; }
 	inline int GetFrameX()const { return mImageBuffer->frameX; }

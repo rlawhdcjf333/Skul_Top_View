@@ -26,13 +26,13 @@ void Tile::Update() //업데이트를 통해 내용 여부 체크
 			}
 			int x = mObjects[a]->GetIndexX();
 			int y = mObjects[a]->GetIndexY();
-			if (x != mIndexX || y != mIndexY) {
+			if (!(x == mIndexX && y == mIndexY)) {
 				mObjects.erase(mObjects.begin()+a);
 				--a;
 				continue;
 			}
 			Enemy* dumpEnemy =  dynamic_cast<Enemy*>(mObjects[a]);
-			if (!dumpEnemy) {
+			if (dumpEnemy) {
 					mIsTileEmpty = false;
 			}
 		}

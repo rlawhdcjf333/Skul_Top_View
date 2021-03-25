@@ -42,6 +42,7 @@ public:
 	inline float GetFrameUpdateTime()const { return mFrameUpdateTime; }
 	inline int GetCurrentFrameIndex()const { return mCurrentFrameIndex; }
 	inline float GetCurrentFrameTime()const { return mCurrentFrameTime; }
+	inline int GetFrameSize()const { return mFrameList.size(); }
 	inline bool GetIsLoop()const { return mIsLoop; }
 	inline bool GetIsPlay()const { return mIsPlay; }
 	inline pair<int, int> GetNowFrame()const { return mFrameList[mCurrentFrameIndex]; }

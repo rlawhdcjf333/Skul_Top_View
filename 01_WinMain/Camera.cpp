@@ -160,6 +160,18 @@ void Camera::AlphaScaleFrameRender(HDC hdc, Image * image, int x, int y, int fra
 	image->AlphaScaleFrameRender(hdc, x - mRect.left, y - mRect.top, frameX, frameY, width, height, alpha);
 }
 
+void Camera::CenterBottomFrameRender(HDC hdc, Image* image, int x, int y, int frameX, int frameY)
+{
+	if (mRect.left > x + image->GetWidth() || mRect.right < x) {
+		return;
+	}
+	if (mRect.top > y + image->GetHeight() || mRect.bottom < y) {
+		return;
+	}
+	image->CenterBottomFrameRender(hdc, x - mRect.left, y - mRect.top, frameX, frameY);
+}
+
+
 void Camera::RenderRect(HDC hdc, RECT rc)
 {
 	rc.left -= mRect.left;
