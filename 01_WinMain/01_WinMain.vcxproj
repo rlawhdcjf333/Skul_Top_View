@@ -211,6 +211,8 @@
     <ClInclude Include="Shuriken.h" />
     <ClInclude Include="GrimReaper.h" />
     <ClInclude Include="Yaksha.h" />
+    <ClInclude Include="ClownBox.h" />
+    <ClInclude Include="ClownDagger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -277,6 +279,8 @@
     <ClCompile Include="Shuriken.cpp" />
     <ClCompile Include="GrimReaper.cpp" />
     <ClCompile Include="Yaksha.cpp" />
+    <ClCompile Include="ClownBox.cpp" />
+    <ClCompile Include="ClownDagger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

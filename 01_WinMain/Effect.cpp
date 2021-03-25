@@ -14,7 +14,15 @@ Effect::Effect(wstring keyname, float x, float y, EffectType type)
 	mSizeY = mImage->GetFrameHeight();
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 	mAnimation=new Animation();
-	mAnimation->InitFrameByStartEnd(0,0,mImage->GetFrameX(),0,false);
+	if (type == EffectType::Reverse)
+	{
+		mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX(), 0, true);
+	}
+	else
+	{
+		mAnimation->InitFrameByStartEnd(0,0,mImage->GetFrameX(),0,false);
+	}
+	mAnimation->SetCallbackFunc([this]() {mAnimation->SetCurrentFrameIndex(mImage->GetFrameX()-1);});
 	mAnimation->SetFrameUpdateTime(0.1f);
 	mAnimation->Play();
 	Obj->AddObject(ObjectLayer::Effect,this);

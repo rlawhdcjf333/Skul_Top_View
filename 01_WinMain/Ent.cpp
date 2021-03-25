@@ -80,8 +80,8 @@ void Ent::Update()
 	if (LEFT and mPath.size() == 0) SetAnimation(M leftIdle);
 	if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdle);
 
-	if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-	if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -124,7 +124,6 @@ void Ent::Update()
 
 	if (INPUT->GetKey('X'))
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}

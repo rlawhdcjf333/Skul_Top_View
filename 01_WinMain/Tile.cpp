@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Effect.h"
 
 Tile::Tile(Image* pImage, float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY)
 	:mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY), mImage(pImage), mIndexX(indexX), mIndexY(indexY), mObject(nullptr), mIsTileEmpty(false)
@@ -109,6 +110,7 @@ void Tile::AttackDamage(int damage) {
 		Enemy* dumpEnemy = dynamic_cast<Enemy*> (elem);
 		if (dumpEnemy != nullptr) {
 			elem->Damage(damage);
+			new Effect(L"SkulHitEffect", elem->GetRect().left, elem->GetRect().top, EffectType::Normal);
 		}
 	}
 	mAttackTest = true;
@@ -119,7 +121,6 @@ void Tile::EnemyAttack(int damage) {
 		Player* dumpPlayer = dynamic_cast<Player*> (elem);
 		if (dumpPlayer != nullptr) {
 			SKUL->Damage(damage);
-			//elem->Damage(damage);
 		}
 	}
 	mAttackTest = true;

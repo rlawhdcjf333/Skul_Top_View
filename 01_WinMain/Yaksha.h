@@ -39,8 +39,6 @@ class Yaksha :public Player
 
 	int mStompCount;
 
-	float mSkill1CoolTime;
-	float mSkill2CoolTime;
 
 public:
 	Yaksha(int indexX, int indexY, float sizeX, float sizeY);

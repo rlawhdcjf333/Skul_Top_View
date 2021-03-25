@@ -3,18 +3,14 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "ClownDagger.h"
+#include "ClownBox.h"
 
 Clown::Clown(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Clown", Resources(L"/skul/skul_clown.bmp"), 800, 1600, 8, 16, true);
 	mImage = IMAGEMANAGER->FindImage(L"Clown");
-
-	IMAGEMANAGER->LoadFromFile(L"Dagger", Resources(L"/skul/dagger.bmp"), 15, 14, 1, 2, true);
-	mDagger = IMAGEMANAGER->FindImage(L"Dagger");
-
-	IMAGEMANAGER->LoadFromFile(L"Box", Resources(L"/skul/box.bmp"), 30, 47, true);
-	mBox = IMAGEMANAGER->FindImage(L"Box");
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -44,14 +40,14 @@ void Clown::Init()
 		[this]() {
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for (int i = 0; i < 4; i++) {
-				new Bullet(mDagger, "Daggers", this, 1, 500, 500, mAngle+PI/6-i*PI/12, BulletType::Straight);
+				new ClownDagger(this, mPhysicalAttackPower, mAngle-PI/6+i*PI/12, 500);
 			}
 		});
 	mAnimationList[M leftSwitching] = new Animation(0, 15, 6, 15, true, false, 0.05f,
 		[this]() {
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for (int i = 0; i < 4; i++) {
-				new Bullet(mDagger, "Daggers", this, 1, 500, 500, mAngle + PI / 6 - i * PI / 12, BulletType::Straight);
+				new ClownDagger(this, mPhysicalAttackPower, mAngle - PI / 6 + i * PI / 12, 500);
 			}
 		});
 
@@ -64,8 +60,8 @@ void Clown::Update()
 	if (LEFT and mPath.size() == 0) SetAnimation(M leftIdle);
 	if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdle);
 
-	if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-	if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -119,7 +115,7 @@ void Clown::Update()
 
 	if (INPUT->GetKey('X'))
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		UpdateAngle();
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -216,8 +212,8 @@ void Clown::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mDagger, "Bullet", this, 1*mPhysicalAttackPower, 500, 500, mAngle, BulletType::Straight);
+			UpdateAngle();
+			new ClownDagger(this, mPhysicalAttackPower, mAngle, 500);
 		}
 	}
 }
@@ -234,11 +230,10 @@ void Clown::Skill1()
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 2)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			for (int i = 0; i < 2; i++)
-				new Bullet(mDagger, "ExplosiveDagger", this, 2 * mMagicalAttackPower, 500, 500, mAngle + PI / 12 - i * PI / 6, BulletType::Flask);
+			for (int i = 0; i < 3; i++)
+				new ClownDagger(this, 2 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true);
 
 			CAMERA->PanningOn(5);
-
 		}
 	}
 }
@@ -250,19 +245,28 @@ void Clown::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		mSkill2CoolTime = 14;
+		mSkill2CoolTime = 1;
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
+			
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				Dash(5);
-				CAMERA->PanningOn(5);
+				case 0:
+					break;
+				case 1:
+					Dash(5);
+					break;
+				case 2:
+				case 3:
+				case 4:
+					new ClownBox(this, 2 * mMagicalAttackPower, 0);
+					break;
+				case 5:
+					new ClownBox(this, 2 * mMagicalAttackPower, 0);
+					CAMERA->PanningOn(5);
+					break;
 			}
-			
-			UpdateAngle();
-			new Bullet(mBox, "Box", this, 2* mMagicalAttackPower, 60, 30, PI/2, BulletType::Flask);
-			
 			
 		}
 	}

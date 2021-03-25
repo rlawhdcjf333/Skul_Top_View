@@ -81,8 +81,8 @@ void Yaksha::Init()
 	mAnimationList[M rightSkill1Full] = new Animation(0,16,4,16, false, false, 0.1f);
 	mAnimationList[M leftSkill1Full] = new Animation(0,17,4,17,false, false, 0.1f);
 
-	mAnimationList[M rightSkill2] = new Animation(0, 14, 11, 14, false, false, 0.2f);
-	mAnimationList[M leftSkill2] = new Animation(0, 15, 11, 15, false, false, 0.2f);
+	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f);
+	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f);
 
 
 	mPhysicalAttackPower = 3;
@@ -97,8 +97,8 @@ void Yaksha::Update()
 	if (LEFT and mPath.size() == 0) SetAnimation(M leftIdle);
 	if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdle);
 
-	if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-	if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -126,8 +126,8 @@ void Yaksha::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 			Dash(5);
+			Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mStompCount++ ;
@@ -152,7 +152,6 @@ void Yaksha::Update()
 
 	if (INPUT->GetKey('X'))
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -197,7 +196,7 @@ void Yaksha::Update()
 
 	Skill1();
 
-	if (INPUT->GetKeyDown('S')) // 수확
+	if (INPUT->GetKeyDown('S')) // 야차 행진
 	{
 		if (mSkill2CoolTime == 0)
 		{
@@ -327,7 +326,7 @@ void Yaksha::Skill1()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
 			{
-				Attack(5 * mPhysicalAttackPower, 5, AttackType::Stab);
+				Attack(5 * mPhysicalAttackPower, 3, AttackType::Stab);
 				Dash(3);
 				CAMERA->PanningOn(3);
 			}
@@ -343,7 +342,7 @@ void Yaksha::Skill1()
 			{
 				Attack(10 * mPhysicalAttackPower, 5, AttackType::Stab);
 				Dash(5);
-				CAMERA->PanningOn(3);
+				CAMERA->PanningOn(5);
 			}
 		}
 	}
@@ -363,11 +362,16 @@ void Yaksha::Skill2()
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-			case 0:
+			case 1:
+			case 4:
+			case 9:
+				Attack(5 * mPhysicalAttackPower, 3, AttackType::Whirlwind);
+				Dash(1);
+				mStompCount++;
+				CAMERA->PanningOn(5);
 				break;
-
-
-
+			default:
+				break;
 			}
 		}
 	}

@@ -28,8 +28,6 @@ class Berserker: public Player
 	Animation* mAnimationList[(int)Motion::End];
 	Animation* mCurrentAnimation;
 
-	float mSkill1CoolTime;
-	float mSkill2CoolTime;
 
 public:
 	Berserker(int indexX, int indexY, float sizeX, float sizeY);

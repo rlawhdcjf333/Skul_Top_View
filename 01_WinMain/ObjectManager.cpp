@@ -2,6 +2,9 @@
 #include "ObjectManager.h"
 #include "Bullet.h"
 #include "GameObject.h"
+#include "Enemy.h"
+#include "Effect.h"
+
 ObjectManager::ObjectManager()
 {
 	//ObjectLayer 별로 벡터 하나씩 맵에 집어 넣는다.
@@ -98,18 +101,6 @@ void ObjectManager::Update()
 
 void ObjectManager::Render(HDC hdc)
 {
-	//ObjectIter iter = mObjectList.begin();
-	//for (; iter != mObjectList.end(); ++iter)
-	//{
-	//	for (int i = 0; i < iter->second.size(); ++i)
-	//	{
-	//		if (iter->second[i]->GetIsActive() == true)
-	//		{	
-	//			iter->second[i]->Render(hdc);
-	//		}
-	//	}
-	//}
-
 	for (GameObject* elem : mObjectList[ObjectLayer::Background]) //반드시 뒤에 와야되는 오브젝트의 렌더링
 	{
 		if (elem->GetIsActive() == true)
@@ -151,8 +142,18 @@ void ObjectManager::IntersectObject()
 			RECT enemy = elemelem->GetRect();
 			if (IntersectRect(&tmp, &playerBullet, &enemy))
 			{
-				elemelem->Damage(elem->GetDamage());
-				elem->Damage(0);
+				if (downcast->GetType() == BulletType::Mark)
+				{
+					int dam = elem->GetDamage();
+					dynamic_cast<Enemy*>(elemelem)->Mark(dam, [=]() {dynamic_cast<Enemy*>(elemelem)->Explosion(dam,1);});
+					elem->Damage(0);
+				}
+				else
+				{
+					elemelem->Damage(elem->GetDamage());
+					elem->Damage(0);
+				}
+				new Effect(L"SkulHitEffect", elemelem->GetRect().left, elemelem->GetRect().top, EffectType::Normal);
 			}
 		}
 	}

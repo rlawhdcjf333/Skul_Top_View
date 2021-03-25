@@ -2,7 +2,6 @@
 #include "GameScene.h"
 #include "Player.h"
 #include "Tile.h"
-#include "Dumb.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 
@@ -10,13 +9,12 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(30, 30, 30, 30);
-	GameObject* alterSkul = new Yaksha(30, 30, 30, 30);
+	GameObject* alterSkul = new GrimReaper(30, 30, 30, 30);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, alterSkul);
 	SKUL->SetCurrentSkul((Player*)alterSkul);
 	SKUL->NewSkulGet((Player*)little);
-	Obj->AddObject(ObjectLayer::Enemy,new Dumb());
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45,45));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 45));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(47, 45));

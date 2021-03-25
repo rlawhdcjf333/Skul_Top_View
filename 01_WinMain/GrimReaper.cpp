@@ -72,8 +72,9 @@ void GrimReaper::Init()
 
 	mAnimationList[M rightSkill1] = new Animation(0,16,6,16,false, false, 0.1f);
 	mAnimationList[M leftSkill1] = new Animation(0,17,6,17,false, false, 0.1f);
-	mAnimationList[M rightSkill2] = new Animation(0,14,11,14,false, false, 0.2f);
-	mAnimationList[M leftSkill2] = new Animation(0,15,11,15, false, false, 0.2f);
+	Obj->SetTimeStop(false);
+	mAnimationList[M rightSkill2] = new Animation(0, 14, 11, 14, false, false, 0.2f, []() {Obj->SetTimeStop(false);});
+	mAnimationList[M leftSkill2] = new Animation(0, 15, 11, 15, false, false, 0.2f, []() {Obj->SetTimeStop(false);});
 
 
 	mMagicalAttackPower = 3;
@@ -87,8 +88,8 @@ void GrimReaper::Update()
 	if (LEFT and mPath.size() == 0) SetAnimation(M leftIdle);
 	if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdle);
 
-	if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-	if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -147,7 +148,6 @@ void GrimReaper::Update()
 
 	if (INPUT->GetKey('X'))
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}

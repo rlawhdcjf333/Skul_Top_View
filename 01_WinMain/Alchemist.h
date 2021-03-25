@@ -31,9 +31,7 @@ class Alchemist : public Player
 	Animation* mAnimationList[(int)Motion::End];
 	Animation* mCurrentAnimation;
 
-	float mSkill1CoolTime;
 	int mSkill1Count; 
-	float mSkill2CoolTime;
 	int mSkill2Count;
 
 public:

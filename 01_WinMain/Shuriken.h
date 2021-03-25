@@ -5,8 +5,6 @@ class Shuriken :public Bullet
 {
 	Image* mImage;
 
-
-
 public:
 
 	Shuriken(GameObject* obj, int damage, float angle, float range);

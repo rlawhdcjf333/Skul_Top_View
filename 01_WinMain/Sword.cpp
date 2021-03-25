@@ -83,8 +83,8 @@ void Sword::Update()
 	if (LEFT and mPath.size() == 0) SetAnimation(M leftIdle);
 	if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdle);
 
-	if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-	if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -96,7 +96,6 @@ void Sword::Update()
 
 	if (INPUT->GetKey('X')) //3타 연계 기본공격
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -243,8 +242,8 @@ void Sword::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Stab);
 			Dash(2);
+			Attack(mPhysicalAttackPower, 2, AttackType::Stab);
 		}
 	}
 }

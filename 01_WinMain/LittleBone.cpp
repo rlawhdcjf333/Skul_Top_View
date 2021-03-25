@@ -90,6 +90,9 @@ void LittleBone::Init()
 	mAnimationList[M respawning] = new Animation(0, 23, 26, 23, false, false, 0.1f, [this]() {SetAnimation(M rightIdle);});
 
 	SetAnimation(M respawning);// 첫 스타트 리스폰
+
+	mSkill1CoolTime = 0;
+	mSkill2CoolTime = 0;
 }
 
 void LittleBone::Update()
@@ -99,8 +102,8 @@ void LittleBone::Update()
 		if (LEFT and mPath.size()==0) SetAnimation(M leftIdle);
 		if (RIGHT and mPath.size()==0) SetAnimation(M rightIdle);
 
-		if (LEFT and mPath.size() > 0) SetAnimation(M leftWalk);
-		if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalk);
+		if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
+		if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
 		if (LEFT and mIsDash) SetAnimation(M leftDash);
 		if (RIGHT and mIsDash) SetAnimation(M rightDash);
@@ -110,8 +113,8 @@ void LittleBone::Update()
 		if (LEFT and mPath.size() == 0) SetAnimation(M leftIdleHeadless);
 		if (RIGHT and mPath.size() == 0) SetAnimation(M rightIdleHeadless);
 
-		if (LEFT and mPath.size() > 0) SetAnimation(M leftWalkHeadless);
-		if (RIGHT and mPath.size() > 0) SetAnimation(M rightWalkHeadless);
+		if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalkHeadless); }
+		if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalkHeadless); }
 
 		if (LEFT and mIsDash) SetAnimation(M leftDashHeadless);
 		if (RIGHT and mIsDash) SetAnimation(M rightDashHeadless);
@@ -129,7 +132,6 @@ void LittleBone::Update()
 
 	if (INPUT->GetKey('X')) //기본공격
 	{
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 		if (mIsHead)
 		{
 			if (RIGHT) { SetAnimation(M rightAttack1);}

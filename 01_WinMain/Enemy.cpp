@@ -40,10 +40,23 @@ void Enemy::setEnemyRect(int x, int y)
 }
 
 
-void Enemy::Mark(int damage) {
+void Enemy::Mark(int damage, function <void(void)> func) {
 	mMark++;
 	mHp -= damage;
 	if (mMark >= 3 && mHp > 0) {
-		mHp -= damage;
+		mMark = 0;
+		func();
+	}
+}
+
+void Enemy::Explosion(int damage, int range) //기본 폭발반경 2타일
+{
+	for (int y = mIndexY - range; y <= mIndexY + range; y++) {
+		for (int x = mIndexX - range; x <= mIndexX + range; x++) {
+			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
+				continue;
+			}
+			TILE[y][x]->AttackDamage(damage);
+		}
 	}
 }

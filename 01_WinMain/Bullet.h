@@ -10,6 +10,7 @@ enum class BulletType : int {
 	Barricade,
 	MeteorStrike,
 	Protect,
+	Mark
 };
 
 class Bullet : public GameObject

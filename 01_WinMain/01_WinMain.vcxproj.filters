@@ -28,9 +28,6 @@
     <Filter Include="FrameWork\Image">
       <UniqueIdentifier>{4ad6b531-7d7b-4111-be06-f2bad4da87c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Figure">
-      <UniqueIdentifier>{c81da49d-f8e8-47d3-831a-e79e4d881ce0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\Math">
       <UniqueIdentifier>{fd572bdf-356e-468e-a803-eca354b8868c}</UniqueIdentifier>
     </Filter>
@@ -106,6 +103,9 @@
     <Filter Include="MainGame\Enemy\Stage1">
       <UniqueIdentifier>{a19767d8-2af7-4fb1-aab6-d17d739e6654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Command\Figure">
+      <UniqueIdentifier>{c81da49d-f8e8-47d3-831a-e79e4d881ce0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -136,7 +136,7 @@
       <Filter>FrameWork\Image</Filter>
     </ClInclude>
     <ClInclude Include="Figure.h">
-      <Filter>FrameWork\Figure</Filter>
+      <Filter>FrameWork\Command\Figure</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>FrameWork\Math</Filter>
@@ -299,6 +299,12 @@
     </ClInclude>
     <ClInclude Include="Yaksha.h">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+    </ClInclude>
+    <ClInclude Include="ClownBox.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ClownDagger.h">
+      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -478,6 +484,12 @@
     </ClCompile>
     <ClCompile Include="Yaksha.cpp">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+    </ClCompile>
+    <ClCompile Include="ClownBox.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ClownDagger.cpp">
+      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

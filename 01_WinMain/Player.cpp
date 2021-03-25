@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "TileSelect.h"
 #include "Bullet.h"
+#include "Effect.h"
 
 Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	:GameObject("Player")
@@ -98,9 +99,9 @@ void Player::Move(float speed)
 		{
 			int pathX = mPath[mPathIndex]->GetX() + TileSizeX / 2;
 			int pathY = mPath[mPathIndex]->GetY() + TileSizeY / 2;
-			mAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
-			mX += speed * cosf(mAngle) * dTime;
-			mY -= speed * sinf(mAngle) * dTime;
+			mMoveAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
+			mX += speed * cosf(mMoveAngle) * dTime;
+			mY -= speed * sinf(mMoveAngle) * dTime;
 
 			if (abs(mX - pathX) < speed * dTime and abs(mY - pathY) < speed * dTime) //오차 보정
 			{
@@ -209,6 +210,8 @@ void Player::Dash(int dist, bool isBack)
 		}
 	}
 
+	if(RIGHT) (new Effect(L"DashRightEffect", mX, mY, EffectType::Normal))->SetUpdateTime(0.05f); 
+	if(LEFT) (new Effect(L"DashLeftEffect", mX, mY, EffectType::Reverse))->SetUpdateTime(0.05f);
 	mPathIndex = 1; mIsDash = true; SKUL->Invincibilize();
 
 
@@ -217,8 +220,6 @@ void Player::Dash(int dist, bool isBack)
 
 void Player::Attack(int damage, int range, AttackType type, bool isBack)
 {
-	mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-
 	if (isBack)
 	{
 		if (mAngle < PI) mAngle += PI;

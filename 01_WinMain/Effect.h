@@ -4,6 +4,7 @@
 enum class EffectType : int
 {
 	Normal,
+	Reverse,
 	Follow
 };
 

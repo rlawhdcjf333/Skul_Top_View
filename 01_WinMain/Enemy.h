@@ -51,9 +51,10 @@ public :
 	virtual void Release() override;
 	
 	virtual void Damage(int damage) override;
+	void Explosion(int damage, int range=2);
 	
 	
-	void Mark(int damage);
+	void Mark(int damage, function <void(void)> func = []() {});
 	void setEnemyRect(int x, int y); //Rect 생성 및 mX mY 값 셋팅
 };
 

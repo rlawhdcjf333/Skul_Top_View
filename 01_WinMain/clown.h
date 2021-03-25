@@ -4,8 +4,6 @@
 class Animation;
 class Clown : public Player
 {
-	Image* mDagger;
-	Image* mBox;
 
 	enum class Motion : int {
 		rightIdle = 0,
@@ -32,8 +30,6 @@ class Clown : public Player
 	Animation* mAnimationList[(int)Motion::End];
 	Animation* mCurrentAnimation;
 
-	float mSkill1CoolTime;
-	float mSkill2CoolTime;
 
 public:
 	Clown(int indexX, int indexY, float sizeX, float sizeY);

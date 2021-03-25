@@ -73,7 +73,7 @@ void Bullet::Update()
 		mFrameTick -= dTime;
 		if (mFrameTick < 0)
 		{
-			mFrameTick = 0.1f;
+			mFrameTick = 0.05f;
 			mCurrentFrameX++;
 			if (mCurrentFrameX >= mImage->GetFrameX())
 			{

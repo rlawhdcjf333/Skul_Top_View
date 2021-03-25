@@ -23,6 +23,7 @@ protected:
 	float mSpeed;
 	float mInitSpeed;
 	float mAngle;
+	float mMoveAngle;
 
 	float mInitDashCoolTime;
 	float mDashCoolTime;
@@ -33,7 +34,11 @@ protected:
 
 	int mPhysicalAttackPower;
 	int mMagicalAttackPower;
+
 	float mAttackSpeed;
+
+	float mSkill1CoolTime;
+	float mSkill2CoolTime;
 
 public:
 
@@ -52,15 +57,23 @@ public:
 
 	virtual void Skill1() {};
 	virtual void Skill2() {};
+	float const GetSkill1CoolTime() { return mSkill1CoolTime; };
+	float const GetSkill2CoolTime() { return mSkill2CoolTime; };
 
 	int const GetPhysicalAttackPower() { return mPhysicalAttackPower; }
 	void SetPhysicalAttackPower(int val) { mPhysicalAttackPower = val; }
 
 	int const GetMagicalAttackPower() { return mMagicalAttackPower; }
+	void SetMagicalAttackPower(int val) { mMagicalAttackPower = val; }
+
 	void PhysicalAttackBuff(int percentage, float buffDuration);
 	void AttackSpeedBuff(int percentage, float buffDuration);
 	void AttackSpeedSet(float val) { mAttackSpeed = val; }
-	void UpdateAngle() { mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY()); }
+	void UpdateAngle() 
+	{ 
+		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		mMoveAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+	}
 
 	virtual void SkulSwitch(int indexX, int indexY);
 	virtual void SkulReset() {};
@@ -71,4 +84,6 @@ public:
 
 #define M (int)Motion::
 #define LEFT (mAngle>PI/2 and mAngle<=3*PI/2)
+#define M_LEFT (mMoveAngle>PI/2 and mMoveAngle<=3*PI/2)
 #define RIGHT (mAngle>3*PI/2 or mAngle<=PI/2)
+#define M_RIGHT (mMoveAngle>3*PI/2 or mMoveAngle<=PI/2)
