@@ -213,7 +213,7 @@ void Warrior::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 2, AttackType::Side);
+			Attack(mPhysicalAttackPower, 2, AttackType::Side);
 		}
 	}
 }
@@ -230,8 +230,8 @@ void Warrior::Skill1()
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 4)
 		{
 			//넉백 함수 필요함!!
-			Attack(1, 3, AttackType::Side);
-			Attack(1, 1, AttackType::Side, true);
+			Attack(mPhysicalAttackPower, 3, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
 			CAMERA->PanningOn(5);
 		}
 	}
@@ -256,8 +256,8 @@ void Warrior::Skill2()
 			if (mCurrentAnimation->GetNowFrameX() == 4)
 			{
 				//넉백 함수 필요함!!
-				Attack(1, 3, AttackType::Side);
-				Attack(1, 1, AttackType::Side, true);
+				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
 			}
 		}
 	}

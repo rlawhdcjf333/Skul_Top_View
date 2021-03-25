@@ -25,6 +25,7 @@ void MainGame::Init()
 	mCursorImage = ImageManager::GetInstance()->FindImage(L"Cursor");
 	mCamera = new Camera;
 	mCamera->Init();
+	SKUL->Init();
 	CameraManager::GetInstance()->SetMainCamera(mCamera);
 
 	//SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
@@ -72,8 +73,8 @@ void MainGame::Render(HDC hdc)
 	// ==================================================
 	{
 		SceneManager::GetInstance()->Render(backDC);
-		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
 		RenderTime(backDC);
+		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
 	}
 	//====================================================
 	//후면버퍼 내용을 윈도우 창에 고속 복사

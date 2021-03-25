@@ -209,6 +209,8 @@
     <ClInclude Include="Ninja.h" />
     <ClInclude Include="Hwadun.h" />
     <ClInclude Include="Shuriken.h" />
+    <ClInclude Include="GrimReaper.h" />
+    <ClInclude Include="Yaksha.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -273,6 +275,8 @@
     <ClCompile Include="Ninja.cpp" />
     <ClCompile Include="Hwadun.cpp" />
     <ClCompile Include="Shuriken.cpp" />
+    <ClCompile Include="GrimReaper.cpp" />
+    <ClCompile Include="Yaksha.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

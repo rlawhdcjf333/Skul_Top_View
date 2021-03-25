@@ -61,6 +61,5 @@ public:
 	void Skill2() {};
 
 	void SetAttackSpeed()override;
-
 };
 

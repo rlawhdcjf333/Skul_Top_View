@@ -13,6 +13,8 @@ ObjectManager::ObjectManager()
 }
 void ObjectManager::Init()
 {
+	mTimeStop = false;
+
 	ObjectIter iter = mObjectList.begin();
 	for (; iter != mObjectList.end(); ++iter)
 	{
@@ -54,10 +56,21 @@ void ObjectManager::Update()
 			}
 			if (iter->second[i]->GetIsActive() == true)
 			{
-				iter->second[i]->Update();
+				if (mTimeStop == false)
+				{
+					iter->second[i]->Update();
+				}
+				else
+				{
+					if (iter->first == ObjectLayer::Player)
+					{
+						iter->second[i]->Update();
+					}
+				}
 			}
 		}
 	}
+
 	IntersectObject();
 
 	mRenderList.clear();

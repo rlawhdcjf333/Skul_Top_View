@@ -22,7 +22,6 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mInitDashCoolTime=2.f;
 	mDashCount = 0;
 
-	mInvincibility = false;
 	mName = "player";
 
 	mPhysicalAttackPower = 1;
@@ -93,7 +92,7 @@ void Player::Move(float speed)
 		{
 			mPath.clear();
 			mPathIndex = 1; 
-			mIsDash = false;
+			mIsDash = false; SKUL->Disinvincibilize();
 		}
 		else //이동 중
 		{
@@ -210,7 +209,7 @@ void Player::Dash(int dist, bool isBack)
 		}
 	}
 
-	mPathIndex = 1; mIsDash = true;
+	mPathIndex = 1; mIsDash = true; SKUL->Invincibilize();
 
 
 }
@@ -267,6 +266,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY - i][mIndexX + i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY - i][mIndexX + i]->AttackDamage(damage);
+					TILE[mIndexY- i][mIndexX-1 + i]->AttackDamage(damage);
+					TILE[mIndexY +1- i][mIndexX + i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -278,6 +279,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY - i][mIndexX]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY - i][mIndexX]->AttackDamage(damage);
+					TILE[mIndexY - i][mIndexX-1]->AttackDamage(damage);
+					TILE[mIndexY - i][mIndexX+1]->AttackDamage(damage);
 				}
 			}
 		}
@@ -289,6 +292,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY - i][mIndexX - i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY - i][mIndexX - i]->AttackDamage(damage);
+					TILE[mIndexY - i+1][mIndexX - i]->AttackDamage(damage);
+					TILE[mIndexY - i][mIndexX+1 - i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -300,6 +305,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY][mIndexX - i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY][mIndexX - i]->AttackDamage(damage);
+					TILE[mIndexY-1][mIndexX - i]->AttackDamage(damage);
+					TILE[mIndexY+1][mIndexX - i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -311,6 +318,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY + i][mIndexX - i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY + i][mIndexX - i]->AttackDamage(damage);
+					TILE[mIndexY + i][mIndexX+1 - i]->AttackDamage(damage);
+					TILE[mIndexY-1 + i][mIndexX - i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -322,6 +331,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY + i][mIndexX]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY + i][mIndexX]->AttackDamage(damage);
+					TILE[mIndexY + i][mIndexX-1]->AttackDamage(damage);
+					TILE[mIndexY + i][mIndexX+1]->AttackDamage(damage);
 				}
 			}
 		}
@@ -333,6 +344,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY + i][mIndexX + i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY + i][mIndexX + i]->AttackDamage(damage);
+					TILE[mIndexY + i][mIndexX-1 + i]->AttackDamage(damage);
+					TILE[mIndexY-1 + i][mIndexX + i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -344,6 +357,8 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 					if (TILE[mIndexY][mIndexX + i]->GetType() == TileType::Block)
 						break;
 					TILE[mIndexY][mIndexX + i]->AttackDamage(damage);
+					TILE[mIndexY+1][mIndexX + i]->AttackDamage(damage);
+					TILE[mIndexY-1][mIndexX + i]->AttackDamage(damage);
 				}
 			}
 		}
@@ -363,7 +378,7 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 		case AttackType::RangedAttack:
 			new Bullet(nullptr,"Bullet",this,damage,300,range,mAngle,BulletType::Straight);
 		break;
-
+	
 	}
 }
 
@@ -393,6 +408,7 @@ void Player::AttackSpeedBuff(int percentage, float buffDuration) //공속버프
 		SKUL->GetCurrentSkul()->SetAttackSpeed(); if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();}, buffDuration);
 
 }
+
 
 void Player::SkulSwitch(int indexX, int indexY)
 {

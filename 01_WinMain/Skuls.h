@@ -12,3 +12,5 @@
 #include "Berserker.h"
 #include "HighWarlock.h"
 #include "Ninja.h"
+#include "GrimReaper.h"
+#include "Yaksha.h"

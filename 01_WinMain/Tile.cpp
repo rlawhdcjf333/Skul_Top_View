@@ -116,9 +116,10 @@ void Tile::AttackDamage(int damage) {
 void Tile::EnemyAttack(int damage) {
 	Update();
 	for (GameObject* elem : mObjects) {
-		Player* dumpEnemy = dynamic_cast<Player*> (elem);
-		if (dumpEnemy != nullptr) {
-			elem->Damage(damage);
+		Player* dumpPlayer = dynamic_cast<Player*> (elem);
+		if (dumpPlayer != nullptr) {
+			SKUL->Damage(damage);
+			//elem->Damage(damage);
 		}
 	}
 	mAttackTest = true;

@@ -10,6 +10,7 @@ private:
 	Player* mAlterSkul;
 	int mHp;
 	int mGold;
+	bool mInvincibility;
 
 	struct Buff
 	{
@@ -20,6 +21,8 @@ private:
 	vector <Buff> mBuffList;
 
 public:
+	void Init();
+	void Damage(int damage) { if(!mInvincibility) mHp -= damage; }
 	void Update();
 	void ChangeSkul();
 	void PlusHp(int val) { mHp += val; }
@@ -33,8 +36,12 @@ public:
 
 	Player* GetCurrentSkul() { return mCurrentSkul; }
 	Player* GetAlterSkul() { return mAlterSkul; }
-	void SetCurrentSkul(Player* skul) { mCurrentSkul = skul; }
+	void SetCurrentSkul(Player* skul) { mCurrentSkul = skul;}
 
 	Player* NewSkulGet(Player* skul);
+
+	void Invincibilize() { mInvincibility = true; }
+	void Disinvincibilize() { mInvincibility = false; }
+
 };
 #define SKUL SkulManager::GetInstance()

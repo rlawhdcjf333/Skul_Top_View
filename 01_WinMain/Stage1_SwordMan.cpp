@@ -6,7 +6,7 @@
 Stage1_SwordMan::Stage1_SwordMan(int indexX, int indexY)
 	:Enemy(indexX,indexY)
 {
-	mHp = 10;
+	mHp = 500;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);

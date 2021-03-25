@@ -27,6 +27,9 @@ private:
 	typedef map<ObjectLayer, vector<class GameObject*>>::iterator ObjectIter;
 	map<ObjectLayer, vector<class GameObject*>> mObjectList;
 	vector<GameObject*> mRenderList;
+
+	bool mTimeStop;
+
 public:
 	ObjectManager();
 
@@ -42,6 +45,8 @@ public:
 	vector<class GameObject*> FindObjects(const string& name);
 	vector<class GameObject*> FindObjects(ObjectLayer layer, const string& name);
 	vector<class GameObject*> GetObjectList(ObjectLayer layer);
+
+	void SetTimeStop(bool b) { mTimeStop = b; }
 
 };
 

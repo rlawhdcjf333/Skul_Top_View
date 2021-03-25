@@ -5,6 +5,7 @@ enum class AttackType : int {
 	Stab,
 	Whirlwind,
 	RangedAttack,
+	All
 };
 
 class Animation;
@@ -34,7 +35,6 @@ protected:
 	int mMagicalAttackPower;
 	float mAttackSpeed;
 
-	bool mInvincibility;
 public:
 
 	Player(int indexX, int indexY, float sizeX, float sizeY);
@@ -67,7 +67,6 @@ public:
 
 	virtual void SetAnimation(int listNum) {};
 	virtual void SetAttackSpeed() {};
-	
 };
 
 #define M (int)Motion::

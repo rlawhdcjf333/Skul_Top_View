@@ -47,22 +47,8 @@ void Ent::Init()
 		});
 	mAnimationList[M leftAttack2] = new Animation(0, 11, 4, 11, false, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 12, 3, 12, false, false, 0.1f,
-		[this]() {
-			if (mSkill1CoolTime > 10.5f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill1);
-				if (LEFT) SetAnimation(M leftSkill1);
-			}
-		});
-	mAnimationList[M leftSkill1] = new Animation(0, 13, 3, 13, false, false, 0.1f,
-		[this]() {
-			if (mSkill1CoolTime > 10.5f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill1);
-				if (LEFT) SetAnimation(M leftSkill1);
-			}
-		});
+	mAnimationList[M rightSkill1] = new Animation(0, 12, 3, 12, false, false, 0.3f);
+	mAnimationList[M leftSkill1] = new Animation(0, 13, 3, 13, false, false, 0.3f);
 
 	mAnimationList[M rightCharging] = new Animation(0, 14, 3, 14, false, false, 0.25f,
 		[this]() {
@@ -280,16 +266,26 @@ void Ent::Skill1()
 	{
 		mSkill1CoolTime = 11;
 
-		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Dash(2);
-			Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
-			CAMERA->PanningOn(5);
-		}
-		else if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
-		{
-			Dash(2);
-			Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+			switch (mCurrentAnimation->GetNowFrameX())
+			{
+			case 0:
+				Dash(2);
+				CAMERA->PanningOn(5);
+				break;
+			case 1:
+				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Dash(2);
+				break;
+			case 2:
+				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Dash(2);
+				break;
+			case 3:
+				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				break;
+			}
 		}
 	}
 }
@@ -342,10 +338,10 @@ void Ent::SwitchAttack()
 {
 	if (mAnimationList[M rightSwitching]->GetIsPlay() or mAnimationList[M leftSwitching]->GetIsPlay())
 	{
-		mInvincibility = true;
 
 		if (mCurrentAnimation->GetNowFrameX() == 0)
 		{
+			SKUL->Invincibilize();	
 			mCurrentAnimation->SetFrameUpdateTime(1.f);
 		}
 		else
@@ -355,7 +351,7 @@ void Ent::SwitchAttack()
 
 		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(1, 2, AttackType::Whirlwind); mInvincibility = false;
+			Attack(1, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
 		}
 	}
 	

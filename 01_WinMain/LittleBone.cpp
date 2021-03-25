@@ -315,3 +315,4 @@ void LittleBone::SetAttackSpeed()
 	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
 	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }
+

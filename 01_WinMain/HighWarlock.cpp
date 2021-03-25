@@ -307,7 +307,7 @@ void HighWarlock::Skill1()
 
 	if (mAnimationList[M leftSkill1]->GetIsPlay() or mAnimationList[M rightSkill1]->GetIsPlay())
 	{
-		mSkill2CoolTime = 20;
+		mSkill1CoolTime = 20;
 	}
 }
 

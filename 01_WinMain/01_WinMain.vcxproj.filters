@@ -294,6 +294,12 @@
     <ClInclude Include="Shuriken.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="GrimReaper.h">
+      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+    </ClInclude>
+    <ClInclude Include="Yaksha.h">
+      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -466,6 +472,12 @@
     </ClCompile>
     <ClCompile Include="Shuriken.cpp">
       <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimReaper.cpp">
+      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+    </ClCompile>
+    <ClCompile Include="Yaksha.cpp">
+      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

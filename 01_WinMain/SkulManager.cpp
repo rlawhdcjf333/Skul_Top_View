@@ -2,6 +2,18 @@
 #include "SkulManager.h"
 #include "Player.h"
 
+void SkulManager::Init()
+{
+	mCurrentSkul = nullptr;
+	mAlterSkul= nullptr;
+
+	mHp = 100;
+	mGold = 0;
+	mInvincibility = false;
+	mBuffList = {};
+}
+
+
 void SkulManager::Update() {
 	if (INPUT->GetKeyDown(VK_SPACE))
 	{
@@ -20,11 +32,20 @@ void SkulManager::Update() {
 		}
 	}
 
+	if (mHp <= 0) // 죽었을 때 할 일;
+	{
+
+
+	}
+
 	if (mAlterSkul) //교대 스컬 쿨타임 돌리기
 	{
 		mAlterSkul->Skill1();
 		mAlterSkul->Skill2();
 	}
+
+	
+
 }
 
 void SkulManager::ChangeSkul()
