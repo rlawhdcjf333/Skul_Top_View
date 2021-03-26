@@ -40,6 +40,7 @@ void ObjectManager::Release()
 		}
 	}
 	mObjectList.clear();
+	mRenderList.clear();
 }
 
 void ObjectManager::Update()
@@ -76,6 +77,7 @@ void ObjectManager::Update()
 
 	IntersectObject();
 
+	RECT cameraRect = CAMERA->GetRect();
 	mRenderList.clear();
 	for (int i = 0; i < (int)ObjectLayer::End; i++)
 	{
@@ -84,6 +86,7 @@ void ObjectManager::Update()
 
 		for (GameObject* elem : mObjectList[(ObjectLayer)i])
 		{
+			if (elem->GetRect().left<cameraRect.right && elem->GetRect().right > cameraRect.left)
 			mRenderList.push_back(elem);
 		}
 
