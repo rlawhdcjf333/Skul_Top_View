@@ -136,7 +136,6 @@ void ObjectManager::IntersectObject()
 		Bullet* downcast = (Bullet*)elem;
 		if (downcast->GetType() == BulletType::Protect) continue;
 		if (downcast->GetType() == BulletType::Barricade) continue;
-		if (downcast->GetType() == BulletType::MeteorStrike) continue;
 
 		for (GameObject* elemelem : mObjectList[ObjectLayer::Enemy])
 		{
@@ -145,10 +144,13 @@ void ObjectManager::IntersectObject()
 			RECT enemy = elemelem->GetRect();
 			if (IntersectRect(&tmp, &playerBullet, &enemy))
 			{
+				new Effect(L"SkulHitEffect", elemelem->GetRect().left, elemelem->GetRect().top, EffectType::Normal);
 				if (downcast->GetType() == BulletType::Mark)
 				{
 					int dam = elem->GetDamage();
-					dynamic_cast<Enemy*>(elemelem)->Mark(dam, [=]() {dynamic_cast<Enemy*>(elemelem)->Explosion(dam,1);});
+					Enemy* tmp = dynamic_cast<Enemy*>(elemelem);
+					tmp->Mark(dam, [=]() {
+						tmp->Explosion(dam, 1); new Effect(L"ClownMark", tmp->GetRect().left, tmp->GetRect().top, EffectType::Normal);});
 					elem->Damage(0);
 				}
 				else
@@ -156,7 +158,6 @@ void ObjectManager::IntersectObject()
 					elemelem->Damage(elem->GetDamage());
 					elem->Damage(0);
 				}
-				new Effect(L"SkulHitEffect", elemelem->GetRect().left, elemelem->GetRect().top, EffectType::Normal);
 			}
 		}
 	}

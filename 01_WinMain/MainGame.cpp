@@ -53,6 +53,9 @@ void MainGame::Init()
 	IMAGEMANAGER->LoadFromFile(L"Bush4", ResourcesObject(L"Bush4.bmp"), 33, 24, true);
 	IMAGEMANAGER->LoadFromFile(L"Bush5", ResourcesObject(L"Bush5.bmp"), 57, 40, true);
 	IMAGEMANAGER->LoadFromFile(L"Bush7", ResourcesObject(L"Bush7.bmp"), 60, 38, true);
+
+	IMAGEMANAGER->LoadFromFile(L"Disease", Resources(L"/skul/diseaseExplosion.bmp"), 2000, 200, 10, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"Fire", Resources(L"/skul/fireExplosion.bmp"), 2600, 200, 13, 1, true);
 	mCursorImage = ImageManager::GetInstance()->FindImage(L"Cursor");
 	mCamera = new Camera;
 	mCamera->Init();
@@ -87,6 +90,7 @@ void MainGame::Update()
 	INPUT->Update();
 	SkulManager::GetInstance()->Update();
 	SceneManager::GetInstance()->Update();
+	//if (INPUT->GetKeyDown(VK_ESCAPE)) SceneManager::LoadScene();
 }
 
 /*

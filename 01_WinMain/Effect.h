@@ -27,5 +27,6 @@ public :
 	virtual void SetNextEffect(wstring keyname);
 	virtual void SetNextEffect(wstring keyname, float x, float y);
 	void SetUpdateTime(float val); 
+	void Scaling(int x, int y) { mSizeX = x; mSizeY = y; }
 };
 

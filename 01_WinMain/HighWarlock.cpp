@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Effect.h"
 #include "WarlockOrb.h"
+#include"Meteor.h"
 
 HighWarlock::HighWarlock(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -173,11 +174,11 @@ void HighWarlock::Update()
 				
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
-					new Bullet(mMeteorIncomp, "MeteorIncomp", this, 5*mMagicalAttackPower, 400, 1200, 0, BulletType::MeteorStrike);
+					new Meteor(this, 400, 0, 5 * mMagicalAttackPower, false);
 				}
 				else
 				{
-					new Bullet(mMeteorComp, "MeteorComp", this, 10*mMagicalAttackPower, 400, 1200, 0, BulletType::MeteorStrike);
+					new Meteor(this, 400, 0, 10 * mMagicalAttackPower, true);
 				}
 
 				if(Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);

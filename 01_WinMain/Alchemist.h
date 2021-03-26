@@ -5,12 +5,13 @@ class Animation;
 class Alchemist : public Player
 {
 	Image* mProjectile;
-	Image* mFlask1;
-	Image* mFlask2;
+	Image* mFlask;
 
 	GameObject* mAttackTarget;
 	float mMinDistance;
 	float mAttackCoolTime;
+
+	float mGolemCoolTime;
 
 	enum class Motion : int {
 		rightIdle = 0,

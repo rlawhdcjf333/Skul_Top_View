@@ -12,6 +12,8 @@ Clown::Clown(int indexX, int indexY, float sizeX, float sizeY)
 	IMAGEMANAGER->LoadFromFile(L"Clown", Resources(L"/skul/skul_clown.bmp"), 800, 1600, 8, 16, true);
 	mImage = IMAGEMANAGER->FindImage(L"Clown");
 
+	IMAGEMANAGER->LoadFromFile(L"ClownMark", Resources(L"/skul/clownMark.bmp"), 1300, 100, 13, 1, true);
+
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -245,7 +247,7 @@ void Clown::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		mSkill2CoolTime = 1;
+		mSkill2CoolTime = 14;
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{

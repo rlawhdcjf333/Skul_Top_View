@@ -214,6 +214,8 @@
     <ClInclude Include="Yaksha.h" />
     <ClInclude Include="ClownBox.h" />
     <ClInclude Include="ClownDagger.h" />
+    <ClInclude Include="AlchPassive.h" />
+    <ClInclude Include="Meteor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -282,6 +284,8 @@
     <ClCompile Include="Yaksha.cpp" />
     <ClCompile Include="ClownBox.cpp" />
     <ClCompile Include="ClownDagger.cpp" />
+    <ClCompile Include="AlchPassive.cpp" />
+    <ClCompile Include="Meteor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

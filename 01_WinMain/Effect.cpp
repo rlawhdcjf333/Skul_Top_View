@@ -23,8 +23,9 @@ Effect::Effect(wstring keyname, float x, float y, EffectType type)
 		mAnimation->InitFrameByStartEnd(0,0,mImage->GetFrameX(),0,false);
 	}
 	mAnimation->SetCallbackFunc([this]() {mAnimation->SetCurrentFrameIndex(mImage->GetFrameX()-1);});
-	mAnimation->SetFrameUpdateTime(0.1f);
+	mAnimation->SetFrameUpdateTime(0.05f);
 	mAnimation->Play();
+
 	Obj->AddObject(ObjectLayer::Effect,this);
 }
 
@@ -67,7 +68,7 @@ void Effect::Render(HDC hdc)
 	if (!mImage) {
 		return;
 	}
-	CAMERA->FrameRender(hdc,mImage,mRect.left,mRect.top,mAnimation->GetNowFrameX(), 0);
+	CAMERA->ScaleFrameRender(hdc,mImage,mRect.left,mRect.top,mAnimation->GetNowFrameX(), 0, mSizeX, mSizeY);
 }
 
 void Effect::Release()

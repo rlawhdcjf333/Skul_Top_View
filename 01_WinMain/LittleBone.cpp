@@ -196,21 +196,18 @@ void LittleBone::Update()
 		}
 	}
 
-	if (mCurrentAnimation != mAnimationList[M respawning])
+	if (mIsDash)
 	{
-		if (mIsDash)
+		Move(5 * mInitSpeed);
+	}
+	else
+	{
+		if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
 		{
-			Move(5 * mInitSpeed);
+			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
+				mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
 		}
-		else
-		{
-			if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
-			{
-				if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
-					mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
-			}
-			Move(mSpeed);
-		}
+		Move(mSpeed);
 	}
 	mCurrentAnimation->Update();
 

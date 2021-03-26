@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Bullet.h"
+#include "Effect.h"
 
 Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type)
 	: GameObject(name), mImage(image)
@@ -25,14 +26,7 @@ Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float s
 	mCurrentFrameY = 0;
 	mFrameTick = 0.1f;
 	
-	if (mType == BulletType::MeteorStrike)
-	{
-		mX = object->GetX() + 600;
-		mY = object->GetY() - 600;
-		mRange = 1200;
-		mAngle = Math::GetAngle(mX, mY, object->GetX(), object->GetY());
-	}
-
+	
 
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 
@@ -89,26 +83,6 @@ void Bullet::Update()
 
 	}
 
-	if (mType == BulletType::MeteorStrike)
-	{
-		mFrameTick -= dTime;
-		if (mFrameTick < 0)
-		{
-			mFrameTick = 0.1f;
-			mCurrentFrameX++;
-			if (mCurrentFrameX >= mImage->GetFrameX())
-			{
-				mCurrentFrameY++;
-				mCurrentFrameX = 0;
-			}
-			if (mCurrentFrameY >= mImage->GetFrameY())
-			{
-				mCurrentFrameX = 0;
-				mCurrentFrameY = 0;
-			}
-		}
-	}
-
 	if (mType == BulletType::SkulHead)
 	{
 		if(TILE[TILELIST->CalcIndexY(mX,mY)][TILELIST->CalcIndexX(mX,mY)]->GetType() == TileType::Block)
@@ -122,11 +96,11 @@ void Bullet::Update()
 
 	if (mRange <= 0) {
 		if (mType == BulletType::SkulHead) return;
-		if (mType == BulletType::Flask) Explosion(mDamage);
-		if (mType == BulletType::MeteorStrike)
+		if (mType == BulletType::Flask)
 		{
-			Explosion(mDamage, 5);
-			CAMERA->PanningOn(10);
+			if (mName == "FireFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Fire", mX, mY, EffectType::Normal);});
+			else if (mName == "DiseaseFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Disease",mX,mY, EffectType::Normal);});
+			else Explosion(mDamage);
 		}
 		mIsDestroy = true;
 	}
@@ -156,12 +130,6 @@ void Bullet::Render(HDC hdc)
 			return;
 		}
 
-		if (mType == BulletType::MeteorStrike)
-		{
-			CAMERA->ScaleFrameRender(hdc, mImage, mX, mRect.top,mCurrentFrameX,mCurrentFrameY,200,200);
-			return;
-		}
-
 		if (mImage->GetFrameX() != 0)
 		{
 			if (RIGHT) CAMERA->ScaleFrameRender(hdc, mImage, mX,mY, 0, 0, 30, 15);
@@ -187,11 +155,16 @@ void Bullet::Damage(int a) {
 	if (mType == BulletType::SkulHead) return;
 	if (mType == BulletType::Piercing) return;
 	if (mType == BulletType::Barricade) return;
-	if (mType == BulletType::Flask) Explosion(mDamage);
+	if (mType == BulletType::Flask)
+	{
+		if (mName == "FireFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Fire", mX, mY, EffectType::Normal);});
+		else if (mName == "DiseaseFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Disease", mX, mY, EffectType::Normal);});
+		else Explosion(mDamage);
+	}
 	mIsDestroy = true;
 }
 
-void Bullet::Explosion(int damage, int range) //기본 폭발반경 2타일
+void Bullet::Explosion(int damage, int range, function <void(void)> func) //기본 폭발반경 2타일
 {
 	int indexX = TILELIST->CalcIndexX(mX, mY);
 	int indexY = TILELIST->CalcIndexY(mX, mY);
@@ -204,4 +177,5 @@ void Bullet::Explosion(int damage, int range) //기본 폭발반경 2타일
 			TILE[y][x]->AttackDamage(damage);
 		}
 	}
+	func();
 }
