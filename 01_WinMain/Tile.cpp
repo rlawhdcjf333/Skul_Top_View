@@ -20,7 +20,7 @@ void Tile::Update() //업데이트를 통해 내용 여부 체크
 	if (!mObjects.empty()) {
 		mIsTileEmpty = true;
 		for (int a = 0; a < mObjects.size(); a++) {
-			if (mObjects[a] == nullptr) {
+			if (mObjects[a] == nullptr || mObjects[a]->GetIsDestroy()) {
 				mObjects.erase(mObjects.begin() + a);
 				--a;
 				continue;
