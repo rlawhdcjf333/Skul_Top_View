@@ -48,7 +48,7 @@ void Tile::Render(HDC hdc)
 {
 	if (mImage)
 	{
-		CAMERA->ScaleFrameRender(hdc, mImage, mX, mY, mFrameX, mFrameY, mSizeX, mSizeY);
+		CAMERA->FrameRender(hdc, mImage, mX, mY-mZaxis, mFrameX, mFrameY);
 		//mImage->ScaleFrameRender(hdc, mX, mY, mFrameX, mFrameY, mSizeX, mSizeY);
 		
 			
