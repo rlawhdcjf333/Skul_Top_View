@@ -110,6 +110,9 @@ void Stage1_SwordMan::Update()
 
 void Stage1_SwordMan::Release()
 {
+	//타일에서 지워주깅
+	TILE[mIndexY][mIndexX]->ClearObject(this);
+
 	// 좌우 Animation 삭제
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[0].begin(); itr != mAnimationMap[0].end(); itr++) {
 		SafeDelete(itr->second.animation);
@@ -121,6 +124,7 @@ void Stage1_SwordMan::Release()
 
 void Stage1_SwordMan::Render(HDC hdc)
 {
+
 	//CAMERA->RenderRect(hdc, mRect);
 	if (mCurrentImage) {
 		CAMERA->CenterBottomFrameRender(hdc,mCurrentImage,mX,mY,mCurrentAnimation->GetNowFrameX(),mCurrentAnimation->GetNowFrameY());

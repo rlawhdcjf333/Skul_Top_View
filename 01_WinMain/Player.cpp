@@ -110,6 +110,7 @@ void Player::Move(float speed)
 				mIndexX = mPath[mPathIndex]->GetIndexX();
 				mIndexY = mPath[mPathIndex]->GetIndexY();
 				TILE[mIndexY][mIndexX]->SetObject(this);
+				TILE[mIndexY][mIndexX]->Update();
 				mPathIndex++;
 			}
 

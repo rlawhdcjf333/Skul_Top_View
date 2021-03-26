@@ -60,6 +60,7 @@ public:
 
 	//void SetObject(GameObject* object) { mObject = object;}
 	void SetObject(GameObject* object) { mObjects.push_back(object); }
+	void ClearObject(GameObject* object) { mObjects.erase(find(mObjects.begin(), mObjects.end(), object)); }
 	bool GetTileEmpty() const { return mIsTileEmpty; }
 	void SetType(TileType val) { mTileType = val; }
 	TileType GetType() { return mTileType; }

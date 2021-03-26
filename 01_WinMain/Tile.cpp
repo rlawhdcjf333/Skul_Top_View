@@ -34,7 +34,7 @@ void Tile::Update() //업데이트를 통해 내용 여부 체크
 			}
 			Enemy* dumpEnemy =  dynamic_cast<Enemy*>(mObjects[a]);
 			if (dumpEnemy) {
-					mIsTileEmpty = false;
+				mIsTileEmpty = false;
 			}
 		}
 	}
