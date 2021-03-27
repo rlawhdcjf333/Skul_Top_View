@@ -1,12 +1,12 @@
 #pragma once
 #include "Condition.h"
 
-class Burning 
+class Burning :public Condition
 {
-
+	int mTick;
 
 public:
-	Burning();
+	Burning(GameObject* target, int damage, float duration);
 	void Update();
 	void Render(HDC hdc);
 

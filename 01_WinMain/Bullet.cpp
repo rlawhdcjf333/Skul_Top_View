@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Bullet.h"
 #include "Effect.h"
+#include "Enemy.h"
+#include "Burning.h"
 
 Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float speed, float range, float angle, BulletType type)
 	: GameObject(name), mImage(image)
@@ -38,7 +40,24 @@ void Bullet::Init()
 
 void Bullet::Release()
 {
-
+	if (mType == BulletType::Flask)
+	{
+		if (mName == "FireFlask") Explosion(mDamage, 2,
+			[this]()
+			{
+				new Effect(L"Fire", mX, mY, EffectType::Normal);
+				for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
+				{
+					Enemy* downcast = (Enemy*)elem;
+					if (downcast->GetHitTime() == 0.6f)
+					{
+						new Burning(elem, mDamage, 3); //3초간 화상 부여
+					}
+				}
+			});
+		else if (mName == "DiseaseFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Disease", mX, mY, EffectType::Normal);});
+		else Explosion(mDamage);
+	}
 }
 
 void Bullet::Update()
@@ -79,19 +98,13 @@ void Bullet::Update()
 
 	}
 
-
 	if (mRange > 0)
 	{
 		Move();
 	}
 
-	if (mRange <= 0) {
-		if (mType == BulletType::Flask)
-		{
-			if (mName == "FireFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Fire", mX, mY, EffectType::Normal);});
-			else if (mName == "DiseaseFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Disease",mX,mY, EffectType::Normal);});
-			else Explosion(mDamage);
-		}
+	if (mRange <= 0)
+	{
 		mIsDestroy = true;
 	}
 }
@@ -144,12 +157,7 @@ void Bullet::Move() {
 void Bullet::Damage(int a) {
 	if (mType == BulletType::Piercing) return;
 	if (mType == BulletType::Barricade) return;
-	if (mType == BulletType::Flask)
-	{
-		if (mName == "FireFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Fire", mX, mY, EffectType::Normal);});
-		else if (mName == "DiseaseFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Disease", mX, mY, EffectType::Normal);});
-		else Explosion(mDamage);
-	}
+	
 	mIsDestroy = true;
 }
 

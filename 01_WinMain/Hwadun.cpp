@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Hwadun.h"
 #include "Animation.h"
+#include "Enemy.h"
+#include "Burning.h"
 
 Hwadun::Hwadun(GameObject* startUnit, float damage, float angle)
 {
@@ -49,9 +51,17 @@ Hwadun::Hwadun(GameObject* startUnit, float damage, float angle)
 void Hwadun::Update()
 {
 	mAnimation->Update();
-	if (mAnimation->GetCurrentFrameIndex()%4==1 and mAnimation->GetCurrentFrameTime() < dTime)
+	if (mAnimation->GetCurrentFrameIndex()==2)
 	{
 		Explosion(mDamage, 2);
+		for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
+		{
+			Enemy* downcast = (Enemy*)elem;
+			if (downcast->GetHitTime() == 0.6f)
+			{
+				new Burning(elem, mDamage, 5);
+			}
+		}
 	}
 }
 

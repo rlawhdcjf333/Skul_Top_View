@@ -323,12 +323,7 @@ void Warrior::Skill2()
 					}
 					else
 					{
-						elem->SetX(mX);
-						elem->SetY(mY);
-						elem->SetIndexX(mIndexX);
-						elem->SetIndexY(mIndexY);
-						TILE[mIndexY][mIndexX]->SetObject(elem);
-						TILE[mIndexY][mIndexX]->Update();
+						elem->SetObjectOnTile(mIndexX, mIndexY);
 					}
 				}
 				Attack(mPhysicalAttackPower, 3, AttackType::Side);
