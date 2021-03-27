@@ -93,13 +93,14 @@ void Player::Move(float speed)
 		{
 			mPath.clear();
 			mPathIndex = 1; 
-			mIsDash = false; SKUL->Disinvincibilize();
+			if(mIsDash) SKUL->Disinvincibilize();
+			mIsDash = false;
 		}
 		else //이동 중
 		{
 			int pathX = mPath[mPathIndex]->GetX() + TileSizeX / 2;
 			int pathY = mPath[mPathIndex]->GetY() + TileSizeY / 2;
-			mMoveAngle = Math::GetAngle(mX, mY, pathX, pathY); //앵글 거리 계산이 0이 나올때 리턴 0으로 막음
+			mMoveAngle = Math::GetAngle(mX, mY, pathX, pathY); 
 			mX += speed * cosf(mMoveAngle) * dTime;
 			mY -= speed * sinf(mMoveAngle) * dTime;
 

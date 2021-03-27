@@ -124,6 +124,11 @@ void Ent::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}

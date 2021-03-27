@@ -2,6 +2,8 @@
 #include "GrimReaper.h"
 #include "Animation.h"
 #include "TileSelect.h"
+#include "Enemy.h"
+#include "Effect.h"
 
 GrimReaper::GrimReaper(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -9,6 +11,9 @@ GrimReaper::GrimReaper(int indexX, int indexY, float sizeX, float sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"GrimReaper", Resources(L"/skul/skul_grim_reaper.bmp"), 3600, 3000, 12, 20, true);
 	mImage = IMAGEMANAGER->FindImage(L"GrimReaper");
+
+	IMAGEMANAGER->LoadFromFile(L"GrimCut", Resources(L"/skul/grimCut.bmp"), 1500, 100, 15, 1, true);
+
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -148,6 +153,12 @@ void GrimReaper::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay()
+			and !mAnimationList[M rightAttack3]->GetIsPlay() and !mAnimationList[M leftAttack3]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -290,11 +301,31 @@ void GrimReaper::Skill1()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			if (mCurrentAnimation->GetCurrentFrameIndex() == 0)
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				Attack(5*mMagicalAttackPower, 5, AttackType::Stab);
-				Dash(5);
-				CAMERA->PanningOn(3);
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				Dash(1);
+				Attack(2 * mMagicalAttackPower, 1, AttackType::Whirlwind);
+				break;
+			case 6:
+				for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
+				{
+					Enemy* tmp = (Enemy*)elem;
+					if (tmp->GetHitTime()>0)
+					{
+						tmp->Explosion(5 * mMagicalAttackPower,0);
+						(new Effect(L"GrimCut", elem->GetRect().left, elem->GetRect().top, EffectType::Normal))->Scaling(130,130);
+						CAMERA->PanningOn(5);
+					}
+				}
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -317,8 +348,9 @@ void GrimReaper::Skill2()
 			}
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 11)
 			{
+				Attack(7 * mMagicalAttackPower, 15, AttackType::Whirlwind);
 				Obj->SetTimeStop(false);
-				Attack(10 * mMagicalAttackPower, 15, AttackType::Whirlwind);
+				CAMERA->PanningOn(10);
 			}
 		}
 	}

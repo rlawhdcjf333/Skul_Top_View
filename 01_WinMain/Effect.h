@@ -17,6 +17,7 @@ class Effect : public GameObject
 	float mNextX;
 	float mNextY;
 	EffectType mType;
+	float mAlpha;
 public :
 	Effect(wstring keyname,float x, float y, EffectType type);
 	virtual void Init() override;
@@ -27,6 +28,6 @@ public :
 	virtual void SetNextEffect(wstring keyname);
 	virtual void SetNextEffect(wstring keyname, float x, float y);
 	void SetUpdateTime(float val); 
-	void Scaling(int x, int y) { mSizeX = x; mSizeY = y; }
+	void Scaling(int x, int y, float alpha = 1.f) { mSizeX = x; mSizeY = y; mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY); mAlpha = alpha; }
 };
 

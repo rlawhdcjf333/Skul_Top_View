@@ -3,8 +3,6 @@
 class Animation;
 class LittleBone :public Player
 {
-	Image* mHeadImage;
-
 	enum class Motion : int {
 		rightIdle=0,
 		leftIdle,

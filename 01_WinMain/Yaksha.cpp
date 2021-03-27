@@ -2,6 +2,7 @@
 #include "Yaksha.h"
 #include "Animation.h"
 #include "TileSelect.h"
+#include "Effect.h"
 
 Yaksha::Yaksha(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -9,6 +10,9 @@ Yaksha::Yaksha(int indexX, int indexY, float sizeX, float sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Yaksha", Resources(L"/skul/skul_yaksha.bmp"), 1800, 3000, 12, 20, true);
 	mImage = IMAGEMANAGER->FindImage(L"Yaksha");
+
+	IMAGEMANAGER->LoadFromFile(L"YakshaStomp", Resources(L"/skul/yakshaStomp.bmp"),500,500,5,5, true);
+	IMAGEMANAGER->LoadFromFile(L"StompSpark", Resources(L"/skul/stompSpark.bmp"), 600, 300, 6, 3, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -30,6 +34,7 @@ void Yaksha::Init()
 
 	mAnimationList[M rightAttack1] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed,
 		[this]() {
+				mStompCount++;
 			if (INPUT->GetKey('X'))
 			{
 				UpdateAngle();
@@ -49,6 +54,7 @@ void Yaksha::Init()
 	mAnimationList[M rightAttack3] = new Animation(0, 10, 6, 10, false, false, mAttackSpeed, [this]() {mCurrentAnimation = mAnimationList[M rightIdle]; });
 	mAnimationList[M leftAttack1] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed,
 		[this]() {
+				mStompCount++;
 			if (INPUT->GetKey('X'))
 			{
 				UpdateAngle();
@@ -67,8 +73,8 @@ void Yaksha::Init()
 		});
 	mAnimationList[M leftAttack3] = new Animation(0, 11, 6, 11, false, false, mAttackSpeed, [this]() {mCurrentAnimation = mAnimationList[M leftIdle]; });
 
-	mAnimationList[M rightSwitching] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed);
-	mAnimationList[M leftSwitching] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed);
+	mAnimationList[M rightSwitching] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed), [this]() {mStompCount ++;};
+	mAnimationList[M leftSwitching] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed), [this]() {mStompCount ++;};
 
 	mAnimationList[M rightCharging] = new Animation(0,12,4,12, false, false, 0.2f, [this]() {
 		mCurrentAnimation->Play(), mCurrentAnimation->SetCurrentFrameIndex(4);
@@ -81,8 +87,8 @@ void Yaksha::Init()
 	mAnimationList[M rightSkill1Full] = new Animation(0,16,4,16, false, false, 0.1f);
 	mAnimationList[M leftSkill1Full] = new Animation(0,17,4,17,false, false, 0.1f);
 
-	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f);
-	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f);
+	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f, [this]() {mStompCount += 3;});
+	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f, [this]() {mStompCount += 3;});
 
 
 	mPhysicalAttackPower = 3;
@@ -110,8 +116,10 @@ void Yaksha::Update()
 
 	if (mStompCount > 4)
 	{
-		Attack(mPhysicalAttackPower, 3, AttackType::Side);
-		mStompCount = 0;
+		Attack(2*mPhysicalAttackPower, 3, AttackType::Whirlwind);
+		CAMERA->PanningOn(5);
+		mStompCount-=5;
+		(new Effect(L"YakshaStomp", mX, mY - 80, EffectType::Normal))->Scaling(300,300, 0.7f);
 	}
 
 
@@ -152,6 +160,13 @@ void Yaksha::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay()
+			and !mAnimationList[M rightAttack3]->GetIsPlay() and !mAnimationList[M leftAttack3]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
+
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -182,6 +197,7 @@ void Yaksha::Update()
 				case 2:
 				case 3:
 					mCurrentAnimation->Stop();
+					new Effect(L"StompSpark", mX, mY - 15, EffectType::Normal);
 					if (RIGHT) { SetAnimation(M rightSkill1); }
 					if (LEFT) { SetAnimation(M leftSkill1); }
 					break;
@@ -232,11 +248,7 @@ void Yaksha::Release()
 void Yaksha::Render(HDC hdc)
 {
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top + 25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
-
 	mTileSelect->Render(hdc);
-
-	TextOut(hdc, 100, 100, to_wstring(mStompCount).c_str(), to_wstring(mStompCount).length());
-
 }
 
 void Yaksha::SetAnimation(int listNum)
@@ -294,7 +306,8 @@ void Yaksha::BasicAttack()
 		if (mCurrentAnimation->GetCurrentFrameIndex() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Attack(mPhysicalAttackPower, 3, AttackType::Side);
-			mStompCount++;
+			(new Effect(L"YakshaStomp", mX, mY-15, EffectType::Normal))->Scaling(100, 100, 0.7f);
+			CAMERA->PanningOn(3);
 		}
 	}
 	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
@@ -309,6 +322,7 @@ void Yaksha::BasicAttack()
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Attack(mPhysicalAttackPower, 3, AttackType::Whirlwind);
+			CAMERA->PanningOn(5);
 		}
 	}
 }
@@ -320,7 +334,7 @@ void Yaksha::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		mSkill1CoolTime = 1;
+		mSkill1CoolTime = 12;
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
@@ -334,16 +348,17 @@ void Yaksha::Skill1()
 	}
 	else if (mAnimationList[M rightSkill1Full]->GetIsPlay() or mAnimationList[M leftSkill1Full]->GetIsPlay())
 	{
-		mSkill1CoolTime = 1;
+		mSkill1CoolTime = 12;
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 0)
 			{
 				Attack(10 * mPhysicalAttackPower, 5, AttackType::Stab);
-				Dash(5);
 				CAMERA->PanningOn(5);
 			}
+			Dash(1);
+			new Effect(L"StompSpark", mX, mY - 15, EffectType::Normal);
 		}
 	}
 	
@@ -367,7 +382,8 @@ void Yaksha::Skill2()
 			case 9:
 				Attack(5 * mPhysicalAttackPower, 3, AttackType::Whirlwind);
 				Dash(1);
-				mStompCount++;
+				(new Effect(L"YakshaStomp", mX, mY, EffectType::Normal))->Scaling(200, 200, 0.7f);
+				new Effect(L"StompSpark", mX, mY - 15, EffectType::Normal);
 				CAMERA->PanningOn(5);
 				break;
 			default:
@@ -386,7 +402,8 @@ void Yaksha::SwitchAttack()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 4:
-				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(2*mPhysicalAttackPower, 3, AttackType::Side);
+				(new Effect(L"YakshaStomp", mX, mY - 45, EffectType::Normal))->Scaling(200, 200, 0.7f);
 				break;
 			}
 		}

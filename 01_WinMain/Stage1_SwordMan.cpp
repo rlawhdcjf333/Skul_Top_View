@@ -110,8 +110,7 @@ void Stage1_SwordMan::Update()
 
 void Stage1_SwordMan::Release()
 {
-	//타일에서 지워주깅
-	TILE[mIndexY][mIndexX]->ClearObject(this);
+	Enemy::Release();
 
 	// 좌우 Animation 삭제
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[0].begin(); itr != mAnimationMap[0].end(); itr++) {

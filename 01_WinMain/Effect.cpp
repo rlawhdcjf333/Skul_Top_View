@@ -16,15 +16,33 @@ Effect::Effect(wstring keyname, float x, float y, EffectType type)
 	mAnimation=new Animation();
 	if (type == EffectType::Reverse)
 	{
-		mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX(), 0, true);
+		if (mImage->GetFrameY() != 0)
+		{
+			mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, mImage->GetFrameY() - 1, true);
+
+		}
+		else
+		{
+			mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX()-1, 0, true);
+		}
 	}
 	else
 	{
-		mAnimation->InitFrameByStartEnd(0,0,mImage->GetFrameX(),0,false);
+		if (mImage->GetFrameY() != 0)
+		{
+			mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, mImage->GetFrameY()-1, false);
+
+		}
+		else
+		{
+			mAnimation->InitFrameByStartEnd(0,0,mImage->GetFrameX()-1,0,false);
+		}
+
 	}
-	mAnimation->SetCallbackFunc([this]() {mAnimation->SetCurrentFrameIndex(mImage->GetFrameX()-1);});
+	mAnimation->SetCallbackFunc([this]() {mAnimation->SetCurrentFrameIndex(mAnimation->GetFrameSize()-1);});
 	mAnimation->SetFrameUpdateTime(0.05f);
 	mAnimation->Play();
+	mAlpha = 1.f;
 
 	Obj->AddObject(ObjectLayer::Effect,this);
 }
@@ -68,7 +86,7 @@ void Effect::Render(HDC hdc)
 	if (!mImage) {
 		return;
 	}
-	CAMERA->ScaleFrameRender(hdc,mImage,mRect.left,mRect.top,mAnimation->GetNowFrameX(), 0, mSizeX, mSizeY);
+	CAMERA->AlphaScaleFrameRender(hdc, mImage, mRect.left, mRect.top, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), mSizeX, mSizeY, mAlpha);
 }
 
 void Effect::Release()
@@ -77,7 +95,7 @@ void Effect::Release()
 }
 
 void Effect::SetNextEffect(wstring keyname)
-{
+{	
 	mNextImageKeyname = keyname;
 }
 

@@ -2,7 +2,6 @@
 #include "GameObject.h"
 enum class BulletType : int {
 	Straight = 1,
-	SkulHead,
 	Piercing,
 	Flask,
 	FrameProjectile,

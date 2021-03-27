@@ -312,6 +312,12 @@
     <ClInclude Include="Meteor.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="LittleHead.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GrimSoul.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -501,6 +507,12 @@
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Meteor.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleHead.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimSoul.cpp">
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>

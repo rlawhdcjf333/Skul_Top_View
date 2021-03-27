@@ -145,18 +145,24 @@ void ObjectManager::IntersectObject()
 			if (IntersectRect(&tmp, &playerBullet, &enemy))
 			{
 				new Effect(L"SkulHitEffect", elemelem->GetRect().left, elemelem->GetRect().top, EffectType::Normal);
-				if (downcast->GetType() == BulletType::Mark)
+				int dam;
+				Enemy* tmp;
+				switch (downcast->GetType())
 				{
-					int dam = elem->GetDamage();
-					Enemy* tmp = dynamic_cast<Enemy*>(elemelem);
+				case BulletType::Mark:
+					dam = elem->GetDamage();
+					tmp = dynamic_cast<Enemy*>(elemelem);
 					tmp->Mark(dam, [=]() {
 						tmp->Explosion(dam, 1); new Effect(L"ClownMark", tmp->GetRect().left, tmp->GetRect().top, EffectType::Normal);});
 					elem->Damage(0);
-				}
-				else
-				{
+					break;
+
+				default:
 					elemelem->Damage(elem->GetDamage());
 					elem->Damage(0);
+
+					break;
+
 				}
 			}
 		}

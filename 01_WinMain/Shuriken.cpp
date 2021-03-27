@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shuriken.h"
+#include "Effect.h"
 
 Shuriken::Shuriken(GameObject* obj, int damage, float angle, float range)
 {
@@ -9,6 +10,7 @@ Shuriken::Shuriken(GameObject* obj, int damage, float angle, float range)
 
 	IMAGEMANAGER->LoadFromFile(L"Shuriken", Resources(L"skul/shuriken.bmp"), 19,19, true);
 	mImage = IMAGEMANAGER->FindImage(L"Shuriken");
+
 
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();
@@ -69,4 +71,9 @@ void Shuriken::Update()
 void Shuriken::Render(HDC hdc)
 {
 	CAMERA->ScaleRender(hdc, mImage, mRect.left, mRect.top, 20, 20);
+}
+
+void Shuriken::Release()
+{
+	(new Effect(L"NinjaHit", mX, mY, EffectType::Normal))->Scaling(75, 75);
 }

@@ -26,7 +26,7 @@ void PettyThief::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, false, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, (float)mAttackSpeed/2,
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, (float)mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -35,8 +35,8 @@ void PettyThief::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 8, 4, 8, false, false, (float)mAttackSpeed/2);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, false, false, (float)mAttackSpeed/2,
+	mAnimationList[M rightAttack2] = new Animation(0, 8, 4, 8, false, false, (float)mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, false, false, (float)mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -45,7 +45,7 @@ void PettyThief::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 9, 4, 9, false, false, (float)mAttackSpeed/2);
+	mAnimationList[M leftAttack2] = new Animation(0, 9, 4, 9, false, false, (float)mAttackSpeed);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 10, 4, 10, false, false, 0.1f);
 	mAnimationList[M leftSkill1] = new Animation(0, 11, 4, 11, false, false, 0.1f);
@@ -88,6 +88,7 @@ void PettyThief::Update()
 	{
 		if (mDashCoolTime == 0)
 		{
+			SKUL->Disinvincibilize();
 			mCurrentAnimation->Stop();
 			Dash(5);
 			if (LEFT) SetAnimation(M leftDash);
@@ -125,6 +126,11 @@ void PettyThief::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}

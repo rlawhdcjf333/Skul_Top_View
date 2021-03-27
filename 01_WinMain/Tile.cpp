@@ -125,3 +125,4 @@ void Tile::EnemyAttack(int damage) {
 	}
 	mAttackTest = true;
 }
+

@@ -25,12 +25,8 @@ Bullet::Bullet(Image* image,string name, GameObject* object, int damage, float s
 	mCurrentFrameX = 0;
 	mCurrentFrameY = 0;
 	mFrameTick = 0.1f;
-	
-	
 
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
-
-
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player_Bullet, this);
 }
@@ -83,11 +79,6 @@ void Bullet::Update()
 
 	}
 
-	if (mType == BulletType::SkulHead)
-	{
-		if(TILE[TILELIST->CalcIndexY(mX,mY)][TILELIST->CalcIndexX(mX,mY)]->GetType() == TileType::Block)
-		mRange = 0;
-	}
 
 	if (mRange > 0)
 	{
@@ -95,7 +86,6 @@ void Bullet::Update()
 	}
 
 	if (mRange <= 0) {
-		if (mType == BulletType::SkulHead) return;
 		if (mType == BulletType::Flask)
 		{
 			if (mName == "FireFlask") Explosion(mDamage, 2, [this]() {new Effect(L"Fire", mX, mY, EffectType::Normal);});
@@ -152,7 +142,6 @@ void Bullet::Move() {
 }
 
 void Bullet::Damage(int a) {
-	if (mType == BulletType::SkulHead) return;
 	if (mType == BulletType::Piercing) return;
 	if (mType == BulletType::Barricade) return;
 	if (mType == BulletType::Flask)

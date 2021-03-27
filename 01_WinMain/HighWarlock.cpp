@@ -157,6 +157,7 @@ void HighWarlock::Update()
 
 	if ((INPUT->GetKeyDown('A') and mSkill1CoolTime==0) or (INPUT->GetKeyDown('S') and mSkill2CoolTime==0)) //Ä³½ºÆÃ
 	{
+		mCurrentAnimation->Stop();
 		UpdateAngle();
 		if (RIGHT) { SetAnimation(M rightCasting); }
 		if (LEFT) { SetAnimation(M leftCasting); }

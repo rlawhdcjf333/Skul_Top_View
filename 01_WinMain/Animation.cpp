@@ -26,6 +26,7 @@ void Animation::Update()
 	if (mCurrentFrameTime >= mFrameUpdateTime)
 	{
 		//손실 다 없애준다
+
 		while (mCurrentFrameTime >= mFrameUpdateTime)
 		{
 			mCurrentFrameTime -=mFrameUpdateTime;

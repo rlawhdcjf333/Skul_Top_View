@@ -40,3 +40,4 @@ public:
 	}
 };
 
+#define RAND Random::GetInstance()

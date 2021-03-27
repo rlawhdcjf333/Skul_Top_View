@@ -3,12 +3,15 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Effect.h"
 
 Warrior::Warrior(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Warrior", Resources(L"/skul/skul_warrior.bmp"), 1650, 2400, 11, 16, true);
 	mImage = IMAGEMANAGER->FindImage(L"Warrior");
+
+	IMAGEMANAGER->LoadFromFile(L"WarriorHit", Resources(L"/skul/warriorHit.bmp"), 500, 300, 5, 3, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -116,6 +119,11 @@ void Warrior::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -213,6 +221,7 @@ void Warrior::BasicAttack()
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			CAMERA->PanningOn(3);
 		}
 	}
 }
@@ -226,12 +235,26 @@ void Warrior::Skill1()
 	{
 		mSkill1CoolTime = 4;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 4)
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			//넉백 함수 필요함!!
-			Attack(mPhysicalAttackPower, 3, AttackType::Side);
-			Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
-			CAMERA->PanningOn(5);
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 3)
+			{
+				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
+				CAMERA->PanningOn(5);
+			}
+			if (mCurrentAnimation->GetCurrentFrameIndex() >= 4)
+			{
+				int i = mCurrentAnimation->GetCurrentFrameIndex() - 4;
+				if (LEFT)
+				{
+					new Effect(L"WarriorHit", mX + 100 - 50*i, mY - 15*i, EffectType::Normal);
+				}
+				else if (RIGHT)
+				{
+					new Effect(L"WarriorHit", mX - 100 + 50 * i, mY - 15 * i, EffectType::Normal);
+				}
+			}
 		}
 	}
 }
@@ -247,17 +270,28 @@ void Warrior::Skill2()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 1 or mAnimationList[M leftSkill2]->GetNowFrameX() == 7)
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				Attack(1, 3, AttackType::Stab);
-			}
+			case 1:
+				Dash(1);
+				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+				new Effect(L"WarriorHit", mX , mY, EffectType::Normal);
+				break;
 
-			if (mCurrentAnimation->GetNowFrameX() == 4)
-			{
-				//넉백 함수 필요함!!
+			case 4:
 				Attack(mPhysicalAttackPower, 3, AttackType::Side);
-				Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
+				Attack(mPhysicalAttackPower, 2, AttackType::Stab, true);
+				CAMERA->PanningOn(5);
+				break;
+
+			case 5:
+			case 6:
+			case 7:
+				new Effect(L"WarriorHit", mX - 100 + RAND->RandomInt(200), mY - 100 + RAND->RandomInt(200), EffectType::Normal);
+				new Effect(L"WarriorHit", mX - 100 + RAND->RandomInt(200), mY - 100 + RAND->RandomInt(200), EffectType::Normal);
+				break;
 			}
+		
 		}
 	}
 }
@@ -268,13 +302,13 @@ void Warrior::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M leftDash);
 	}
 	if (RIGHT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M rightDash);
 	}
 }

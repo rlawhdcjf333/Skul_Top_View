@@ -96,6 +96,12 @@ void Sword::Update()
 
 	if (INPUT->GetKey('X')) //3타 연계 기본공격
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay()
+			and !mAnimationList[M rightAttack3]->GetIsPlay() and !mAnimationList[M leftAttack3]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}

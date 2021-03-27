@@ -216,6 +216,8 @@
     <ClInclude Include="ClownDagger.h" />
     <ClInclude Include="AlchPassive.h" />
     <ClInclude Include="Meteor.h" />
+    <ClInclude Include="LittleHead.h" />
+    <ClInclude Include="GrimSoul.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -286,6 +288,8 @@
     <ClCompile Include="ClownDagger.cpp" />
     <ClCompile Include="AlchPassive.cpp" />
     <ClCompile Include="Meteor.cpp" />
+    <ClCompile Include="LittleHead.cpp" />
+    <ClCompile Include="GrimSoul.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

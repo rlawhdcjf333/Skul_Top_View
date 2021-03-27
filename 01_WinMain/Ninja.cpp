@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Hwadun.h"
 #include "Shuriken.h"
+#include "Effect.h"
 
 Ninja::Ninja(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -130,6 +131,11 @@ void Ninja::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -237,6 +243,8 @@ void Ninja::BasicAttack()
 		if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
 			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			if(LEFT) (new Effect(L"NinjaHit", mX - 100 + RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
+			else if(RIGHT)  (new Effect(L"NinjaHit", mX + 100 - RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
 		}
 
 	}
@@ -255,6 +263,7 @@ void Ninja::Skill1()
 			if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1)
 			{
 				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				(new Effect(L"NinjaHit", mX-50 + RAND->RandomInt(100), mY-50+RAND->RandomInt(100), EffectType::Normal))->Scaling(75, 75);
 				CAMERA->PanningOn(5);
 			}
 		}
