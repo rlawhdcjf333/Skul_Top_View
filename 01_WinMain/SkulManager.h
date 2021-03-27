@@ -8,8 +8,27 @@ class SkulManager {
 private:
 	Player* mCurrentSkul;
 	Player* mAlterSkul;
+
+	const int mInitHp = 100;
 	int mHp;
+	int mMaxHp;
+	
+	const int mInitGold =0;
 	int mGold;
+
+	const float mInitAttackSpeed = 0.1f;
+	float mAttackSpeed;
+	const float mMaxAttackSpeed = 0.02f;
+
+	const int mMinPhysicalAtk = 1;
+	int mPhysicalAtk;
+
+	const int mMinMagicalAtk = 1;
+	int mMagicalAtk;
+
+	const int mInitMovingSpeed = 200;
+	int mMovingSpeed;
+
 	bool mInvincibility;
 
 	struct Buff
@@ -25,10 +44,11 @@ public:
 	void Damage(int damage) { if(!mInvincibility) mHp -= damage; }
 	void Update();
 	void ChangeSkul();
-	void PlusHp(int val) { mHp += val; }
+	
+	void PlusHp(int val); 
 	void MinusHp(int val) { mHp -= val; }
 	int GetHp() { return mHp; }
-	void PlusGold(int val) { mGold += val; }
+	void PlusGold(int val);
 	void MinusGold(int val) { if(mGold-val>=0) mGold -= val;}
 	int GetGold() { return mGold; }
 

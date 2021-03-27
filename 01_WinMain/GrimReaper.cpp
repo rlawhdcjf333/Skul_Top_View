@@ -129,7 +129,7 @@ void GrimReaper::Update()
 				if (mDashCoolTime == 0)
 				{
 					mCurrentAnimation->Stop();
-					Dash(5);
+					Dash(3);
 					if (LEFT) SetAnimation(M leftDash);
 					if (RIGHT) SetAnimation(M rightDash);
 					mDashCount = 1;
@@ -141,7 +141,7 @@ void GrimReaper::Update()
 					if (mDashCount == 1)
 					{
 						mCurrentAnimation->Stop();
-						Dash(5);
+						Dash(3);
 						if (LEFT) SetAnimation(M leftDash);
 						if (RIGHT) SetAnimation(M rightDash);
 						mDashCount = 0;
@@ -281,14 +281,14 @@ void GrimReaper::BasicAttack()
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M rightAttack2]->GetIsPlay()
 		or mAnimationList[M leftAttack1]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			Attack(mMagicalAttackPower, 2, AttackType::Side);
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() < 3)
 			{
@@ -313,18 +313,20 @@ void GrimReaper::Skill1()
 	{
 		mSkill1CoolTime = 12;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 0:
+				Attack(mMagicalAttackPower, 4, AttackType::Side);
+				Dash(5);
+				break;
 			case 1:
 			case 2:
 			case 3:
 			case 4:
+				break;
 			case 5:
-				Dash(1);
-				Attack(2 * mMagicalAttackPower, 1, AttackType::Whirlwind);
 				for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
 				{
 					Enemy* tmp = (Enemy*)elem;
@@ -335,8 +337,6 @@ void GrimReaper::Skill1()
 						CAMERA->PanningOn(5);
 					}
 				}
-				break;
-			case 6:
 				break;
 			default:
 				break;
@@ -354,7 +354,7 @@ void GrimReaper::Skill2()
 	{
 		mSkill2CoolTime = 45;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() >0.2f-dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex()==0)
 			{
@@ -362,7 +362,7 @@ void GrimReaper::Skill2()
 			}
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 11)
 			{
-				Attack(7 * mMagicalAttackPower, 15, AttackType::Whirlwind);
+				Attack(10 * mMagicalAttackPower, 15, AttackType::Whirlwind);
 				Obj->SetTimeStop(false);
 				CAMERA->PanningOn(10);
 			}
@@ -374,7 +374,7 @@ void GrimReaper::SwitchAttack()
 {
 	if (mAnimationList[M leftSwitching]->GetIsPlay() or mAnimationList[M rightSwitching]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{

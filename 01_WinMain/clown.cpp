@@ -30,24 +30,24 @@ void Clown::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, (float)mAttackSpeed/2);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, true, false, (float)mAttackSpeed/2);
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, true, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 10, 5, 10, false, false, 0.05f);
-	mAnimationList[M leftSkill1] = new Animation(0, 11, 5, 11, true, false, 0.05f);
-	mAnimationList[M rightSkill2] = new Animation(0, 12, 5, 12, false, false, 0.05f);
-	mAnimationList[M leftSkill2] = new Animation(0, 13, 5, 13, true, false, 0.05f);
+	mAnimationList[M rightSkill1] = new Animation(0, 10, 5, 10, false, false, 0.1f);
+	mAnimationList[M leftSkill1] = new Animation(0, 11, 5, 11, true, false, 0.1f);
+	mAnimationList[M rightSkill2] = new Animation(0, 12, 5, 12, false, false, 0.1f);
+	mAnimationList[M leftSkill2] = new Animation(0, 13, 5, 13, true, false, 0.1f);
 
-	mAnimationList[M rightSwitching] = new Animation(0, 14, 6, 14, false, false, 0.05,
+	mAnimationList[M rightSwitching] = new Animation(0, 14, 6, 14, false, false, 0.1f,
 		[this]() {
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			UpdateAngle();
 			for (int i = 0; i < 4; i++) {
-				new ClownDagger(this, mPhysicalAttackPower, mAngle-PI/6+i*PI/12, 500);
+				new ClownDagger(this, mPhysicalAttackPower, mAngle-PI/6+i*PI/12, 500); //여기에도 표식 활성화
 			}
 		});
-	mAnimationList[M leftSwitching] = new Animation(0, 15, 6, 15, true, false, 0.05f,
+	mAnimationList[M leftSwitching] = new Animation(0, 15, 6, 15, true, false, 0.1f,
 		[this]() {
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+			UpdateAngle();
 			for (int i = 0; i < 4; i++) {
 				new ClownDagger(this, mPhysicalAttackPower, mAngle - PI / 6 + i * PI / 12, 500);
 			}
@@ -81,23 +81,11 @@ void Clown::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(5); //팡머 특; 연속대쉬 안되는 대신 조금 더 멀리 구름
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
 			mDashCoolTime = mInitDashCoolTime;
-		}
-		else if (mAnimationList[M leftDash]->GetIsPlay() or mAnimationList[M rightDash]->GetIsPlay())
-		{
-
-			if (mDashCount == 1)
-			{
-				mCurrentAnimation->Stop();
-				Dash(5);
-				if (LEFT) SetAnimation(M leftDash);
-				if (RIGHT) SetAnimation(M rightDash);
-				mDashCount = 0;
-			}
 		}
 	}
 
@@ -212,10 +200,10 @@ void Clown::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			UpdateAngle();
-			new ClownDagger(this, mPhysicalAttackPower, mAngle, 500);
+			new ClownDagger(this, mPhysicalAttackPower, mAngle, 500); // 광대 단검 자체 패시브 -3타 표식에 폭발 효과
 		}
 	}
 }
@@ -229,11 +217,11 @@ void Clown::Skill1()
 	{
 		mSkill1CoolTime = 12;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 2)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime and mCurrentAnimation->GetNowFrameX() == 2)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for (int i = 0; i < 3; i++)
-				new ClownDagger(this, 2 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true);
+				new ClownDagger(this, 2 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true); //여기에도 표식이 묻음
 
 			CAMERA->PanningOn(5);
 		}
@@ -249,24 +237,19 @@ void Clown::Skill2()
 	{
 		mSkill2CoolTime = 14;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime)
 		{
 			
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				case 0:
-					break;
 				case 1:
-					Dash(5);
-					break;
 				case 2:
 				case 3:
 				case 4:
+					Dash(1);
 					new ClownBox(this, 2 * mMagicalAttackPower, 0);
 					break;
-				case 5:
-					new ClownBox(this, 2 * mMagicalAttackPower, 0);
-					CAMERA->PanningOn(5);
+				default:
 					break;
 			}
 			

@@ -30,7 +30,7 @@ void PettyThief::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, false, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, (float)mAttackSpeed,
+	mAnimationList[M rightAttack1] = new Animation(0, 6, 4, 6, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -39,8 +39,8 @@ void PettyThief::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M rightAttack2] = new Animation(0, 8, 4, 8, false, false, (float)mAttackSpeed);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, false, false, (float)mAttackSpeed,
+	mAnimationList[M rightAttack2] = new Animation(0, 8, 4, 8, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 4, 7, false, false, mAttackSpeed,
 		[this]() {
 			if (INPUT->GetKey('X'))
 			{
@@ -49,7 +49,7 @@ void PettyThief::Init()
 				if (LEFT) SetAnimation(M leftAttack2);
 			}
 		});
-	mAnimationList[M leftAttack2] = new Animation(0, 9, 4, 9, false, false, (float)mAttackSpeed);
+	mAnimationList[M leftAttack2] = new Animation(0, 9, 4, 9, false, false, mAttackSpeed);
 
 	mAnimationList[M rightSkill1] = new Animation(0, 10, 4, 10, false, false, 0.1f);
 	mAnimationList[M leftSkill1] = new Animation(0, 11, 4, 11, false, false, 0.1f);
@@ -67,6 +67,7 @@ void PettyThief::Init()
 
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
+	mSmokeCount = 3;
 }
 
 void PettyThief::Update()
@@ -94,7 +95,7 @@ void PettyThief::Update()
 		{
 			SKUL->Disinvincibilize();
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(4); //좀도둑의 패시브 효과로 대쉬거리가 1 높다.
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -106,7 +107,7 @@ void PettyThief::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(4);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -157,7 +158,7 @@ void PettyThief::Update()
 
 	if (INPUT->GetKeyDown('S')) // 연막치고 뒤구르기
 	{
-		if (mSkill2CoolTime == 0)
+		if (mSmokeCount>0)
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
@@ -232,9 +233,19 @@ void PettyThief::BasicAttack()
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay()
 		or mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side);
+			auto tmp = Obj->GetObjectList(ObjectLayer::Enemy); //10% 확률로 삥뜯는 패시브 로직
+			for (GameObject* elem : tmp)
+			{
+				Enemy* downcast = (Enemy*)elem;
+				if (downcast->GetHitTime() == 0.6f and RAND->Probablity(10)) //적이 공격에 피격된 순간에는 최대 힛타임. 힛타임이 에너미마다 서로 다르다면 maxhitTime으로 변수화해야함
+				{
+					SKUL->PlusGold(3);
+					(new Effect(L"GoldGet", downcast->GetRect().left, downcast->GetRect().top - 15, EffectType::Normal))->Scaling(50, 50);
+				}
+			}
 		}
 	}
 }
@@ -246,9 +257,9 @@ void PettyThief::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		mSkill1CoolTime = 4;
+		mSkill1CoolTime = 8;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() >0.1f- dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
@@ -264,8 +275,8 @@ void PettyThief::Skill1()
 					Enemy* downcast = (Enemy*)elem;
 					if (downcast->GetHitTime() > 0)
 					{
-						SKUL->PlusGold(3);
-						new Effect(L"GoldGet", downcast->GetRect().left, downcast->GetRect().top, EffectType::Normal);
+						SKUL->PlusGold(2);
+						(new Effect(L"GoldGet", downcast->GetRect().left, downcast->GetRect().top-15, EffectType::Normal))->Scaling(50,50);
 					}
 				}
 				break;
@@ -282,19 +293,19 @@ void PettyThief::Skill1()
 void PettyThief::Skill2()
 {
 	mSkill2CoolTime -= dTime;
-	if (mSkill2CoolTime < 0) mSkill2CoolTime = 0;
+	if (mSkill2CoolTime < 0) { mSkill2CoolTime = 7; mSmokeCount++; }
+	if (mSmokeCount > 3) { mSmokeCount = 3; }
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		mSkill2CoolTime = 15;
-
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 0: 
 				SKUL->Invincibilize();
 				Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+				mSmokeCount--;
 				(new Effect(L"ThiefSmoke", mX, mY, EffectType::Normal))->Scaling(200, 200, 0.7f);
 				CAMERA->PanningOn(5);
 				Dash(5, true);

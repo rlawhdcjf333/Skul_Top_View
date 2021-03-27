@@ -31,13 +31,15 @@ public:
 public:
 	Random();
 
-	//0~num까지의 랜덤값 반환
+	//0~num-1까지의 랜덤값 반환
 	inline int RandomInt(int num) { return rand() % num; }	
 	//startNum ~ endNum까지의 랜덤값 반환하는 함수
 	inline int RandomInt(int startNum, int endNum)
 	{
 		return rand() % (endNum - startNum + 1) + startNum;
 	}
+	// val 퍼센트 확률로 true 반환
+	inline bool Probablity(int val) { bool result; rand() % 100 +1 <= val ? result = true : result = false; return result; }
 };
 
 #define RAND Random::GetInstance()

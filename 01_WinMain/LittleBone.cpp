@@ -189,7 +189,7 @@ void LittleBone::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -201,7 +201,7 @@ void LittleBone::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -296,7 +296,7 @@ void LittleBone::BasicAttack()
 		or mAnimationList[M rightAttack1Headless]->GetIsPlay() or mAnimationList[M leftAttack1Headless]->GetIsPlay()
 		or mAnimationList[M rightAttack2Headless]->GetIsPlay() or mAnimationList[M leftAttack2Headless]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
@@ -305,11 +305,15 @@ void LittleBone::BasicAttack()
 }
 void LittleBone::SkulSwitch(int indexX, int indexY)
 {
+	
 	SetAnimation(M switchAttack);// 일단 변경되서 들어오면 빙글빙글
 	Player::SkulSwitch(indexX, indexY);
 }
 void LittleBone::SkulReset() {
 	mCurrentAnimation->Stop();
+	GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "LittleHead");
+	if (head) head->SetIsDestroy(true);
+	mIsHead = true;
 }
 
 void LittleBone::SetAttackSpeed()

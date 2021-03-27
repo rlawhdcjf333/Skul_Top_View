@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SkulManager.h"
 #include "Player.h"
+#include "Effect.h"
 
 void SkulManager::Init()
 {
@@ -9,13 +10,14 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"DashLeftEffect", Resources(L"/skul/dashLeft.bmp"), 2400, 100, 24, 1, true);
 	IMAGEMANAGER->LoadFromFile(L"NinjaHit", Resources(L"skul/ninjaHit.bmp"), 700, 200, 7, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"GoldGet", Resources(L"/skul/goldGet.bmp"), 500, 500, 5, 5, true);
-
+	IMAGEMANAGER->LoadFromFile(L"Bleeding", Resources(L"/skul/bleeding.bmp"), 900, 100, 9, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"Healing", Resources(L"/skul/healing.bmp"), 600, 200, 6, 2, true);
 
 	mCurrentSkul = nullptr;
 	mAlterSkul= nullptr;
 
-	mHp = 100;
-	mGold = 0;
+	mMaxHp =  mHp = mInitHp;
+	mGold = mInitGold;
 	mInvincibility = false;
 	mBuffList = {};
 }
@@ -68,6 +70,23 @@ void SkulManager::ChangeSkul()
 		mCurrentSkul->SkulSwitch(mAlterSkul->GetIndexX(), mAlterSkul->GetIndexY());
 	}
 }
+
+void SkulManager::PlusHp(int val)
+{
+	if (mMaxHp >= mHp + val)
+	{
+		mHp += val; 
+		(new Effect(L"Healing", mCurrentSkul->GetX(), mCurrentSkul->GetY() - 25, EffectType::Normal))->Scaling(100, 100, 0.1f);
+	}
+}
+
+void SkulManager::PlusGold(int val)
+{ 
+	mGold += val; 
+	(new Effect(L"GoldGet", mCurrentSkul->GetX(), mCurrentSkul->GetY()-50, EffectType::Normal))->Scaling(50, 50);
+}
+
+
 
 
 void SkulManager::RegBuff(function<void()> func, float duration)

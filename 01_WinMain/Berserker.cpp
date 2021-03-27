@@ -51,18 +51,8 @@ void Berserker::Init()
 		});
 	mAnimationList[M leftAttack2] = new Animation(0, 9, 7, 9, true, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 10, 1, 10, false, false, 0.25f,
-		[this]() {
-			Attack(2,4, AttackType::Whirlwind);
-			AttackSpeedBuff(100, 10.f);
-			CAMERA->PanningOn(5);
-		});
-	mAnimationList[M leftSkill1] = new Animation(0, 11, 1, 11, true, false, 0.25f,
-		[this]() {
-			Attack(2,4, AttackType::Whirlwind);
-			AttackSpeedBuff(100, 10.f);
-			CAMERA->PanningOn(5);
-		});
+	mAnimationList[M rightSkill1] = new Animation(0, 10, 1, 10, false, false, 0.25f);
+	mAnimationList[M leftSkill1] = new Animation(0, 11, 1, 11, true, false, 0.25f);
 	mAnimationList[M rightSkill2] = new Animation(0, 8, 7, 8, false, false, 0.1f);
 	mAnimationList[M leftSkill2] = new Animation(0, 9, 7, 9, true, false, 0.1f);
 
@@ -95,8 +85,8 @@ void Berserker::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
-			Attack(1, 5, AttackType::Stab);
+			Dash(3);
+			Attack(1, 4, AttackType::Stab);
 
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -184,6 +174,7 @@ void Berserker::Render(HDC hdc)
 
 	mTileSelect->Render(hdc);
 
+
 	//{{ 개발자용 타일 체크 렌더링
 	//TILE[mIndexY][mIndexX]->SelectRender(hdc);
 	//
@@ -217,7 +208,7 @@ void Berserker::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			if (mAnimationList[M rightAttack1]->GetNowFrameX() == 4 or mAnimationList[M leftAttack1]->GetNowFrameX() == 2)
 			{
@@ -227,7 +218,7 @@ void Berserker::BasicAttack()
 	}
 	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			if (mAnimationList[M rightAttack2]->GetNowFrameX() == 5 or mAnimationList[M leftAttack2]->GetNowFrameX() == 2)
 			{
@@ -246,6 +237,16 @@ void Berserker::Skill1()
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
 		mSkill1CoolTime = 30;
+
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.25f - dTime)
+		{
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
+			{
+				Attack(2, 4, AttackType::Whirlwind);
+				AttackSpeedBuff(100, 10.f);
+				CAMERA->PanningOn(5);
+			}
+		}
 	}
 }
 
@@ -258,7 +259,7 @@ void Berserker::Skill2()
 	{
 		mSkill2CoolTime = 14;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
@@ -275,7 +276,7 @@ void Berserker::Skill2()
 			case 5:
 				Attack(mPhysicalAttackPower * 2, 3, AttackType::Whirlwind);
 				CAMERA->PanningOn(7);
-				(new Effect(L"BerserkerRushEnd", mX, mY-50, EffectType::Normal))->Scaling(200, 200);
+				(new Effect(L"BerserkerRushEnd", mX, mY-50, EffectType::Normal))->Scaling(200, 200,0.5f);
 				break;
 
 			default:

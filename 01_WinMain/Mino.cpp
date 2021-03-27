@@ -3,12 +3,17 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Enemy.h"
+#include "Effect.h"
 
 Mino::Mino(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Mino", Resources(L"/skul/skul_mino.bmp"), 800, 1100, 8, 11, true);
 	mImage = IMAGEMANAGER->FindImage(L"Mino");
+
+	IMAGEMANAGER->LoadFromFile(L"MinoBlunt", Resources(L"/skul/minoBlunt.bmp"), 1100, 100, 11, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"MinoBomb", Resources(L"/skul/minoBomb.bmp"), 400, 300, 4, 3, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -49,29 +54,9 @@ void Mino::Init()
 
 	mAnimationList[M rightSkill1] = new Animation(0, 7, 4, 7, false, false, 0.05f);
 	mAnimationList[M leftSkill1] = new Animation(0, 8, 4, 8, true, false, 0.05f);
-	mAnimationList[M rightSkill2] = new Animation(0, 4, 0, 4, false, false, 0.2f,
-		[this]() {
-			if (mSkill2CoolTime > 13.f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill2);
-				if (LEFT) SetAnimation(M leftSkill2);
-				Dash(2);
-				Attack(1, 2, AttackType::Side);
-				CAMERA->PanningOn(5);
-			}
-		});
+	mAnimationList[M rightSkill2] = new Animation(0, 5, 5, 5, false, false, 0.1f);
 	mAnimationList[M rightSkill2CancelAttack] = new Animation(0, 7, 4, 7, false, false, 0.1f);
-	mAnimationList[M leftSkill2] = new Animation(1, 4, 1, 4, false, false, 0.2f,
-		[this]() {
-			if (mSkill2CoolTime > 13.f)
-			{
-				if (RIGHT) SetAnimation(M rightSkill2);
-				if (LEFT) SetAnimation(M leftSkill2);
-				Dash(2);
-				Attack(1, 2, AttackType::Side);
-				CAMERA->PanningOn(5);
-			}
-		});
+	mAnimationList[M leftSkill2] = new Animation(0, 6, 5, 6, true, false, 0.1f);
 	mAnimationList[M leftSkill2CancelAttack] = new Animation(0, 8, 4, 8, true, false, 0.1f);
 
 	mAnimationList[M rightSwitching] = new Animation(0,5,5,5,false,false,0.1f);
@@ -79,6 +64,7 @@ void Mino::Init()
 
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
+	mPassiveDuration = 0;
 }
 
 void Mino::Update()
@@ -104,8 +90,8 @@ void Mino::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
-			Attack(1, 5, AttackType::Stab);
+			Dash(3);
+			Attack(1, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCoolTime = mInitDashCoolTime;
@@ -158,8 +144,6 @@ void Mino::Update()
 	{
 		if (mSkill2CoolTime == 0)
 		{
-			mCurrentAnimation->Stop();
-			mSkill2CoolTime = 14;
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			if (RIGHT) { SetAnimation(M rightSkill2); }
 			if (LEFT) { SetAnimation(M leftSkill2); }
@@ -171,7 +155,8 @@ void Mino::Update()
 	}
 	Skill2();
 
-	
+	Passive();
+
 	mCurrentAnimation->Update();
 	
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -219,6 +204,10 @@ void Mino::SetAnimation(int listNum)
 	if (mAnimationList[M rightSkill1]->GetIsPlay()) return;
 	if (mAnimationList[M leftSkill2]->GetIsPlay()) return;
 	if (mAnimationList[M rightSkill2]->GetIsPlay()) return;
+	
+	if (mAnimationList[M rightSkill2CancelAttack]->GetIsPlay()) return;
+	if (mAnimationList[M leftSkill2CancelAttack]->GetIsPlay()) return;
+
 
 	if (mAnimationList[M rightSwitching]->GetIsPlay()) return;
 	if (mAnimationList[M leftSwitching]->GetIsPlay()) return;
@@ -231,23 +220,19 @@ void Mino::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			if (mAnimationList[M rightAttack1]->GetNowFrameX() ==3)
+			if (mCurrentAnimation->GetCurrentFrameIndex() ==3)
 			{
-				Attack(1, 2, AttackType::Side);
-			}
-			else if (mAnimationList[M leftAttack1]->GetNowFrameX() ==2)
-			{
-				Attack(1, 2, AttackType::Side);
+				Attack(mPhysicalAttackPower, 2, AttackType::Side);
 			}
 		}
 	}
 	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			Attack(1, 2, AttackType::Side);
+			Attack(mPhysicalAttackPower, 2, AttackType::Side);
 		}
 	}
 }
@@ -259,17 +244,21 @@ void Mino::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
+		mPassiveDuration = 3;
 		mSkill1CoolTime = 10;
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.05f-dTime)
 		{
-			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				Dash(5);
-				CAMERA->PanningOn(5);
-			}
-			else
-			{
-				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					Attack(2*mPhysicalAttackPower, 1, AttackType::Side);
+					Dash(1);
+					CAMERA->PanningOn(5);
+					break;
 			}
 		}
 	}
@@ -282,16 +271,40 @@ void Mino::Skill2()
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		if (INPUT->GetKeyDown('S') and mSkill2CoolTime<13.8f)
+		mPassiveDuration = 3;
+		mSkill2CoolTime = 14;
+		if (mCurrentAnimation->GetCurrentFrameIndex() > 0)
 		{
-			mCurrentAnimation->Stop();
-			if (RIGHT) mCurrentAnimation = mAnimationList[M rightAttack2];
-			if (LEFT) mCurrentAnimation = mAnimationList[M rightAttack2];
-			mCurrentAnimation->Play();
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
-			CAMERA->PanningOn(5);
+			if (INPUT->GetKeyDown('S'))
+			{
+				mCurrentAnimation->Stop();
+				if (RIGHT) mCurrentAnimation = mAnimationList[M rightSkill2CancelAttack];
+				if (LEFT) mCurrentAnimation = mAnimationList[M leftSkill2CancelAttack];
+				mCurrentAnimation->Play();
+				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				(new Effect(L"MinoBlunt", mX, mY, EffectType::Normal))->Scaling(200,200);
+				for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
+				{
+					Enemy* downcast = (Enemy*)elem;
+					if (downcast->GetHitTime() == 0.6f) //방금 공격에 맞은 친구들만 대상으로 스턴
+					{
+						downcast->Stun(3); //스턴은 별거 없고 그냥 힛타임을 3초로 강제로 늘림 -->에너미에서 힛타임이 0.6 이하일때만 갱신되게 조정
+					}
+				}
 
-			//기절 함수 필요
+				CAMERA->PanningOn(7);
+			}
+		}
+
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
+		{
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			default:
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Side);
+				Dash(1);
+				CAMERA->PanningOn(3);
+			}
 		}
 	}
 }
@@ -301,12 +314,12 @@ void Mino::SkulSwitch(int indexX, int indexY)
 	Player::SkulSwitch(indexX, indexY);
 	if (LEFT)
 	{
-		Attack(1, 2, AttackType::Side);
+		Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 		SetAnimation(M leftSwitching);
 	}
 	if (RIGHT)
 	{
-		Attack(1, 2, AttackType::Side);
+		Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 		SetAnimation(M rightSwitching);
 	}
 }
@@ -322,4 +335,17 @@ void Mino::SetAttackSpeed()
 	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
 	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
 	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
+}
+
+void Mino::Passive()
+{
+	mPassiveDuration -= dTime;
+	if (mPassiveDuration < 0) mPassiveDuration = 0;
+
+	for(int i=0; i<6; i++)
+	if (mPassiveDuration > 0.4f + (float)i/2 and mPassiveDuration<= 0.4f + dTime + (float)i/2)
+	{
+		(new Effect(L"MinoBomb", mX, mY-30, EffectType::Normal))->Scaling(200, 200);
+		Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+	}
 }

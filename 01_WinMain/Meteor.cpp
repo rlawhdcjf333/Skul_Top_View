@@ -10,13 +10,18 @@ Meteor::Meteor(GameObject* startUnit, float speed, float angle, float damage, bo
 	mIsDestroy = false;
 
 	mType = BulletType::Protect;
-	mX = startUnit->GetX() + 600;
-	mY = startUnit->GetY() - 600;
+	mX = startUnit->GetX() + 500 + RAND->RandomInt(200);
+	mY = startUnit->GetY() - 500 - RAND->RandomInt(200);
+	if (isCompleted)
+	{
+		mX = startUnit->GetX() + 600;
+		mY = startUnit->GetY() - 600;
+	}
 
 	mSpeed = speed;
 	mAngle = angle;
 	mRange = 1200;
-	mAngle = Math::GetAngle(mX, mY, startUnit->GetX(), startUnit->GetY());
+	mAngle = Math::GetAngle(mX, mY, mX-600, mY+600);
 	mDamage = damage;
 	mIsCompleted = isCompleted;
 
@@ -34,7 +39,11 @@ Meteor::Meteor(GameObject* startUnit, float speed, float angle, float damage, bo
 
 	mSizeX = 200;
 	mSizeY = 200;
-
+	if (isCompleted)
+	{
+		mSizeX = 400;
+		mSizeY = 400;
+	}
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 
 	mAnimation = new Animation(0, 0, mImage->GetFrameX()-1, mImage->GetFrameY()-1, false, false, 0.05f, [this]() {mAnimation->Play();});
@@ -56,7 +65,7 @@ void Meteor::Update()
 	{
 		if (mIsCompleted)
 		{
-			Explosion(mDamage, 5, [this]() {(new Effect(L"MeteorBang", mX-100, mY-100, EffectType::Normal))->Scaling(400,400);});
+			Explosion(mDamage, 5, [this]() {(new Effect(L"MeteorBang", mX, mY, EffectType::Normal))->Scaling(600,600);});
 			CAMERA->PanningOn(10);
 		}
 		else
@@ -76,6 +85,13 @@ void Meteor::Release()
 
 void Meteor::Render(HDC hdc)
 {
-	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), mSizeX, mSizeY);
+	if (mIsCompleted)
+	{
+		CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top-100, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), mSizeX, mSizeY);
+	}
+	else
+	{
+		CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), mSizeX, mSizeY);
+	}
 
 }

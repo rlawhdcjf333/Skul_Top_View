@@ -58,5 +58,6 @@ public :
 	void setEnemyRect(int x, int y); //Rect 생성 및 mX mY 값 셋팅
 
 	float const GetHitTime() { return mHitTime; }
+	void Stun(float val) { mHitTime = val; }
 };
 

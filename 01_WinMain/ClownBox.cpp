@@ -48,6 +48,7 @@ void ClownBox::Update()
 	if (mShowTime < 0)
 	{
 		Explosion(mDamage, 2, [this]() {new Effect(L"ShowTime", mX, mY, EffectType::Normal);});
+		CAMERA->PanningOn(5);
 		mIsDestroy = true;
 	}
 }

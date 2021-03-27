@@ -29,6 +29,7 @@ class Warrior : public Player
 	Animation* mAnimationList[(int)Motion::End];
 	Animation* mCurrentAnimation;
 
+	vector <GameObject*> mSkill2Targets;
 
 public:
 	Warrior(int indexX, int indexY, float sizeX, float sizeY);

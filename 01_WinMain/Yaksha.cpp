@@ -34,7 +34,6 @@ void Yaksha::Init()
 
 	mAnimationList[M rightAttack1] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed,
 		[this]() {
-				mStompCount++;
 			if (INPUT->GetKey('X'))
 			{
 				UpdateAngle();
@@ -54,7 +53,6 @@ void Yaksha::Init()
 	mAnimationList[M rightAttack3] = new Animation(0, 10, 6, 10, false, false, mAttackSpeed, [this]() {mCurrentAnimation = mAnimationList[M rightIdle]; });
 	mAnimationList[M leftAttack1] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed,
 		[this]() {
-				mStompCount++;
 			if (INPUT->GetKey('X'))
 			{
 				UpdateAngle();
@@ -73,8 +71,8 @@ void Yaksha::Init()
 		});
 	mAnimationList[M leftAttack3] = new Animation(0, 11, 6, 11, false, false, mAttackSpeed, [this]() {mCurrentAnimation = mAnimationList[M leftIdle]; });
 
-	mAnimationList[M rightSwitching] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed), [this]() {mStompCount ++;};
-	mAnimationList[M leftSwitching] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed), [this]() {mStompCount ++;};
+	mAnimationList[M rightSwitching] = new Animation(0, 6, 5, 6, false, false, mAttackSpeed);
+	mAnimationList[M leftSwitching] = new Animation(0, 7, 5, 7, false, false, mAttackSpeed);
 
 	mAnimationList[M rightCharging] = new Animation(0,12,4,12, false, false, 0.2f, [this]() {
 		mCurrentAnimation->Play(), mCurrentAnimation->SetCurrentFrameIndex(4);
@@ -87,8 +85,8 @@ void Yaksha::Init()
 	mAnimationList[M rightSkill1Full] = new Animation(0,16,4,16, false, false, 0.1f);
 	mAnimationList[M leftSkill1Full] = new Animation(0,17,4,17,false, false, 0.1f);
 
-	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f, [this]() {mStompCount += 3;});
-	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f, [this]() {mStompCount += 3;});
+	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f);
+	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f);
 
 
 	mPhysicalAttackPower = 3;
@@ -134,8 +132,8 @@ void Yaksha::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
-			Attack(mPhysicalAttackPower, 5, AttackType::Stab);
+			Dash(3);
+			Attack(mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mStompCount++ ;
@@ -249,6 +247,7 @@ void Yaksha::Render(HDC hdc)
 {
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top + 25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
 	mTileSelect->Render(hdc);
+
 }
 
 void Yaksha::SetAnimation(int listNum)
@@ -283,7 +282,6 @@ void Yaksha::SetAnimation(int listNum)
 void Yaksha::SkulSwitch(int indexX, int indexY)
 {
 	Player::SkulSwitch(indexX, indexY);
-	mStompCount++;
 	if (LEFT)
 	{
 		SetAnimation(M leftSwitching);
@@ -303,23 +301,24 @@ void Yaksha::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameIndex() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameIndex() == 3 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			Attack(mPhysicalAttackPower, 3, AttackType::Side);
 			(new Effect(L"YakshaStomp", mX, mY-15, EffectType::Normal))->Scaling(100, 100, 0.7f);
+			mStompCount++;
 			CAMERA->PanningOn(3);
 		}
 	}
 	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 6 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 6 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			Attack(mPhysicalAttackPower, 3, AttackType::Stab);
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			Attack(mPhysicalAttackPower, 3, AttackType::Whirlwind);
 			CAMERA->PanningOn(5);
@@ -336,7 +335,7 @@ void Yaksha::Skill1()
 	{
 		mSkill1CoolTime = 12;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
 			{
@@ -350,7 +349,7 @@ void Yaksha::Skill1()
 	{
 		mSkill1CoolTime = 12;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 0)
 			{
@@ -373,7 +372,7 @@ void Yaksha::Skill2()
 	{
 		mSkill2CoolTime = 8;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.2f-dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
@@ -385,6 +384,7 @@ void Yaksha::Skill2()
 				(new Effect(L"YakshaStomp", mX, mY, EffectType::Normal))->Scaling(200, 200, 0.7f);
 				new Effect(L"StompSpark", mX, mY - 15, EffectType::Normal);
 				CAMERA->PanningOn(5);
+				mStompCount++;
 				break;
 			default:
 				break;
@@ -397,13 +397,14 @@ void Yaksha::SwitchAttack()
 {
 	if (mAnimationList[M leftSwitching]->GetIsPlay() or mAnimationList[M rightSwitching]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 4:
 				Attack(2*mPhysicalAttackPower, 3, AttackType::Side);
 				(new Effect(L"YakshaStomp", mX, mY - 45, EffectType::Normal))->Scaling(200, 200, 0.7f);
+				mStompCount++;
 				break;
 			}
 		}

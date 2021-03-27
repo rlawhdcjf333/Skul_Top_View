@@ -106,12 +106,12 @@ void HighWarlock::Update()
 
 	if (INPUT->GetKeyDown('Z')) //대쉬
 	{
-		if (!mAnimationList[M rightCasting]->GetIsPlay() and !mAnimationList[M leftCasting]->GetIsPlay()) //캐스팅 중 대쉬 불가
+		if (!mAnimationList[M rightCasting]->GetIsPlay() and !mAnimationList[M leftCasting]->GetIsPlay()) //비 캐스팅 대쉬
 		{
 			if (mDashCoolTime == 0)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
@@ -124,9 +124,27 @@ void HighWarlock::Update()
 				if (mDashCount == 1)
 				{
 					mCurrentAnimation->Stop();
-					Dash(5);
+					Dash(3);
 					if (LEFT) SetAnimation(M leftDash);
 					if (RIGHT) SetAnimation(M rightDash);
+					mDashCount = 0;
+				}
+			}
+		}
+		else //캐스팅 대쉬
+		{
+			if (mDashCoolTime == 0)
+			{
+				Dash(3);
+				mDashCount = 1;
+				mDashCoolTime = mInitDashCoolTime;
+			}
+			else if (mAnimationList[M rightCasting]->GetIsPlay() or mAnimationList[M leftCasting]->GetIsPlay())
+			{
+
+				if (mDashCount == 1)
+				{
+					Dash(3);
 					mDashCount = 0;
 				}
 			}
@@ -172,15 +190,36 @@ void HighWarlock::Update()
 		{
 			if (mAnimationList[M rightCasting]->GetIsPlay() or mAnimationList[M leftCasting]->GetIsPlay())
 			{
-				
+				switch (mCurrentAnimation->GetCurrentFrameIndex())
+				{
+				case 0:
+				case 1:
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					break;
+				case 2:
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					break;
+				case 3:
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					break;
+				case 4:
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+
+					break;
+				case 5:
+					new Meteor(this, 400, 0, 10 * mMagicalAttackPower, true);
+				}
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
 					new Meteor(this, 400, 0, 5 * mMagicalAttackPower, false);
 				}
-				else
-				{
-					new Meteor(this, 400, 0, 10 * mMagicalAttackPower, true);
-				}
+				
 
 				if(Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
 				if(Obj->FindObject(ObjectLayer::Effect,"CastingEffect")) Obj->FindObject(ObjectLayer::Effect, "CastingEffect")->SetIsDestroy(true);
@@ -203,11 +242,11 @@ void HighWarlock::Update()
 				UpdateAngle();
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 5*mMagicalAttackPower, false);
+					new WarlockOrb(this, 100, mAngle, 800, 2*mMagicalAttackPower, false);
 				}
 				else
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 10*mMagicalAttackPower, true);
+					new WarlockOrb(this, 100, mAngle, 800, 4*mMagicalAttackPower, true);
 				}
 
 				if (Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
@@ -282,7 +321,7 @@ void HighWarlock::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex()==2 or mCurrentAnimation->GetCurrentFrameIndex() == 4)
 			{
@@ -292,7 +331,7 @@ void HighWarlock::BasicAttack()
 	}
 	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 1 or mCurrentAnimation->GetCurrentFrameIndex() == 3)
 			{

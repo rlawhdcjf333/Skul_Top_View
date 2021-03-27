@@ -55,7 +55,7 @@ void WarlockOrb::Update()
 {
 	if (mAnimation->GetCurrentFrameIndex() == 1 or mAnimation->GetCurrentFrameIndex() ==10)
 	{
-		if(mAnimation->GetCurrentFrameTime() < dTime)
+		if(mAnimation->GetCurrentFrameTime() > 0.05f-dTime)
 		Explosion(mDamage, 2);
 	}
 
@@ -70,6 +70,7 @@ void WarlockOrb::Update()
 		if (mIsCompleted) 
 		{
 			(new Effect(L"OrbCompDespawn", mX, mY, EffectType::Normal))->Scaling(mSizeX, mSizeY);
+			Explosion(mDamage, 3);
 		}
 		else
 		{

@@ -40,7 +40,7 @@ void AlchPassive::Update()
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 
 	mAnimation->Update();
-	if (mAnimation->GetCurrentFrameIndex() % 6 == 1 and mAnimation->GetCurrentFrameTime() < dTime)
+	if (mAnimation->GetCurrentFrameIndex() % 6 == 1 and mAnimation->GetCurrentFrameTime()> 0.05f-dTime)
 	{
 		Explosion(mDamage, 2);
 	}

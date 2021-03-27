@@ -3,6 +3,8 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Enemy.h"
+#include "Effect.h"
 
 Werewolf::Werewolf(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -80,7 +82,7 @@ void Werewolf::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(4); //패시브 == 대쉬거리 10프로 증가.. 최소 거리인 1타일 증가
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -92,7 +94,7 @@ void Werewolf::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(4);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -180,6 +182,7 @@ void Werewolf::Render(HDC hdc)
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top + 25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
 
 	mTileSelect->Render(hdc);
+	
 
 	//{{ 개발자용 타일 체크 렌더링
 	//TILE[mIndexY][mIndexX]->SelectRender(hdc);
@@ -215,7 +218,7 @@ void Werewolf::BasicAttack()
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay()
 		or mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
@@ -232,10 +235,17 @@ void Werewolf::Skill1()
 	{
 		mSkill1CoolTime = 4;
 
-		if (mCurrentAnimation->GetCurrentFrameTime()<dTime and mCurrentAnimation->GetCurrentFrameIndex()==3)
+		if (mCurrentAnimation->GetCurrentFrameTime()>0.1f-dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
-			CAMERA->PanningOn(5);
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 3:
+			case 4:
+			case 5:
+				Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+				CAMERA->PanningOn(5);
+				break;
+			}
 		}
 
 	}
@@ -250,9 +260,28 @@ void Werewolf::Skill2()
 	{
 		mSkill2CoolTime = 15;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 3)
+		if (mCurrentAnimation->GetCurrentFrameIndex() > 3)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+			for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
+			{
+				if (elem->GetIsDestroy())
+				{
+					SKUL->PlusHp(1); //이 공격으로 죽은 적 하나당 1회복
+					new Effect(L"Bleeding", elem->GetX(), elem->GetY(), EffectType::Normal);
+				}
+			}
+		}
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime)
+		{
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 4:
+			case 5:
+			case 6:
+				Attack(2* mMagicalAttackPower, 2, AttackType::Whirlwind);
+				break;
+			}
+
 			CAMERA->PanningOn(5);
 		}
 

@@ -171,13 +171,13 @@ void Stage1_SwordMan::Hit()
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
 		mCurrentAnimation->Update();
 		mCurrentAnimation->Pause();
-		mHitTime = 0.6f;
+		if(mHitTime<0.6f) mHitTime = 0.6f;
 	}
 	else{
 		CurrentSet(StateType::Hit, mDirection);
 		mCurrentAnimation->Pause();
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
-		mHitTime = 0.6f;
+		mHitTime = 0.6f; //이 타이밍으로 애들 피격 순간 체크를 하고 있으므로 변경되면 알려주시길 바람
 	}
 	KnockBack();
 }

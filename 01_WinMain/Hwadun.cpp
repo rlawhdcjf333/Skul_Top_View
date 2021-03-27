@@ -40,7 +40,7 @@ Hwadun::Hwadun(GameObject* startUnit, float damage, float angle)
 
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
-	mAnimation = new Animation(0, 0, 10, 1, false, false, 0.05f, [this]() {mIsDestroy = true;});
+	mAnimation = new Animation(0, 0, 10, 1, false, false, 0.05f, [this]() { mAnimation->SetCurrentFrameIndex(21); mIsDestroy = true;});
 	mAnimation->Play();
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player_Bullet, this);
