@@ -110,8 +110,6 @@ void Stage1_SwordMan::Update()
 
 void Stage1_SwordMan::Release()
 {
-	Enemy::Release();
-
 	// ÁÂ¿ì Animation »èÁ¦
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[0].begin(); itr != mAnimationMap[0].end(); itr++) {
 		SafeDelete(itr->second.animation);

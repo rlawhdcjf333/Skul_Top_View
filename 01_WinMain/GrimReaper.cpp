@@ -4,6 +4,7 @@
 #include "TileSelect.h"
 #include "Enemy.h"
 #include "Effect.h"
+#include "GrimSoul.h"
 
 GrimReaper::GrimReaper(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -103,6 +104,19 @@ void GrimReaper::Update()
 	}
 
 	mTileSelect->Update();
+
+	auto tmp = Obj->GetObjectList(ObjectLayer::Enemy);
+	for(GameObject* elem : tmp)
+	{
+		Enemy* downcast = (Enemy*)elem;
+		if (downcast->GetIsDestroy())
+		{
+			new GrimSoul(downcast, mMagicalAttackPower);
+			new GrimSoul(downcast, mMagicalAttackPower);
+			new GrimSoul(downcast, mMagicalAttackPower);
+		}
+	}
+
 
 	mDashCoolTime -= dTime;
 	if (mDashCoolTime < 0) {
@@ -311,8 +325,6 @@ void GrimReaper::Skill1()
 			case 5:
 				Dash(1);
 				Attack(2 * mMagicalAttackPower, 1, AttackType::Whirlwind);
-				break;
-			case 6:
 				for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
 				{
 					Enemy* tmp = (Enemy*)elem;
@@ -323,6 +335,8 @@ void GrimReaper::Skill1()
 						CAMERA->PanningOn(5);
 					}
 				}
+				break;
+			case 6:
 				break;
 			default:
 				break;

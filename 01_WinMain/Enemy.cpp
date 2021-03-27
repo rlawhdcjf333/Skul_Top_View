@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Enemy.h"
 #include "Animation.h"
-#include "GrimSoul.h"
 
 
 Enemy::Enemy(int indexX, int indexY)
@@ -28,13 +27,6 @@ void Enemy::Render(HDC hdc)
 void Enemy::Release()
 {
 
-
-	if (SKUL->GetCurrentSkul()->GetKeyName()==L"GrimReaper")
-	{
-		new GrimSoul(this, SKUL->GetCurrentSkul()->GetMagicalAttackPower());
-		new GrimSoul(this, SKUL->GetCurrentSkul()->GetMagicalAttackPower());	
-		new GrimSoul(this, SKUL->GetCurrentSkul()->GetMagicalAttackPower());
-	}
 }
 
 void Enemy::Damage(int damage)

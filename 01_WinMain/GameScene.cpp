@@ -9,7 +9,7 @@ void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(33, 33, 30, 30);
-	GameObject* alterSkul = new PettyThief(30, 30, 30, 30);
+	GameObject* alterSkul = new GrimReaper(30, 30, 30, 30);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, alterSkul);

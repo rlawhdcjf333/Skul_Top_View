@@ -3,12 +3,16 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Effect.h"
+#include "Enemy.h"
 
 PettyThief::PettyThief(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"PettyThief", Resources(L"/skul/skul_petty_thief.bmp"), 700, 1600, 7, 16, true);
 	mImage = IMAGEMANAGER->FindImage(L"PettyThief");
+
+	IMAGEMANAGER->LoadFromFile(L"ThiefSmoke", Resources(L"/skul/thiefSmoke.bmp"),600,600,6,6, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -49,8 +53,8 @@ void PettyThief::Init()
 
 	mAnimationList[M rightSkill1] = new Animation(0, 10, 4, 10, false, false, 0.1f);
 	mAnimationList[M leftSkill1] = new Animation(0, 11, 4, 11, false, false, 0.1f);
-	mAnimationList[M rightSkill2] = new Animation(0, 4, 7, 4, true, false, 0.1f);
-	mAnimationList[M leftSkill2] = new Animation(0, 5, 7, 5, true, false, 0.1f);
+	mAnimationList[M rightSkill2] = new Animation(0, 12, 7, 12, false, false, 0.1f);
+	mAnimationList[M leftSkill2] = new Animation(0, 13, 7, 13, false, false, 0.1f);
 
 	mAnimationList[M rightSwitching] = new Animation(0, 4, 7, 4, true, false, 0.1f,
 		[this]() {
@@ -244,11 +248,34 @@ void PettyThief::Skill1()
 	{
 		mSkill1CoolTime = 4;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 2)
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
-			CAMERA->PanningOn(5);
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case0: 
+				SKUL->Invincibilize();
+				break;
+			case 2:
+				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				CAMERA->PanningOn(5);
+				auto tmp = Obj->GetObjectList(ObjectLayer::Enemy);
+				for (GameObject* elem : tmp)
+				{
+					Enemy* downcast = (Enemy*)elem;
+					if (downcast->GetHitTime() > 0)
+					{
+						SKUL->PlusGold(3);
+						new Effect(L"GoldGet", downcast->GetRect().left, downcast->GetRect().top, EffectType::Normal);
+					}
+				}
+				break;
+			case4:
+
+				SKUL->Disinvincibilize();
+				break;
+			}
 		}
+		
 	}
 }
 
@@ -261,11 +288,22 @@ void PettyThief::Skill2()
 	{
 		mSkill2CoolTime = 15;
 
-		if(mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 6)
+		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
 		{
-			Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
-			Dash(5, true);
-			CAMERA->PanningOn(5);
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 0: 
+				SKUL->Invincibilize();
+				Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+				(new Effect(L"ThiefSmoke", mX, mY, EffectType::Normal))->Scaling(200, 200, 0.7f);
+				CAMERA->PanningOn(5);
+				Dash(5, true);
+				break;
+
+			case 7:
+				SKUL->Disinvincibilize();
+				break;
+			}
 		}
 	}
 }
