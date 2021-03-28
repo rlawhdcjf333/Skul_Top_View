@@ -211,11 +211,11 @@ void Hunter::BasicAttack()
 			{
 			case 3:
 			case 4:
-				new Arrow(this, mPhysicalAttackPower, mAngle, true); //헌터 패시브 적용 차징샷에 피어싱 효과 부여 및 사거리/ 속도 증가
+				new Arrow(this, 2*mPhysicalAttackPower, mAngle, true); //헌터 패시브 적용 차징샷에 피어싱 효과 부여 및 사거리/ 속도 증가
 				break;
 
 			default:
-				new Arrow(this, mPhysicalAttackPower, mAngle, false);
+				new Arrow(this, 2*mPhysicalAttackPower, mAngle, false);
 				break;
 			}
 			mCurrentAnimation->Stop();

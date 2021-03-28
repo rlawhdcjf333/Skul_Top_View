@@ -42,14 +42,14 @@ void Clown::Init()
 		[this]() {
 			UpdateAngle();
 			for (int i = 0; i < 4; i++) {
-				new ClownDagger(this, mPhysicalAttackPower, mAngle-PI/6+i*PI/12, 500); //여기에도 표식 활성화
+				new ClownDagger(this, 2*mPhysicalAttackPower, mAngle-PI/6+i*PI/12, 500); //여기에도 표식 활성화
 			}
 		});
 	mAnimationList[M leftSwitching] = new Animation(0, 15, 6, 15, true, false, 0.1f,
 		[this]() {
 			UpdateAngle();
 			for (int i = 0; i < 4; i++) {
-				new ClownDagger(this, mPhysicalAttackPower, mAngle - PI / 6 + i * PI / 12, 500);
+				new ClownDagger(this, 2*mPhysicalAttackPower, mAngle - PI / 6 + i * PI / 12, 500);
 			}
 		});
 
@@ -203,7 +203,7 @@ void Clown::BasicAttack()
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
 			UpdateAngle();
-			new ClownDagger(this, mPhysicalAttackPower, mAngle, 500); // 광대 단검 자체 패시브 -3타 표식에 폭발 효과
+			new ClownDagger(this, 2*mPhysicalAttackPower, mAngle, 500); // 광대 단검 자체 패시브 -3타 표식에 폭발 효과
 		}
 	}
 }
@@ -221,7 +221,7 @@ void Clown::Skill1()
 		{
 			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for (int i = 0; i < 3; i++)
-				new ClownDagger(this, 2 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true); //여기에도 표식이 묻음
+				new ClownDagger(this, 3 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true); //여기에도 표식이 묻음
 
 			CAMERA->PanningOn(5);
 		}
@@ -247,7 +247,7 @@ void Clown::Skill2()
 				case 3:
 				case 4:
 					Dash(1);
-					new ClownBox(this, 2 * mMagicalAttackPower, 0);
+					new ClownBox(this, 3 * mMagicalAttackPower, 0);
 					break;
 				default:
 					break;

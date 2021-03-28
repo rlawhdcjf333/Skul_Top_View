@@ -157,9 +157,9 @@ void LittleBone::Update()
 	if (INPUT->GetKeyDown('A') and mIsHead and mSkill1CoolTime==0) //머가리 던지기
 	{
 		mCurrentAnimation->Stop();
-		mIsHead = !mIsHead;
+		mIsHead = false;
 		UpdateAngle();
-		new LittleHead(this, mPhysicalAttackPower, mAngle, 500);
+		new LittleHead(this, 2*mPhysicalAttackPower, mAngle, 500);
 
 		if (RIGHT) SetAnimation(M rightSkill1);
 		if (LEFT) SetAnimation(M leftSkill1);
@@ -169,7 +169,7 @@ void LittleBone::Update()
 	if (INPUT->GetKeyDown('S') and !mIsHead) //머가리 줍기
 	{
 		GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "LittleHead");
-		if (head == nullptr) {mIsHead = !mIsHead; return;}
+		if (head == nullptr) {mIsHead = true; return;}
 
 		mX = head->GetX();
 		mY = head->GetY();
@@ -178,7 +178,7 @@ void LittleBone::Update()
 		mPath.clear(); mPathIndex = 1;
 		head->SetIsDestroy(true);
 		new Effect(L"Spark", mX, mY, EffectType::Normal);
-		mIsHead = !mIsHead;
+		mIsHead = true;
 	}
 
 	mDashCoolTime -= dTime;
@@ -243,6 +243,8 @@ void LittleBone::Render(HDC hdc)
 	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top+25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
 
 	mTileSelect->Render(hdc);
+
+	TextOut(hdc, 200, 100, to_wstring(mPhysicalAttackPower).c_str(), to_wstring(mPhysicalAttackPower).size());
 
 	//{{ 개발자용 타일 체크 렌더링
 	//TILE[mIndexY][mIndexX]->SelectRender(hdc);

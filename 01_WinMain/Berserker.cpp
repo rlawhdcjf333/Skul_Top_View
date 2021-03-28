@@ -4,6 +4,8 @@
 #include "Bullet.h"
 #include "Animation.h"
 #include "Effect.h"
+#include "AtkSpeedBuff.h"
+#include "PhysicalAtkBuff.h"
 
 Berserker::Berserker(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -56,7 +58,6 @@ void Berserker::Init()
 	mAnimationList[M rightSkill2] = new Animation(0, 8, 7, 8, false, false, 0.1f);
 	mAnimationList[M leftSkill2] = new Animation(0, 9, 7, 9, true, false, 0.1f);
 
-	mPhysicalAttackPower = 2;
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
 }
@@ -86,7 +87,7 @@ void Berserker::Update()
 		{
 			mCurrentAnimation->Stop();
 			Dash(3);
-			Attack(1, 4, AttackType::Stab);
+			Attack(3*mPhysicalAttackPower, 4, AttackType::Stab);
 
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
@@ -212,7 +213,7 @@ void Berserker::BasicAttack()
 		{
 			if (mAnimationList[M rightAttack1]->GetNowFrameX() == 4 or mAnimationList[M leftAttack1]->GetNowFrameX() == 2)
 			{
-				Attack(1, 2, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 2, AttackType::Side);
 			}
 		}
 	}
@@ -222,7 +223,7 @@ void Berserker::BasicAttack()
 		{
 			if (mAnimationList[M rightAttack2]->GetNowFrameX() == 5 or mAnimationList[M leftAttack2]->GetNowFrameX() == 2)
 			{
-				Attack(1, 2, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 2, AttackType::Side);
 				CAMERA->PanningOn(1);
 			}
 		}
@@ -242,8 +243,8 @@ void Berserker::Skill1()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 1)
 			{
-				Attack(2, 4, AttackType::Whirlwind);
-				AttackSpeedBuff(100, 10.f);
+				Attack(4*mPhysicalAttackPower, 4, AttackType::Whirlwind);
+				new AtkSpeedBuff(100, 10);
 				CAMERA->PanningOn(5);
 			}
 		}
@@ -267,14 +268,14 @@ void Berserker::Skill2()
 			case 2:
 			case 3:
 			case 4:
-				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				Attack(4*mPhysicalAttackPower, 2, AttackType::Side);
 				Dash(2);
 				CAMERA->PanningOn(3);
 				(new Effect(L"BerserkerRush", mX, mY-30, EffectType::Normal))->Scaling(150,150, 0.7f);
 				break;
 
 			case 5:
-				Attack(mPhysicalAttackPower * 2, 3, AttackType::Whirlwind);
+				Attack(4*mPhysicalAttackPower * 2, 3, AttackType::Whirlwind);
 				CAMERA->PanningOn(7);
 				(new Effect(L"BerserkerRushEnd", mX, mY-50, EffectType::Normal))->Scaling(200, 200,0.5f);
 				break;
@@ -291,16 +292,16 @@ void Berserker::SkulSwitch(int indexX, int indexY)
 	Player::SkulSwitch(indexX, indexY);
 	if (LEFT)
 	{
-		PhysicalAttackBuff(50, 5.f);
-		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		new PhysicalAtkBuff(50, 5);
+		Dash(3);
+		Attack(4*mPhysicalAttackPower, 4, AttackType::Stab);
 		SetAnimation(M leftAttack2);
 	}
 	if (RIGHT)
 	{
-		PhysicalAttackBuff(50, 5.f);
-		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		new PhysicalAtkBuff(50, 5);
+		Dash(3);
+		Attack(4*mPhysicalAttackPower, 4, AttackType::Stab);
 		SetAnimation(M rightAttack2);
 	}
 }

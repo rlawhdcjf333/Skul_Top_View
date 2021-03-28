@@ -225,6 +225,12 @@
     <ClInclude Include="Burning.h" />
     <ClInclude Include="TetanusBuff.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="AtkSpeedBuff.h" />
+    <ClInclude Include="PhysicalAtkBuff.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="CaerleonSword.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Items.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -304,6 +310,11 @@
     <ClCompile Include="Burning.cpp" />
     <ClCompile Include="TetanusBuff.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="AtkSpeedBuff.cpp" />
+    <ClCompile Include="PhysicalAtkBuff.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="CaerleonSword.cpp" />
+    <ClCompile Include="Inventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

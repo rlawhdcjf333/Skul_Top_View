@@ -24,66 +24,25 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mDashCount = 0;
 
 	mName = "player";
-
-	mPhysicalAttackPower = 1;
-	mMagicalAttackPower = 1;
-	mAttackSpeed = 0.1f;
 }
 
 void Player::Init()
 {
-	IMAGEMANAGER->LoadFromFile(L"Sans", Resources(L"Sans.bmp"), 92, 30, 4, 1, true);
-	mImage = IMAGEMANAGER->GetInstance()->FindImage(L"Sans");
-	mTileSelect = new TileSelect;
+	
 }
 
 void Player::Update()
 {
 	
-	mSpeed = mInitSpeed;
-	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
-	{
-		mSpeed = mInitSpeed / 2;
-	}
-
-	mTileSelect->Update();
-
-	if (mIsDash)
-	{
-		Move(5*mInitSpeed); //대쉬 중 5배 가속
-	}
-	else
-	{
-		if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect) //대쉬 중이 아닐 경우에만 클릭 이동 활성화 == 대쉬 중에 이동캔슬 안됨
-		{
-			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
-				mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
-		}
-		Move(mSpeed);
-	}
-
-	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-
 }
 
 void Player::Release()
 {
-	SafeDelete(mTileSelect);
 }
 
 void Player::Render(HDC hdc)
 {
-	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, 0, 0, mSizeX, mSizeY);
-	mTileSelect->Render(hdc);
 
-	//{{ 개발자용 타일 체크 렌더링
-	TILE[mIndexY][mIndexX]->SelectRender(hdc);
-
-	for (Tile* elem : mPath)
-	{
-		elem->SelectRender(hdc);
-	}
-	//}}
 }
 
 void Player::Move(float speed)
@@ -384,34 +343,6 @@ void Player::Attack(int damage, int range, AttackType type, bool isBack)
 	
 	}
 }
-
-void Player::PhysicalAttackBuff(int percentage, float buffDuration) //물리공격력 버프
-{
-	int plus = mPhysicalAttackPower * percentage / 100;
-	mPhysicalAttackPower += plus;
-	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetPhysicalAttackPower(SKUL->GetAlterSkul()->GetPhysicalAttackPower()+plus);
-
-	SKUL->RegBuff([this, plus]() {
-		mPhysicalAttackPower -= plus; if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetPhysicalAttackPower(SKUL->GetAlterSkul()->GetPhysicalAttackPower() - plus);
-		}, buffDuration);
-
-}
-
-void Player::AttackSpeedBuff(int percentage, float buffDuration) //공속버프
-{
-	float upSpeed = (mAttackSpeed * percentage) / (100+percentage);
-	mAttackSpeed -= upSpeed;
-	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed); 
-
-	SKUL->GetCurrentSkul()->SetAttackSpeed();
-	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
-
-	SKUL->RegBuff([this, upSpeed]() {
-		mAttackSpeed += upSpeed; SKUL->GetCurrentSkul()->AttackSpeedSet(mAttackSpeed); if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->AttackSpeedSet(mAttackSpeed);
-		SKUL->GetCurrentSkul()->SetAttackSpeed(); if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();}, buffDuration);
-
-}
-
 
 void Player::SkulSwitch(int indexX, int indexY)
 {

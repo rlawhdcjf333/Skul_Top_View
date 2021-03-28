@@ -109,6 +109,9 @@
     <Filter Include="MainGame\Condition">
       <UniqueIdentifier>{cd657cf6-cc01-4d4d-ac3a-6fdf0f796f6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Item">
+      <UniqueIdentifier>{891ff192-9168-4406-b37a-00a1253e6956}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -336,6 +339,30 @@
     <ClInclude Include="Arrow.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AtkSpeedBuff.h">
+      <Filter>MainGame\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalAtkBuff.h">
+      <Filter>MainGame\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene2.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>MainGame\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CaerleonSword.h">
+      <Filter>MainGame\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>MainGame\Player\SkulManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>MainGame\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -547,6 +574,27 @@
     </ClCompile>
     <ClCompile Include="Arrow.cpp">
       <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AtkSpeedBuff.cpp">
+      <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalAtkBuff.cpp">
+      <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene2.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>MainGame\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CaerleonSword.cpp">
+      <Filter>MainGame\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>MainGame\Player\SkulManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

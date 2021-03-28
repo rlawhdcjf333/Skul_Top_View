@@ -88,9 +88,6 @@ void Yaksha::Init()
 	mAnimationList[M rightSkill2] = new Animation(0, 18, 11, 18, false, false, 0.2f);
 	mAnimationList[M leftSkill2] = new Animation(0, 19, 11, 19, false, false, 0.2f);
 
-
-	mPhysicalAttackPower = 3;
-
 	mStompCount = 0;
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
@@ -114,7 +111,7 @@ void Yaksha::Update()
 
 	if (mStompCount > 4)
 	{
-		Attack(2*mPhysicalAttackPower, 3, AttackType::Whirlwind);
+		Attack(5*mPhysicalAttackPower, 3, AttackType::Whirlwind);
 		CAMERA->PanningOn(5);
 		mStompCount-=5;
 		(new Effect(L"YakshaStomp", mX, mY - 80, EffectType::Normal))->Scaling(300,300, 0.7f);
@@ -133,7 +130,7 @@ void Yaksha::Update()
 		{
 			mCurrentAnimation->Stop();
 			Dash(3);
-			Attack(mPhysicalAttackPower, 4, AttackType::Stab);
+			Attack(4*mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mStompCount++ ;
@@ -303,7 +300,7 @@ void Yaksha::BasicAttack()
 	{
 		if (mCurrentAnimation->GetCurrentFrameIndex() == 3 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			Attack(mPhysicalAttackPower, 3, AttackType::Side);
+			Attack(4*mPhysicalAttackPower, 3, AttackType::Side);
 			(new Effect(L"YakshaStomp", mX, mY-15, EffectType::Normal))->Scaling(100, 100, 0.7f);
 			mStompCount++;
 			CAMERA->PanningOn(3);
@@ -313,14 +310,14 @@ void Yaksha::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 6 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
-			Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+			Attack(4*mPhysicalAttackPower, 3, AttackType::Stab);
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
-			Attack(mPhysicalAttackPower, 3, AttackType::Whirlwind);
+			Attack(4*mPhysicalAttackPower, 3, AttackType::Whirlwind);
 			CAMERA->PanningOn(5);
 		}
 	}
@@ -402,7 +399,7 @@ void Yaksha::SwitchAttack()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 4:
-				Attack(2*mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(5*mPhysicalAttackPower, 3, AttackType::Side);
 				(new Effect(L"YakshaStomp", mX, mY - 45, EffectType::Normal))->Scaling(200, 200, 0.7f);
 				mStompCount++;
 				break;

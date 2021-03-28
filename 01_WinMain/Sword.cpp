@@ -287,7 +287,7 @@ void Sword::Skill1()
 		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime and mCurrentAnimation->GetCurrentFrameIndex() == 1)
 		{
 			Dash(5);
-			Attack(3*mPhysicalAttackPower, 5, AttackType::Stab);
+			Attack(2*mPhysicalAttackPower, 5, AttackType::Stab);
 			CAMERA->PanningOn(5);
 		}
 	}
@@ -307,7 +307,7 @@ void Sword::Skill2()
 			if (mCurrentAnimation->GetNowFrameX() == 2 or mCurrentAnimation->GetNowFrameX() == 5 or mCurrentAnimation->GetNowFrameX() == 8)
 			{
 				Dash(3);
-				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+				Attack(2*mPhysicalAttackPower, 3, AttackType::Stab);
 				CAMERA->PanningOn(5);
 			}
 		}

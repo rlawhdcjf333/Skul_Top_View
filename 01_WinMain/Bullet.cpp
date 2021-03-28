@@ -86,7 +86,7 @@ void Bullet::Update()
 			mCurrentFrameX++;
 			if (mCurrentFrameX >= mImage->GetFrameX())
 			{
-				Explosion(SKUL->GetCurrentSkul()->GetMagicalAttackPower(), 3);
+				Explosion(mMagicalAttackPower, 3);
 				mCurrentFrameY++;
 				mCurrentFrameX = 0;
 			}

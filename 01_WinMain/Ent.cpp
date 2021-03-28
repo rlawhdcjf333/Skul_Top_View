@@ -102,7 +102,7 @@ void Ent::Update()
 		if (mDashCoolTime == 0)
 		{
 			Dash(3);
-			Attack(1, 4, AttackType::Stab);
+			Attack(mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCoolTime = mInitDashCoolTime;
@@ -306,17 +306,17 @@ void Ent::Skill1()
 			case 0:
 				break;
 			case 1:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
 			case 2:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
 			case 3:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
@@ -336,7 +336,7 @@ void Ent::Skill2()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 		}
 	}
 	else if (mAnimationList[M rightSkill2Full]->GetIsPlay() or mAnimationList[M leftSkill2Full]->GetIsPlay())
@@ -345,7 +345,7 @@ void Ent::Skill2()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(2*mPhysicalAttackPower, 4, AttackType::Side);
+			Attack(4*mPhysicalAttackPower, 4, AttackType::Side);
 		}
 	}
 
@@ -386,7 +386,7 @@ void Ent::SwitchAttack()
 
 		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
+			Attack(2*mPhysicalAttackPower, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
 		}
 	}
 	
