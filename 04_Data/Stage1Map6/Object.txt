@@ -1,0 +1,15 @@
+Flower4,105,1228
+Flower4,1186,1228
+Flower2,647,1233
+Flower4,643,1704
+Flower4,642,748
+Flower1,582,1227
+Flower1,645,1255
+Flower1,701,1226
+Flower1,644,1201
+Flower3,607,1214
+Flower3,610,1250
+Flower3,678,1246
+Flower3,680,1223
+Flower2,627,1228
+Flower2,648,1212

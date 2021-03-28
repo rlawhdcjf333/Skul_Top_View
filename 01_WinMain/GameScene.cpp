@@ -12,7 +12,7 @@ void GameScene::Init()
 	MapLoad();
 	GameObject* little = new LittleBone(41, 57, 30, 30);
 	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
-	GameObject* door = new Door(723, 975);
+	GameObject* door = new Door(680, 744);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, alterSkul);
@@ -48,6 +48,17 @@ void GameScene::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+
+	//RECT temp;
+	//RECT temp2 = Obj->FindObject("door")->GetRect();
+	//RECT temp3 = Obj->FindObject("Player")->GetRect();
+	//if (IntersectRect(&temp, &temp2, &temp3))
+	//{
+	//	if (INPUT->GetKeyDown('F'))
+	//	{
+	//		SceneManager::GetInstance()->LoadScene(L"GameScene2");
+	//	}
+	//}
 
 	if (INPUT->GetKeyDown('F'))
 	{

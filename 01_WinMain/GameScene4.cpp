@@ -1,33 +1,30 @@
 #include "pch.h"
-#include "GameScene2.h"
+#include "GameScene4.h"
 #include "Player.h"
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 
-void GameScene2::Init()
+void GameScene4::Init()
 {
 	MapLoad();
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(40, 38));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(56, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 42));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(51, 39));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(54, 38));
 	Obj->Init();
-	
+
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	SKUL->GetCurrentSkul()->SetObjectOnTile(18, 39);
+	SKUL->GetCurrentSkul()->SetObjectOnTile(53, 53);
 
-	//CAMERA->ChangeMode(Camera::Mode::Follow);
-	//CAMERA->SetTarget(Obj->FindObject("player"));
-
-	IMAGEMANAGER->LoadFromFile(L"back1", Resources(L"back1.bmp"), 1280, 740, false);
+	IMAGEMANAGER->LoadFromFile(L"back2", Resources(L"back2.bmp"), 1280, 740, false);
 	mBack = new Image;
-	mBack = IMAGEMANAGER->FindImage(L"back1");
+	mBack = IMAGEMANAGER->FindImage(L"back2");
 }
 
-void GameScene2::Update()
+void GameScene4::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
@@ -48,11 +45,11 @@ void GameScene2::Update()
 
 	if (INPUT->GetKeyDown('F'))
 	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene3");
+		SceneManager::GetInstance()->LoadScene(L"GameScene5");
 	}
 }
 
-void GameScene2::Render(HDC hdc)
+void GameScene4::Render(HDC hdc)
 {
 	mBack->Render(hdc, 0, 0);
 
@@ -81,7 +78,7 @@ void GameScene2::Render(HDC hdc)
 	ObjectManager::GetInstance()->Render(hdc);
 }
 
-void GameScene2::Release()
+void GameScene4::Release()
 {
 	for (auto elem : mTileList)
 	{
@@ -95,7 +92,7 @@ void GameScene2::Release()
 
 }
 
-void GameScene2::MapLoad()
+void GameScene4::MapLoad()
 {
 	for (int y = 0; y < 75; y++)
 	{
@@ -121,7 +118,7 @@ void GameScene2::MapLoad()
 		mTileList.push_back(tmp);
 	}
 
-	ifstream loadStream(L"../04_Data/Stage1Map2/Tile.txt");
+	ifstream loadStream(L"../04_Data/Stage1Map4/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -158,7 +155,7 @@ void GameScene2::MapLoad()
 	}
 	loadStream.close();
 
-	loadStream.open(L"../04_Data/Stage1Map2/Object.txt");
+	loadStream.open(L"../04_Data/Stage1Map4/Object.txt");
 	if (loadStream.is_open())
 	{
 		while (loadStream.peek() != EOF) {

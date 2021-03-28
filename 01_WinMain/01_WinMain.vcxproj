@@ -165,6 +165,12 @@
     <ClInclude Include="GameEventManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene2.h" />
+    <ClInclude Include="GameScene3.h" />
+    <ClInclude Include="GameScene4.h" />
+    <ClInclude Include="GameScene5.h" />
+    <ClInclude Include="GameScene6.h" />
+    <ClInclude Include="GameScene7.h" />
+    <ClInclude Include="GameScene8.h" />
     <ClInclude Include="Gizmo.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
@@ -248,6 +254,12 @@
     <ClCompile Include="GameEventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene2.cpp" />
+    <ClCompile Include="GameScene3.cpp" />
+    <ClCompile Include="GameScene4.cpp" />
+    <ClCompile Include="GameScene5.cpp" />
+    <ClCompile Include="GameScene6.cpp" />
+    <ClCompile Include="GameScene7.cpp" />
+    <ClCompile Include="GameScene8.cpp" />
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />

@@ -1,0 +1,4 @@
+Building2,894,1123
+Building4,362,1126
+Building3,631,1053
+Post,910,1132

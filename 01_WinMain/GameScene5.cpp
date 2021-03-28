@@ -1,33 +1,26 @@
 #include "pch.h"
-#include "GameScene2.h"
+#include "GameScene5.h"
 #include "Player.h"
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 
-void GameScene2::Init()
+void GameScene5::Init()
 {
 	MapLoad();
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(40, 38));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
 	Obj->Init();
-	
+
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	SKUL->GetCurrentSkul()->SetObjectOnTile(18, 39);
+	SKUL->GetCurrentSkul()->SetObjectOnTile(22, 52);
 
-	//CAMERA->ChangeMode(Camera::Mode::Follow);
-	//CAMERA->SetTarget(Obj->FindObject("player"));
-
-	IMAGEMANAGER->LoadFromFile(L"back1", Resources(L"back1.bmp"), 1280, 740, false);
+	IMAGEMANAGER->LoadFromFile(L"back3", Resources(L"back3.bmp"), 1280, 740, false);
 	mBack = new Image;
-	mBack = IMAGEMANAGER->FindImage(L"back1");
+	mBack = IMAGEMANAGER->FindImage(L"back3");
 }
 
-void GameScene2::Update()
+void GameScene5::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
@@ -48,11 +41,11 @@ void GameScene2::Update()
 
 	if (INPUT->GetKeyDown('F'))
 	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene3");
+		SceneManager::GetInstance()->LoadScene(L"GameScene6");
 	}
 }
 
-void GameScene2::Render(HDC hdc)
+void GameScene5::Render(HDC hdc)
 {
 	mBack->Render(hdc, 0, 0);
 
@@ -81,7 +74,7 @@ void GameScene2::Render(HDC hdc)
 	ObjectManager::GetInstance()->Render(hdc);
 }
 
-void GameScene2::Release()
+void GameScene5::Release()
 {
 	for (auto elem : mTileList)
 	{
@@ -95,7 +88,7 @@ void GameScene2::Release()
 
 }
 
-void GameScene2::MapLoad()
+void GameScene5::MapLoad()
 {
 	for (int y = 0; y < 75; y++)
 	{
@@ -121,7 +114,7 @@ void GameScene2::MapLoad()
 		mTileList.push_back(tmp);
 	}
 
-	ifstream loadStream(L"../04_Data/Stage1Map2/Tile.txt");
+	ifstream loadStream(L"../04_Data/Stage1Map5/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -158,7 +151,7 @@ void GameScene2::MapLoad()
 	}
 	loadStream.close();
 
-	loadStream.open(L"../04_Data/Stage1Map2/Object.txt");
+	loadStream.open(L"../04_Data/Stage1Map5/Object.txt");
 	if (loadStream.is_open())
 	{
 		while (loadStream.peek() != EOF) {

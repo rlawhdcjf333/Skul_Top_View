@@ -4,6 +4,12 @@
 #include "Image.h"
 #include "GameScene.h"
 #include "GameScene2.h"
+#include "GameScene3.h"
+#include "GameScene4.h"
+#include "GameScene5.h"
+#include "GameScene6.h"
+#include "GameScene7.h"
+#include "GameScene8.h"
 
 /*
 Initialize : 초기화
@@ -66,6 +72,12 @@ void MainGame::Init()
 	//SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene2", new GameScene2);
+	SceneManager::GetInstance()->AddScene(L"GameScene3", new GameScene3);
+	SceneManager::GetInstance()->AddScene(L"GameScene4", new GameScene4);
+	SceneManager::GetInstance()->AddScene(L"GameScene5", new GameScene5);
+	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
+	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
+	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
 	SceneManager::GetInstance()->LoadScene(L"GameScene");
 
 }

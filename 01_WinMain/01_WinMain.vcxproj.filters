@@ -73,32 +73,11 @@
     <Filter Include="FrameWork\Command">
       <UniqueIdentifier>{2aac7948-42da-475d-bc28-3148c6be05f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\Player">
-      <UniqueIdentifier>{11d0613a-1895-418a-bd73-e58fe8c746b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Enemy">
       <UniqueIdentifier>{c66976d8-fcf0-41b9-8aaa-ee0713a93f90}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Bullet">
       <UniqueIdentifier>{412150ea-7769-4e4b-8d14-73bc94d11d09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\Skuls">
-      <UniqueIdentifier>{fb2fdf9e-bc2b-49f5-890b-3da76e459800}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\SkulManager">
-      <UniqueIdentifier>{f9621100-4df5-4a29-acfe-c2c743f56560}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\Skuls\NormalS">
-      <UniqueIdentifier>{55d4073f-f91d-47b7-9236-8e715f92cd8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\Skuls\RareS">
-      <UniqueIdentifier>{3dadd5f1-6dd6-4ebe-bc41-8ebc7b8a845c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\Skuls\UniqueS">
-      <UniqueIdentifier>{8ae86afb-ad63-4086-9fa8-39f22a97396b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Player\Skuls\LegendaryS">
-      <UniqueIdentifier>{3face1f9-c12f-4dbc-806c-1451abf9d5a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Enemy\Stage1">
       <UniqueIdentifier>{a19767d8-2af7-4fb1-aab6-d17d739e6654}</UniqueIdentifier>
@@ -108,6 +87,27 @@
     </Filter>
     <Filter Include="MainGame\Condition">
       <UniqueIdentifier>{cd657cf6-cc01-4d4d-ac3a-6fdf0f796f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player">
+      <UniqueIdentifier>{11d0613a-1895-418a-bd73-e58fe8c746b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\Skuls">
+      <UniqueIdentifier>{fb2fdf9e-bc2b-49f5-890b-3da76e459800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\Skuls\NormalS">
+      <UniqueIdentifier>{55d4073f-f91d-47b7-9236-8e715f92cd8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\Skuls\RareS">
+      <UniqueIdentifier>{3dadd5f1-6dd6-4ebe-bc41-8ebc7b8a845c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\Skuls\UniqueS">
+      <UniqueIdentifier>{8ae86afb-ad63-4086-9fa8-39f22a97396b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\Skuls\LegendaryS">
+      <UniqueIdentifier>{3face1f9-c12f-4dbc-806c-1451abf9d5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Player\SkulManager">
+      <UniqueIdentifier>{f9621100-4df5-4a29-acfe-c2c743f56560}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,49 +229,49 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="SkulManager.h">
-      <Filter>MainGame\Player\SkulManager</Filter>
+      <Filter>MainGame\Scene\Player\SkulManager</Filter>
     </ClInclude>
     <ClInclude Include="Sword.h">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClInclude>
     <ClInclude Include="Werewolf.h">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>MainGame\Player</Filter>
+      <Filter>MainGame\Scene\Player</Filter>
     </ClInclude>
     <ClInclude Include="PettyThief.h">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClInclude>
     <ClInclude Include="Skuls.h">
-      <Filter>MainGame\Player\Skuls</Filter>
+      <Filter>MainGame\Scene\Player\Skuls</Filter>
     </ClInclude>
     <ClInclude Include="Ent.h">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClInclude>
     <ClInclude Include="LittleBone.h">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClInclude>
     <ClInclude Include="Warrior.h">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClInclude>
     <ClInclude Include="Mino.h">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClInclude>
     <ClInclude Include="Hunter.h">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClInclude>
     <ClInclude Include="Alchemist.h">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClInclude>
     <ClInclude Include="Clown.h">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Berserker.h">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClInclude>
     <ClInclude Include="Stage1_SwordMan.h">
       <Filter>MainGame\Enemy\Stage1</Filter>
@@ -283,13 +283,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HighWarlock.h">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClInclude>
     <ClInclude Include="WarlockOrb.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Ninja.h">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClInclude>
     <ClInclude Include="Hwadun.h">
       <Filter>MainGame\Bullet</Filter>
@@ -298,10 +298,10 @@
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="GrimReaper.h">
-      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\LegendaryS</Filter>
     </ClInclude>
     <ClInclude Include="Yaksha.h">
-      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\LegendaryS</Filter>
     </ClInclude>
     <ClInclude Include="ClownBox.h">
       <Filter>MainGame\Bullet</Filter>
@@ -337,6 +337,45 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameScene2.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AtkSpeedBuff.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalAtkBuff.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CaerleonSword.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene3.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene4.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene5.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene6.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene7.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene8.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -423,7 +462,7 @@
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>MainGame\Player</Filter>
+      <Filter>MainGame\Scene\Player</Filter>
     </ClCompile>
     <ClCompile Include="Dumb.cpp">
       <Filter>MainGame\Enemy</Filter>
@@ -450,43 +489,43 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SkulManager.cpp">
-      <Filter>MainGame\Player\SkulManager</Filter>
+      <Filter>MainGame\Scene\Player\SkulManager</Filter>
     </ClCompile>
     <ClCompile Include="Sword.cpp">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClCompile>
     <ClCompile Include="Werewolf.cpp">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClCompile>
     <ClCompile Include="PettyThief.cpp">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClCompile>
     <ClCompile Include="Ent.cpp">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClCompile>
     <ClCompile Include="LittleBone.cpp">
-      <Filter>MainGame\Player\Skuls\NormalS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\NormalS</Filter>
     </ClCompile>
     <ClCompile Include="Warrior.cpp">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Mino.cpp">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Hunter.cpp">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Alchemist.cpp">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Clown.cpp">
-      <Filter>MainGame\Player\Skuls\RareS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\RareS</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Berserker.cpp">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClCompile>
     <ClCompile Include="Stage1_SwordMan.cpp">
       <Filter>MainGame\Enemy\Stage1</Filter>
@@ -498,13 +537,13 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="HighWarlock.cpp">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClCompile>
     <ClCompile Include="WarlockOrb.cpp">
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Ninja.cpp">
-      <Filter>MainGame\Player\Skuls\UniqueS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\UniqueS</Filter>
     </ClCompile>
     <ClCompile Include="Hwadun.cpp">
       <Filter>MainGame\Bullet</Filter>
@@ -513,10 +552,10 @@
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="GrimReaper.cpp">
-      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\LegendaryS</Filter>
     </ClCompile>
     <ClCompile Include="Yaksha.cpp">
-      <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
+      <Filter>MainGame\Scene\Player\Skuls\LegendaryS</Filter>
     </ClCompile>
     <ClCompile Include="ClownBox.cpp">
       <Filter>MainGame\Bullet</Filter>
@@ -552,6 +591,42 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameScene2.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AtkSpeedBuff.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalAtkBuff.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CaerleonSword.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene3.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene4.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene5.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene6.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene7.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene8.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>

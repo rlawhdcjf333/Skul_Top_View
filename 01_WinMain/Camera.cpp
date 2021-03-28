@@ -38,7 +38,7 @@ void Camera::Update()
 
 		if (mRect.top < TILE[0][41]->GetY()) mY = TILE[0][41]->GetY() + mSizeY/2;
 		if (mRect.right > TILE[0][42]->GetX()) mX = TILE[0][42]->GetX() - mSizeX / 2;
-		if (mRect.left < TILE[40][0]->GetX()) mX = TILE[40][0]->GetX() + mSizeX / 2;
+		if (mRect.left < TILE[39][1]->GetX()) mX = TILE[39][1]->GetX() + mSizeX / 2;
 		if (mRect.bottom > TILE[36][74]->GetY()) mY = TILE[36][74]->GetY() - mSizeY / 2;
 		
 		mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
