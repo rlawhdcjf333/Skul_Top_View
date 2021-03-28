@@ -160,7 +160,6 @@ void ObjectManager::IntersectObject()
 				default:
 					elemelem->Damage(elem->GetDamage());
 					elem->Damage(0);
-
 					break;
 
 				}

@@ -333,6 +333,9 @@
     <ClInclude Include="TetanusBuff.h">
       <Filter>MainGame\Condition</Filter>
     </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -541,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="TetanusBuff.cpp">
       <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

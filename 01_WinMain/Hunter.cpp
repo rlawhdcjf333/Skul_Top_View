@@ -1,17 +1,14 @@
 #include "pch.h"
 #include "Hunter.h"
 #include "TileSelect.h"
-#include "Bullet.h"
 #include "Animation.h"
+#include "Arrow.h" //화살 이미지 개선, 반향 잔상효과 적용
 
 Hunter::Hunter(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Hunter", Resources(L"/skul/skul_hunter.bmp"), 700, 1000, 7, 10, true);
 	mImage = IMAGEMANAGER->FindImage(L"Hunter");
-
-	IMAGEMANAGER->LoadFromFile(L"Arrow", Resources(L"/skul/arrow1.bmp"), 210, 100, 1, 2, true);
-	mArrow = IMAGEMANAGER->FindImage(L"Arrow");
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -29,18 +26,18 @@ void Hunter::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
-	mAnimationList[M rightAttack1] = new Animation(0, 6, 6, 6, false, false, (float)mAttackSpeed/3);
-	mAnimationList[M leftAttack1] = new Animation(0, 7, 6, 7, true, false, (float)mAttackSpeed/3);
+	mAnimationList[M rightAttackCharging] = new Animation(0, 6, 4, 6, false, true, mAttackSpeed, [this]() {mCurrentAnimation->SetCurrentFrameIndex(3);});
+	mAnimationList[M leftAttackCharging] = new Animation(2, 7, 6, 7, true, true, mAttackSpeed, [this]() {mCurrentAnimation->SetCurrentFrameIndex(3);});
+	mAnimationList[M rightAttack1] = new Animation(5, 6, 6, 6, false, false, mAttackSpeed);
+	mAnimationList[M leftAttack1] = new Animation(0, 7, 1, 7, true, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 8, 6, 8, false, false, 0.03f);
-	mAnimationList[M leftSkill1] = new Animation(0, 9, 6, 9, true, false, 0.03f);
-	mAnimationList[M rightSkill2] = new Animation(0, 8, 6, 8, false, false, 0.03f);
-	mAnimationList[M leftSkill2] = new Animation(0, 9, 6, 9, true, false, 0.03f);
+	mAnimationList[M rightSkill1] = new Animation(0, 8, 6, 8, false, false, 0.1f);
+	mAnimationList[M leftSkill1] = new Animation(0, 9, 6, 9, true, false, 0.1f);
+	mAnimationList[M rightSkill2] = new Animation(0, 8, 6, 8, false, false, 0.1f);
+	mAnimationList[M leftSkill2] = new Animation(0, 9, 6, 9, true, false, 0.1f);
 
-	mAnimationList[M leftSwitching] = new Animation(0, 4, 6, 4, false, false, 0.03f,
-		[this]() { SetAnimation(M leftSkill2);});
-	mAnimationList[M rightSwitching] = new Animation(0, 5, 6, 5, true, false, 0.03f,
-		[this]() {SetAnimation(M rightSkill2);});
+	mAnimationList[M leftSwitching] = new Animation(0, 4, 6, 4, false, false, 0.05f);
+	mAnimationList[M rightSwitching] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
@@ -104,11 +101,11 @@ void Hunter::Update()
 		Move(mSpeed);
 	}
 
-	if (INPUT->GetKey('X'))
+	if (INPUT->GetKeyDown('X'))
 	{
 		UpdateAngle();
-		if (RIGHT) { SetAnimation(M rightAttack1); }
-		if (LEFT) { SetAnimation(M leftAttack1); }
+		if (RIGHT) { SetAnimation(M rightAttackCharging); }
+		if (LEFT) { SetAnimation(M leftAttackCharging); }
 	}
 	BasicAttack();
 
@@ -142,6 +139,7 @@ void Hunter::Update()
 	}
 	Skill2();
 
+	SwitchAttack();
 
 
 	mCurrentAnimation->Update();
@@ -163,7 +161,7 @@ void Hunter::Release()
 
 void Hunter::Render(HDC hdc)
 {
-	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top + 50, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
+	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top + 25, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), mSizeX, mSizeY);
 
 	mTileSelect->Render(hdc);
 
@@ -184,6 +182,11 @@ void Hunter::SetAnimation(int listNum)
 
 	if (mAnimationList[M rightAttack1]->GetIsPlay()) return;
 	if (mAnimationList[M leftAttack1]->GetIsPlay()) return;
+	if (mAnimationList[M rightAttackCharging]->GetIsPlay() or mAnimationList[M leftAttackCharging]->GetIsPlay())
+	{
+		mPath.clear();
+		return;
+	}
 
 	if (mAnimationList[M leftSkill1]->GetIsPlay()) return;
 	if (mAnimationList[M leftSkill2]->GetIsPlay()) return;
@@ -199,12 +202,25 @@ void Hunter::SetAnimation(int listNum)
 
 void Hunter::BasicAttack()
 {
-	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
+	if (INPUT->GetKeyUp('X'))
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mAnimationList[M rightAttackCharging]->GetIsPlay() or mAnimationList[M leftAttackCharging]->GetIsPlay())
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mArrow, "Bullet", this, 1*mPhysicalAttackPower, 300, 500, mAngle, BulletType::Straight);
+			UpdateAngle();
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 3:
+			case 4:
+				new Arrow(this, mPhysicalAttackPower, mAngle, true); //헌터 패시브 적용 차징샷에 피어싱 효과 부여 및 사거리/ 속도 증가
+				break;
+
+			default:
+				new Arrow(this, mPhysicalAttackPower, mAngle, false);
+				break;
+			}
+			mCurrentAnimation->Stop();
+			if (RIGHT) { SetAnimation(M rightAttack1); }
+			if (LEFT) { SetAnimation(M leftAttack1); }
 		}
 	}
 }
@@ -218,12 +234,10 @@ void Hunter::Skill1()
 	{
 		mSkill1CoolTime = 8;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 3)
+		if (mCurrentAnimation->GetCurrentFrameTime() >0.1f-dTime and mCurrentAnimation->GetCurrentFrameIndex() == 3)
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-
 			for (int i = 0; i < 5; i++)
-				new Bullet(mArrow, "Bullet", this, 3 * mPhysicalAttackPower, 300, 500, mAngle - PI / 3 + i * PI / 6, BulletType::Straight);
+			new Arrow(this, 3*mPhysicalAttackPower, mAngle-PI/6+i*PI/12, false);
 
 			CAMERA->PanningOn(5);
 
@@ -240,16 +254,41 @@ void Hunter::Skill2()
 	{
 		mSkill2CoolTime = 14;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime)
 		{
 			if (mCurrentAnimation->GetNowFrameX() == 3)
 			{
-				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-				new Bullet(mArrow, "Bullet", this, 3*mPhysicalAttackPower, 600, 1000, mAngle, BulletType::Piercing);
+				new Arrow(this, 3*mMagicalAttackPower, mAngle, true);
 				CAMERA->PanningOn(5);
 			}
 		}
 	}
+}
+
+void Hunter::SwitchAttack()
+{
+	if (mAnimationList[M rightSwitching]->GetIsPlay() or mAnimationList[M leftSwitching]->GetIsPlay())
+	{
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.05f - dTime)
+		{
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 6)
+			{
+				UpdateAngle();
+				mCurrentAnimation->Stop();
+				if (LEFT)
+				{
+					SetAnimation(M leftAttack1);
+					new Arrow(this, 3 * mPhysicalAttackPower, mAngle, true);
+				}
+				else if (RIGHT)
+				{
+					SetAnimation(M rightAttack1);
+					new Arrow(this, 3 * mPhysicalAttackPower, mAngle, true);
+				}
+			}
+		}
+	}
+
 }
 
 void Hunter::SkulSwitch(int indexX, int indexY)
@@ -257,12 +296,12 @@ void Hunter::SkulSwitch(int indexX, int indexY)
 	Player::SkulSwitch(indexX, indexY);
 	if (LEFT)
 	{
-		Dash(5, true);
+		Dash(3, true);
 		SetAnimation(M leftSwitching);
 	}
 	if (RIGHT)
 	{
-		Dash(5, true);
+		Dash(3, true);
 		SetAnimation(M rightSwitching);
 	}
 }
@@ -274,6 +313,8 @@ void Hunter::SkulReset()
 
 void Hunter::SetAttackSpeed()
 {
+	mAnimationList[M rightAttackCharging]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttackCharging]->SetFrameUpdateTime(mAttackSpeed);
 	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
 	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
 }

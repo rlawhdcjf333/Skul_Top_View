@@ -155,7 +155,6 @@ void Bullet::Move() {
 }
 
 void Bullet::Damage(int a) {
-	if (mType == BulletType::Piercing) return;
 	if (mType == BulletType::Barricade) return;
 	
 	mIsDestroy = true;
