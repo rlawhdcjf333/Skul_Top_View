@@ -18,6 +18,7 @@ enum class ObjectLayer : int
 	MapObject,
 	Effect,
 	Door,
+	Item,
 	End
 };
 

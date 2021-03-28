@@ -5,12 +5,13 @@
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 #include "Door.h"
+#include "Items.h"
 
 void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(41, 57, 30, 30);
-	GameObject* alterSkul = new GrimReaper(30, 30, 30, 30);
+	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
 	GameObject* door = new Door(723, 975);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
@@ -19,6 +20,8 @@ void GameScene::Init()
 	SKUL->SetCurrentSkul((Player*)alterSkul);
 	SKUL->NewSkulGet((Player*)little);
 	Obj->Init();
+
+	new CaerleonSword(41, 57);
 
 	CAMERA->ChangeMode(Camera::Mode::Follow);
 	CAMERA->SetTarget(Obj->FindObject("player"));

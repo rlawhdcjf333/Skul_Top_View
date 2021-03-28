@@ -3,12 +3,15 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Effect.h"
 
 Ent::Ent(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Ent", Resources(L"/skul/skul_ent.bmp"), 2400, 6000, 8, 20, true);
 	mImage = IMAGEMANAGER->FindImage(L"Ent");
+
+	IMAGEMANAGER->LoadFromFile(L"EntPassive", Resources(L"/skul/entPassive.bmp"), 400, 300, 4, 3, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -99,7 +102,7 @@ void Ent::Update()
 		if (mDashCoolTime == 0)
 		{
 			Dash(3);
-			Attack(1, 4, AttackType::Stab);
+			Attack(mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCoolTime = mInitDashCoolTime;
@@ -255,7 +258,11 @@ void Ent::BasicAttack()
 				Attack(mPhysicalAttackPower, 1, AttackType::Side);
 				break;
 			case 4:
-				if (RAND->Probablity(30)) Attack(mPhysicalAttackPower, 1, AttackType::Side); //30% 확률 추가 공격 패시브 로직
+				if (RAND->Probablity(30))
+				{
+					Attack(mPhysicalAttackPower, 1, AttackType::Side); //30% 확률 추가 공격 패시브 로직
+					(new Effect(L"EntPassive", mX, mY-25, EffectType::Normal))->Scaling(100,100,0.7f);
+				}
 				break;
 			}
 		}
@@ -271,7 +278,11 @@ void Ent::BasicAttack()
 				Attack(mPhysicalAttackPower, 1, AttackType::Side);
 				break;
 			case 3:
-				if (RAND->Probablity(30)) Attack(mPhysicalAttackPower, 1, AttackType::Side); //30% 확률 추가 공격 패시브 로직
+				if (RAND->Probablity(30))
+				{
+					Attack(mPhysicalAttackPower, 1, AttackType::Side);//30% 확률 추가 공격 패시브 로직
+					(new Effect(L"EntPassive", mX, mY - 25, EffectType::Normal))->Scaling(100, 100, 0.7f);
+				}
 				break;
 			}
 		}
@@ -293,20 +304,19 @@ void Ent::Skill1()
 			switch (mCurrentAnimation->GetNowFrameX())
 			{
 			case 0:
-				Dash(1);
 				break;
 			case 1:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
 			case 2:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
 			case 3:
-				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 1, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				Dash(1);
 				break;
@@ -326,7 +336,7 @@ void Ent::Skill2()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+			Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 		}
 	}
 	else if (mAnimationList[M rightSkill2Full]->GetIsPlay() or mAnimationList[M leftSkill2Full]->GetIsPlay())
@@ -335,7 +345,7 @@ void Ent::Skill2()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
-			Attack(2*mPhysicalAttackPower, 4, AttackType::Whirlwind);
+			Attack(4*mPhysicalAttackPower, 4, AttackType::Side);
 		}
 	}
 
@@ -376,7 +386,7 @@ void Ent::SwitchAttack()
 
 		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
+			Attack(2*mPhysicalAttackPower, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
 		}
 	}
 	

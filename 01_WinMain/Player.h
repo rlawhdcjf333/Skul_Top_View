@@ -32,11 +32,6 @@ protected:
 
 	int mPathIndex = 0;
 
-	int mPhysicalAttackPower;
-	int mMagicalAttackPower;
-
-	float mAttackSpeed;
-
 	float mSkill1CoolTime;
 	float mSkill2CoolTime;
 
@@ -60,15 +55,6 @@ public:
 	float const GetSkill1CoolTime() { return mSkill1CoolTime; };
 	float const GetSkill2CoolTime() { return mSkill2CoolTime; };
 
-	int const GetPhysicalAttackPower() { return mPhysicalAttackPower; }
-	void SetPhysicalAttackPower(int val) { mPhysicalAttackPower = val; }
-
-	int const GetMagicalAttackPower() { return mMagicalAttackPower; }
-	void SetMagicalAttackPower(int val) { mMagicalAttackPower = val; }
-
-	void PhysicalAttackBuff(int percentage, float buffDuration);
-	void AttackSpeedBuff(int percentage, float buffDuration);
-	void AttackSpeedSet(float val) { mAttackSpeed = val; }
 	void UpdateAngle() 
 	{ 
 		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MainGame.h"
-
+#include "Inventory.h"
 #include "Image.h"
 #include "GameScene.h"
 #include "GameScene2.h"
@@ -78,7 +78,7 @@ Release : 메모리 해제할 때 불러주는 함수
 void MainGame::Release()
 {
 	Random::ReleaseInstance();	//싱글톤 인스턴스 삭제
-
+	SKUL->Release();
 	SafeDelete(mBackBuffer);
 	SafeDelete(mCamera);
 }
@@ -88,10 +88,13 @@ Update : 매 프레임 실행되는 함수, 여기서 연산 처리 한다.
 */
 void MainGame::Update()
 {
-	CAMERA->Update();
 	INPUT->Update();
 	SkulManager::GetInstance()->Update();
-	SceneManager::GetInstance()->Update();
+	if (SKUL->GetInventory()->GetIsToggle()==false)
+	{
+		CAMERA->Update();
+		SceneManager::GetInstance()->Update();
+	}
 	//if (INPUT->GetKeyDown(VK_ESCAPE)) SceneManager::LoadScene();
 }
 
@@ -110,6 +113,7 @@ void MainGame::Render(HDC hdc)
 	// ==================================================
 	{
 		SceneManager::GetInstance()->Render(backDC);
+		SKUL->Render(backDC);
 		RenderTime(backDC);
 		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
 	}

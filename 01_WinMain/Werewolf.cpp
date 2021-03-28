@@ -66,7 +66,7 @@ void Werewolf::Update()
 	if (M_LEFT and mPath.size() > 0) { SetAnimation(M leftWalk); }
 	if (M_RIGHT and mPath.size() > 0) { SetAnimation(M rightWalk); }
 
-	mSpeed = mInitSpeed;
+	mSpeed = mInitSpeed*1.1f; //웨어울프 패시브: 이동속도 10%증가
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
 	{
 		mSpeed = mInitSpeed / 2;
@@ -242,7 +242,7 @@ void Werewolf::Skill1()
 			case 3:
 			case 4:
 			case 5:
-				Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+				Attack(2*mMagicalAttackPower, 2, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				break;
 			}
@@ -294,13 +294,13 @@ void Werewolf::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		Dash(5);
-		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
+		Attack(2*mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M leftDash);
 	}
 	if (RIGHT)
 	{
 		Dash(5);
-		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
+		Attack(2*mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M rightDash);
 	}
 }

@@ -58,11 +58,11 @@ void PettyThief::Init()
 
 	mAnimationList[M rightSwitching] = new Animation(0, 4, 7, 4, true, false, 0.1f,
 		[this]() {
-			Attack(1, 1, AttackType::Side);
+			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		});
 	mAnimationList[M leftSwitching] = new Animation(0, 5, 7, 5, true, false, 0.1f,
 		[this]() {
-		Attack(1, 1, AttackType::Side);
+		Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		});
 
 	mSkill1CoolTime = 0;
@@ -267,7 +267,7 @@ void PettyThief::Skill1()
 				SKUL->Invincibilize();
 				break;
 			case 2:
-				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				Attack(2*mPhysicalAttackPower, 2, AttackType::Whirlwind);
 				CAMERA->PanningOn(5);
 				auto tmp = Obj->GetObjectList(ObjectLayer::Enemy);
 				for (GameObject* elem : tmp)
@@ -304,7 +304,7 @@ void PettyThief::Skill2()
 			{
 			case 0: 
 				SKUL->Invincibilize();
-				Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+				Attack(2*mMagicalAttackPower, 2, AttackType::Whirlwind);
 				mSmokeCount--;
 				(new Effect(L"ThiefSmoke", mX, mY, EffectType::Normal))->Scaling(200, 200, 0.7f);
 				CAMERA->PanningOn(5);

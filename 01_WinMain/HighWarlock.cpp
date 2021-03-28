@@ -80,7 +80,6 @@ void HighWarlock::Init()
 	mAnimationList[M rightSkill2] = new Animation(0, 12, 7, 12, false, false, 0.1f);
 	mAnimationList[M leftSkill2] = new Animation(0, 13, 7, 13, true, false, 0.1f);
 
-	mMagicalAttackPower = 2;
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
 }
@@ -194,32 +193,27 @@ void HighWarlock::Update()
 				{
 				case 0:
 				case 1:
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
 					break;
 				case 2:
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
 					break;
 				case 3:
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
 					break;
 				case 4:
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
-					new Meteor(this, 400, 0, 2 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
+					new Meteor(this, 400, 0, 4 * mMagicalAttackPower, false);
 
 					break;
 				case 5:
-					new Meteor(this, 400, 0, 10 * mMagicalAttackPower, true);
+					new Meteor(this, 400, 0, 20 * mMagicalAttackPower, true);
 				}
-				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
-				{
-					new Meteor(this, 400, 0, 5 * mMagicalAttackPower, false);
-				}
-				
 
 				if(Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
 				if(Obj->FindObject(ObjectLayer::Effect,"CastingEffect")) Obj->FindObject(ObjectLayer::Effect, "CastingEffect")->SetIsDestroy(true);
@@ -242,11 +236,11 @@ void HighWarlock::Update()
 				UpdateAngle();
 				if (mCurrentAnimation->GetCurrentFrameIndex() < 5)
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 2*mMagicalAttackPower, false);
+					new WarlockOrb(this, 100, mAngle, 800, 4*mMagicalAttackPower, false);
 				}
 				else
 				{
-					new WarlockOrb(this, 100, mAngle, 800, 4*mMagicalAttackPower, true);
+					new WarlockOrb(this, 100, mAngle, 800, 8*mMagicalAttackPower, true);
 				}
 
 				if (Obj->FindObject(ObjectLayer::Effect, "CastingDone")) Obj->FindObject(ObjectLayer::Effect, "CastingDone")->SetIsDestroy(true);
@@ -325,7 +319,7 @@ void HighWarlock::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex()==2 or mCurrentAnimation->GetCurrentFrameIndex() == 4)
 			{
-				new Bullet(mWarlockProjectile, "WarlockProjectile", this, mMagicalAttackPower, 400,600, mAngle, BulletType::FrameProjectile);
+				new Bullet(mWarlockProjectile, "WarlockProjectile", this, 3*mMagicalAttackPower, 400,600, mAngle, BulletType::FrameProjectile);
 			}
 		}
 	}
@@ -335,7 +329,7 @@ void HighWarlock::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 1 or mCurrentAnimation->GetCurrentFrameIndex() == 3)
 			{
-				new Bullet(mWarlockProjectile, "WarlockProjectile", this, mMagicalAttackPower, 400, 600, mAngle, BulletType::FrameProjectile);
+				new Bullet(mWarlockProjectile, "WarlockProjectile", this, 3*mMagicalAttackPower, 400, 600, mAngle, BulletType::FrameProjectile);
 			}
 		}
 	}
@@ -366,7 +360,7 @@ void HighWarlock::Skill2()
 void HighWarlock::SkulSwitch(int indexX, int indexY)
 {
 	Player::SkulSwitch(indexX, indexY);
-	new Bullet(mWarlockBarricade, "Barricade", this, mMagicalAttackPower, 0, 1, 0, BulletType::Barricade);
+	new Bullet(mWarlockBarricade, "Barricade", this, 4*mMagicalAttackPower, 0, 1, 0, BulletType::Barricade);
 }
 
 void HighWarlock::SkulReset()

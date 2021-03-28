@@ -91,7 +91,7 @@ void Mino::Update()
 		{
 			mCurrentAnimation->Stop();
 			Dash(3);
-			Attack(1, 4, AttackType::Stab);
+			Attack(2*mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCoolTime = mInitDashCoolTime;
@@ -224,7 +224,7 @@ void Mino::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() ==3)
 			{
-				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 			}
 		}
 	}
@@ -232,7 +232,7 @@ void Mino::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 		}
 	}
 }
@@ -255,7 +255,7 @@ void Mino::Skill1()
 				case 2:
 				case 3:
 				case 4:
-					Attack(2*mPhysicalAttackPower, 1, AttackType::Side);
+					Attack(3*mPhysicalAttackPower, 1, AttackType::Side);
 					Dash(1);
 					CAMERA->PanningOn(5);
 					break;
@@ -281,7 +281,7 @@ void Mino::Skill2()
 				if (RIGHT) mCurrentAnimation = mAnimationList[M rightSkill2CancelAttack];
 				if (LEFT) mCurrentAnimation = mAnimationList[M leftSkill2CancelAttack];
 				mCurrentAnimation->Play();
-				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				Attack(3*mPhysicalAttackPower, 2, AttackType::Whirlwind);
 				(new Effect(L"MinoBlunt", mX, mY, EffectType::Normal))->Scaling(200,200);
 				for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
 				{
@@ -301,7 +301,7 @@ void Mino::Skill2()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			default:
-				Attack(2*mPhysicalAttackPower, 1, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 1, AttackType::Side);
 				Dash(1);
 				CAMERA->PanningOn(3);
 			}
@@ -314,12 +314,12 @@ void Mino::SkulSwitch(int indexX, int indexY)
 	Player::SkulSwitch(indexX, indexY);
 	if (LEFT)
 	{
-		Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
+		Attack(3*mPhysicalAttackPower, 2, AttackType::Side);
 		SetAnimation(M leftSwitching);
 	}
 	if (RIGHT)
 	{
-		Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
+		Attack(3*mPhysicalAttackPower, 2, AttackType::Side);
 		SetAnimation(M rightSwitching);
 	}
 }
@@ -346,6 +346,6 @@ void Mino::Passive()
 	if (mPassiveDuration > 0.4f + (float)i/2 and mPassiveDuration<= 0.4f + dTime + (float)i/2)
 	{
 		(new Effect(L"MinoBomb", mX, mY-30, EffectType::Normal))->Scaling(200, 200);
-		Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+		Attack(2*mPhysicalAttackPower, 2, AttackType::Whirlwind);
 	}
 }

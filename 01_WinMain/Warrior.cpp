@@ -222,7 +222,7 @@ void Warrior::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 4 )
 			{
-				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 			}
 		}
 	}	
@@ -232,7 +232,7 @@ void Warrior::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 4)
 			{
-				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				Attack(2*mPhysicalAttackPower, 2, AttackType::Side);
 				CAMERA->PanningOn(3);
 			}
 		}
@@ -253,11 +253,11 @@ void Warrior::Skill1()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{ //3타 다단히트 == 멀리 날릴 수 있다.
 			case 3:
-				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 3, AttackType::Side);
 			case 4:
-				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 3, AttackType::Side);
 			case 5:
-				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 3, AttackType::Side);
 				CAMERA->PanningOn(5);
 
 			}
@@ -294,7 +294,7 @@ void Warrior::Skill2()
 
 			case 1:
 				Dash(1); //전진하며 찌르기
-				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+				Attack(3*mPhysicalAttackPower, 3, AttackType::Stab);
 				new Effect(L"WarriorHit", mX , mY, EffectType::Normal);
 				for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
 				{
@@ -326,7 +326,7 @@ void Warrior::Skill2()
 						elem->SetObjectOnTile(mIndexX, mIndexY);
 					}
 				}
-				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				Attack(3*mPhysicalAttackPower, 3, AttackType::Side);
 				mSkill2Targets.clear();
 				CAMERA->PanningOn(5);
 				break;
@@ -349,13 +349,13 @@ void Warrior::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		Dash(5);
-		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
+		Attack(3*mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M leftDash);
 	}
 	if (RIGHT)
 	{
 		Dash(5);
-		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
+		Attack(3*mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M rightDash);
 	}
 }

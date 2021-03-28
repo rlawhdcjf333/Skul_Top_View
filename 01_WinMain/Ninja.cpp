@@ -60,8 +60,6 @@ void Ninja::Init()
 
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
-
-	mPhysicalAttackPower = 2;
 }
 
 void Ninja::Update()
@@ -235,14 +233,14 @@ void Ninja::BasicAttack()
 	{
 		if (mCurrentAnimation->GetCurrentFrameIndex() == 2 and mCurrentAnimation->GetCurrentFrameTime() >mAttackSpeed/2- dTime)
 		{
-			Attack(mPhysicalAttackPower, 1, AttackType::Side);
+			Attack(3*mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 	if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
 		if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			Attack(3*mPhysicalAttackPower, 2, AttackType::Side);
 			if(LEFT) (new Effect(L"NinjaHit", mX - 100 + RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
 			else if(RIGHT)  (new Effect(L"NinjaHit", mX + 100 - RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
 		}
@@ -262,7 +260,7 @@ void Ninja::Skill1()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1)
 			{
-				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				Attack(4*mPhysicalAttackPower, 2, AttackType::Whirlwind);
 				(new Effect(L"NinjaHit", mX-50 + RAND->RandomInt(100), mY-50+RAND->RandomInt(100), EffectType::Normal))->Scaling(75, 75);
 				CAMERA->PanningOn(5);
 			}
@@ -281,7 +279,7 @@ void Ninja::Skill2()
 		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			UpdateAngle();
-			for (int i = 0; i < 6; i++) new Shuriken(this, mPhysicalAttackPower, mAngle, 500);
+			for (int i = 0; i < 6; i++) new Shuriken(this, 4*mPhysicalAttackPower, mAngle, 500);
 			CAMERA->PanningOn(5);
 		}
 	}
@@ -293,12 +291,12 @@ void Ninja::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		SetAnimation(M leftSwitching);
-		new Hwadun(this, mMagicalAttackPower, mAngle);
+		new Hwadun(this, 4*mMagicalAttackPower, mAngle);
 	}
 	if (RIGHT)
 	{
 		SetAnimation(M rightSwitching);
-		new Hwadun(this, mMagicalAttackPower, mAngle);
+		new Hwadun(this, 4*mMagicalAttackPower, mAngle);
 	}
 }
 

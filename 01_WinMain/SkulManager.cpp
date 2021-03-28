@@ -2,6 +2,8 @@
 #include "SkulManager.h"
 #include "Player.h"
 #include "Effect.h"
+#include "Condition.h"
+#include "Inventory.h"
 
 void SkulManager::Init()
 {
@@ -14,48 +16,74 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"Burning", Resources(L"/skul/burning.bmp"), 400, 300, 4, 3, true);
 	IMAGEMANAGER->LoadFromFile(L"Healing", Resources(L"/skul/healing.bmp"), 600, 200, 6, 2, true);
 
+	mInitSwitchingCoolTime = 8; //교대 쿨 8초
+	mSwitchingCoolTime = 0;
+
 	mCurrentSkul = nullptr;
 	mAlterSkul= nullptr;
 
-	mMaxHp =  mHp = mInitHp;
-	mGold = mInitGold;
+	mMaxHp =  mHp = 100;
+	mGold = 0;
+
+	mAtkSpeed = 0.1f;
+	mPhysicalAtk = 1;
+	mMagicalAtk = 1;
+
 	mInvincibility = false;
-	mBuffList = {};
+
+	mInventory = new Inventory();
 }
 
 
-void SkulManager::Update() {
-	if (INPUT->GetKeyDown(VK_SPACE))
-	{
-		ChangeSkul();
-		CAMERA->SetTarget(mCurrentSkul);
-	}
-
-	for (int i = 0; i < mBuffList.size(); i++)  //버프 관리
-	{
-		mBuffList[i].mDuration -= dTime;
-		if (mBuffList[i].mDuration <= 0)
-		{
-			mBuffList[i].mBuffFunc();
-			mBuffList.erase(mBuffList.begin() + i);
-			i--;
-		}
-	}
+void SkulManager::Update() 
+{
 
 	if (mHp <= 0) // 죽었을 때 할 일;
 	{
-
-
+		//GameEventManager::PushEvent() 대충 이런거 하나 하고
+		//Init(); //스컬 매니저 초기화
+		//SceneManager::GetInstance()->LoadScene(L"GameScene");
 	}
-
-	if (mAlterSkul) //교대 스컬 쿨타임 돌리기
+	else
 	{
-		mAlterSkul->Skill1();
-		mAlterSkul->Skill2();
+		if (INPUT->GetKeyDown(VK_TAB)) //인벤토리 활성
+		{
+			mInventory->SetIsToggle(!mInventory->GetIsToggle());
+		}
+
+		if (mInventory->GetIsToggle())
+		{
+			mInventory->Update(); // 인벤토리 활성 중일때 인벤토리 업데이트 == 커서가 위치한 곳에 따라 렌더 바꾸기
+		}
+
+		mSwitchingCoolTime -= dTime;
+		if (mSwitchingCoolTime < 0) mSwitchingCoolTime = 0;
+		if (INPUT->GetKeyDown(VK_SPACE) and mSwitchingCoolTime==0)
+		{
+			mSwitchingCoolTime = mInitSwitchingCoolTime;
+			ChangeSkul();
+			CAMERA->SetTarget(mCurrentSkul);
+		}
+
+		if (mAlterSkul) //교대 스컬 쿨타임 돌리기
+		{
+			mAlterSkul->Skill1();
+			mAlterSkul->Skill2();
+		}
 	}
+}
 
-	
+void SkulManager::Release()
+{
+	if (mCurrentSkul) { mCurrentSkul->Release(); SafeDelete(mCurrentSkul); } //이제 게임 씬에서 더이상 플레이어 스컬을 삭제하지 않으므로 얘가 해야 됨
+	if (mAlterSkul) { mAlterSkul->Release(); SafeDelete(mAlterSkul); }
+	mInventory->Release(); //인벤토리도 날려주자
+	SafeDelete(mInventory);
+}
 
+void SkulManager::Render(HDC hdc)
+{
+	mInventory->Render(hdc);
 }
 
 void SkulManager::ChangeSkul()
@@ -87,26 +115,8 @@ void SkulManager::PlusGold(int val)
 	(new Effect(L"GoldGet", mCurrentSkul->GetX(), mCurrentSkul->GetY()-50, EffectType::Normal))->Scaling(50, 50);
 }
 
-
-
-
-void SkulManager::RegBuff(function<void()> func, float duration)
-{
-	Buff tmp;
-	tmp.mBuffFunc = func;
-	tmp.mDuration = duration;
-	mBuffList.push_back(tmp);
-}
-
 Player* SkulManager::NewSkulGet(Player* skul)
 {
-	for (Buff elem : mBuffList) //새로운 스컬을 얻을 경우 모든 버프 초기화 ->버그방지
-	{
-		elem.mBuffFunc();
-	}
-	mBuffList.clear();
-
-
 	if (mAlterSkul) {
 		Player* temp = mCurrentSkul;
 		mCurrentSkul = skul;

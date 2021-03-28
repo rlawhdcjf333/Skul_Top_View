@@ -1,7 +1,9 @@
 #pragma once
 #include "Skuls.h"
 
+class Condition;
 class Player;
+class Inventory;
 class SkulManager {
 
 	Singleton(SkulManager)
@@ -9,42 +11,31 @@ private:
 	Player* mCurrentSkul;
 	Player* mAlterSkul;
 
-	const int mInitHp = 100;
 	int mHp;
 	int mMaxHp;
 	
-	const int mInitGold =0;
 	int mGold;
 
-	const float mInitAttackSpeed = 0.1f;
-	float mAttackSpeed;
-	const float mMaxAttackSpeed = 0.02f;
-
-	const int mMinPhysicalAtk = 1;
+	float mAtkSpeed;
 	int mPhysicalAtk;
-
-	const int mMinMagicalAtk = 1;
 	int mMagicalAtk;
-
-	const int mInitMovingSpeed = 200;
-	int mMovingSpeed;
 
 	bool mInvincibility;
 
-	struct Buff
-	{
-		function <void()> mBuffFunc; //버프 끝나고 실행될 함수
-		float mDuration;
-	};
+	float mSwitchingCoolTime;
+	float mInitSwitchingCoolTime;
 
-	vector <Buff> mBuffList;
+	Inventory* mInventory;
 
 public:
 	void Init();
 	void Damage(int damage) { if(!mInvincibility) mHp -= damage; }
 	void Update();
-	void ChangeSkul();
+	void Release();
+	void Render(HDC hdc);
 	
+	void ChangeSkul();
+
 	void PlusHp(int val); 
 	void MinusHp(int val) { mHp -= val; }
 	int GetHp() { return mHp; }
@@ -63,5 +54,19 @@ public:
 	void Invincibilize() { mInvincibility = true; }
 	void Disinvincibilize() { mInvincibility = false; }
 
+	float GetAtkSpeed() { return mAtkSpeed; }
+	void SetAtkSpeed(float val) { mAtkSpeed = val; }
+
+	int GetPhysicalAtk() { return mPhysicalAtk; }
+	void SetPhysicalAtk(int val) { mPhysicalAtk = val; }
+
+	int GetMagicalAtk() { return mMagicalAtk; }
+	void SetMagicalAtk(int val) { mMagicalAtk = val; }
+
+	Inventory* GetInventory() { return mInventory; }
+
 };
 #define SKUL SkulManager::GetInstance()
+#define mAttackSpeed SkulManager::GetInstance()->GetAtkSpeed()
+#define mPhysicalAttackPower SkulManager::GetInstance()->GetPhysicalAtk()
+#define mMagicalAttackPower SkulManager::GetInstance()->GetMagicalAtk()

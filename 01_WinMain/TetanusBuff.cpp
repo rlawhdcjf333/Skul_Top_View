@@ -51,7 +51,7 @@ void TetanusBuff::Update()
 			Enemy* downcast = (Enemy*)elem;
 			if (downcast->GetHitTime() == 0.6f)
 			{
-				new Bleeding(elem, SKUL->GetCurrentSkul()->GetMagicalAttackPower(), 3);
+				new Bleeding(elem, mMagicalAttackPower, 3);
 			}
 		}
 	}

@@ -16,6 +16,8 @@ class Hunter : public Player
 		rightDash,
 		leftDash,
 
+		rightAttackCharging,
+		leftAttackCharging,
 		rightAttack1,
 		leftAttack1,
 
@@ -45,6 +47,7 @@ public:
 	void BasicAttack();
 	void Skill1(); // ¸ÖÆ¼¼¦
 	void Skill2(); // ÇÇ¾î½º ¼¦
+	void SwitchAttack();
 
 	void SkulSwitch(int indexX, int indexY) override;
 	void SkulReset() override;

@@ -11,6 +11,7 @@ protected:
 	int mIndexX;
 	int mIndexY;
 	int mDamage=0;
+	bool mIsTrashed;
 
 
 	bool mIsActive;		//활성화 상태
@@ -51,5 +52,6 @@ public:
 	inline int GetDamage()const { return mDamage; }
 
 	void SetObjectOnTile(int indexX, int indexY);
+	virtual bool const GetIsTrashed() {return mIsTrashed;}
 };
 

@@ -83,8 +83,6 @@ void GrimReaper::Init()
 	mAnimationList[M leftSkill2] = new Animation(0, 15, 11, 15, false, false, 0.2f, []() {Obj->SetTimeStop(false);});
 
 
-	mMagicalAttackPower = 3;
-	
 	mSkill1CoolTime = 0;
 	mSkill2CoolTime = 0;
 }
@@ -111,9 +109,9 @@ void GrimReaper::Update()
 		Enemy* downcast = (Enemy*)elem;
 		if (downcast->GetIsDestroy())
 		{
-			new GrimSoul(downcast, mMagicalAttackPower);
-			new GrimSoul(downcast, mMagicalAttackPower);
-			new GrimSoul(downcast, mMagicalAttackPower);
+			new GrimSoul(downcast, 4*mMagicalAttackPower);
+			new GrimSoul(downcast, 4*mMagicalAttackPower);
+			new GrimSoul(downcast, 4*mMagicalAttackPower);
 		}
 	}
 
@@ -283,7 +281,7 @@ void GrimReaper::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			Attack(mMagicalAttackPower, 2, AttackType::Side);
+			Attack(4*mMagicalAttackPower, 2, AttackType::Side);
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
@@ -292,12 +290,12 @@ void GrimReaper::BasicAttack()
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() < 3)
 			{
-				Attack(mMagicalAttackPower, 1, AttackType::Whirlwind);
+				Attack(4*mMagicalAttackPower, 1, AttackType::Whirlwind);
 			}
 
 			if (mCurrentAnimation->GetNowFrameX() == 3)
 			{
-				Attack(mMagicalAttackPower, 2, AttackType::Side);
+				Attack(4*mMagicalAttackPower, 2, AttackType::Side);
 			}
 
 		}
@@ -318,7 +316,7 @@ void GrimReaper::Skill1()
 			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
 			case 0:
-				Attack(mMagicalAttackPower, 4, AttackType::Side);
+				Attack(5*mMagicalAttackPower, 4, AttackType::Side);
 				Dash(5);
 				break;
 			case 1:
@@ -362,7 +360,7 @@ void GrimReaper::Skill2()
 			}
 			if (mCurrentAnimation->GetCurrentFrameIndex() == 11)
 			{
-				Attack(10 * mMagicalAttackPower, 15, AttackType::Whirlwind);
+				Attack(30 * mMagicalAttackPower, 15, AttackType::Whirlwind);
 				Obj->SetTimeStop(false);
 				CAMERA->PanningOn(10);
 			}
@@ -384,7 +382,7 @@ void GrimReaper::SwitchAttack()
 				SKUL->Invincibilize();
 				break;
 			case 3:
-				Attack(mMagicalAttackPower, 3, AttackType::Whirlwind);
+				Attack(5*mMagicalAttackPower, 3, AttackType::Whirlwind);
 				SKUL->Disinvincibilize();
 
 			default: 
