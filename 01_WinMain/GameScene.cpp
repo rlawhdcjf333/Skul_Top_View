@@ -46,7 +46,10 @@ void GameScene::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	
+	if (INPUT->GetKeyDown('F'))
+	{
+		SceneManager::GetInstance()->LoadScene(L"GameScene2");
+	}
 	
 }
 

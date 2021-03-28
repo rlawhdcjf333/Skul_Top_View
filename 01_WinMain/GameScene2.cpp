@@ -8,21 +8,19 @@
 void GameScene2::Init()
 {
 	MapLoad();
-	GameObject* little = new LittleBone(54, 52, 30, 30);
-	GameObject* alterSkul = new GrimReaper(30, 30, 30, 30);
-	alterSkul->SetIsActive(false);
-	Obj->AddObject(ObjectLayer::Player, little);
-	Obj->AddObject(ObjectLayer::Player, alterSkul);
-	SKUL->SetCurrentSkul((Player*)alterSkul);
-	SKUL->NewSkulGet((Player*)little);
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45, 45));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 45));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(47, 45));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(40, 38));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
 	Obj->Init();
+	
+	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
+	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	CAMERA->ChangeMode(Camera::Mode::Follow);
-	CAMERA->SetTarget(Obj->FindObject("player"));
+	SKUL->GetCurrentSkul()->SetObjectOnTile(54, 53);
+
+	//CAMERA->ChangeMode(Camera::Mode::Follow);
+	//CAMERA->SetTarget(Obj->FindObject("player"));
 
 	IMAGEMANAGER->LoadFromFile(L"back", Resources(L"back.bmp"), 1280, 740, false);
 	mBack = new Image;

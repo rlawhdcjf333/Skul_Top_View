@@ -3,6 +3,7 @@
 
 #include "Image.h"
 #include "GameScene.h"
+#include "GameScene2.h"
 
 /*
 Initialize : 초기화
@@ -64,6 +65,7 @@ void MainGame::Init()
 
 	//SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
+	SceneManager::GetInstance()->AddScene(L"GameScene2", new GameScene2);
 	SceneManager::GetInstance()->LoadScene(L"GameScene");
 
 }

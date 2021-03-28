@@ -35,6 +35,8 @@ void ObjectManager::Release()
 	{
 		for (int i = 0; i < iter->second.size(); ++i)
 		{
+			if (iter->first == ObjectLayer::Player)
+				continue;
 			iter->second[i]->Release();
 			SafeDelete(iter->second[i]);
 		}

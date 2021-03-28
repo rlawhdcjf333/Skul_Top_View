@@ -11,24 +11,29 @@ Door::Door(int x, int y)
 void Door::Init()
 {
 	IMAGEMANAGER->LoadFromFile(L"Door", Resources(L"Door.bmp"), 800, 279, 5,1, true);
-	mImage = new Image;
 	mImage = IMAGEMANAGER->FindImage(L"Door");
-	mCurrentAnm = new Animation();
-	mCurrentAnm->InitFrameByStartEnd(0, 0, 4, 0, false);
-	mCurrentAnm->SetFrameUpdateTime(0.1f);
+	mAnm = new Animation();
+	mAnm->InitFrameByStartEnd(0, 0, 4, 0, false);
+	mAnm->SetIsLoop(true);
+	mAnm->SetFrameUpdateTime(0.3f);
+	mAnm->Play();
+	mSizeX = mImage->GetFrameWidth();
+	mSizeY = mImage->GetFrameHeight();
+
+	mRect = RectMake(mX, mY, mSizeX, mSizeY);
 }
 
 void Door::Release()
 {
-	SafeDelete(mImage);
+	SafeDelete(mAnm);
 }
 
 void Door::Update()
 {
-	//mCurrentAnm->Update();
+	mAnm->Update();
 }
 
 void Door::Render(HDC hdc)
 {
-	CAMERA->FrameRender(hdc, mImage, mX, mY, mCurrentAnm->GetNowFrameX(), mCurrentAnm->GetNowFrameY());
+	CAMERA->FrameRender(hdc, mImage, mX, mY, mAnm->GetNowFrameX(), mAnm->GetNowFrameY());
 }

@@ -412,14 +412,17 @@ bool Stage1_SwordMan::WalkCheck() //ºó Ä­ Ã¼Å© ÈÄ ÀÌµ¿
 		}
 	}
 	moveTileList.clear();
-	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
-		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
-		if (PathFinder::GetInstance()->FindPath(TILE,mPath,mIndexX,mIndexY,mTargetTile->GetIndexX(),mTargetTile->GetIndexY())) {
-			return true;
-		}
-		else {
-			mTargetTile = nullptr;
-			return false;
+	if (!(mTargetTile == nullptr))
+	{
+		if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
+			mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
+			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
+				return true;
+			}
+			else {
+				mTargetTile = nullptr;
+				return false;
+			}
 		}
 	}
 	mTargetTile = nullptr;
