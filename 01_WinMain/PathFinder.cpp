@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "PathFinder.h"
-
+#include "GameObject.h"
 #include "Tile.h"
 #include <algorithm>	//reverse함수 등등 정렬관련 함수들 다 이안에 있음
 
@@ -46,7 +46,6 @@ bool PathFinder::FindPath(const vector<vector<class Tile*>>& tileList, vector<Ti
 	dummyList[startIndexY][startIndexX].CostTotal =
 		dummyList[startIndexY][startIndexX].CostToEnd;
 
-	//우선순위 큐로 수정하면 더 빨라짐
 	struct comp //costTotal이 가장 작은 친구를 가장 앞에 정렬하는 비교연산조건... 이거 왜 람다는 안들어가는 걸까요
 	{
 		bool operator() (Tile* a, Tile* b)
@@ -128,41 +127,15 @@ bool PathFinder::FindPath(const vector<vector<class Tile*>>& tileList, vector<Ti
 		// {{ openList에서 가장 적은 비용의 타일 검사 ~
 		Tile* tileMin = nullptr;
 
-		if (openList.top() == currentTile)
+		if (!openList.empty() and openList.top() == currentTile)
 		{
 			openList.pop();
 		}
-		//if (tileMin == nullptr)
-		//{
-		//	tileMin = openList.top();
-		//}
-		if(!openList.empty()) //front() empty vector 이거 보기 싫으면 막자. 안하면 틈틈이 invalid comparator 이거도 볼 수 있다.
+		
+		if(!openList.empty()) 
 		tileMin = openList.top();
 
-		//for (int i = 0; i < openList.size(); ++i)
-		//{
-		//	if (openList[i] == currentTile)
-		//	{
-		//		openList.erase(openList.begin() + i);
-		//		--i;
-		//		continue;
-		//	}
-		//
-		//	if (tileMin == nullptr)
-		//	{
-		//		tileMin = openList[i];
-		//		continue;
-		//	}
-		//	if (dummyList[openList[i]->GetIndexY()][openList[i]->GetIndexX()].CostTotal <
-		//		dummyList[tileMin->GetIndexY()][tileMin->GetIndexX()].CostToEnd)
-		//	{
-		//		tileMin = openList[i];
-		//	}
-		//
-		//}
-
-
-		
+				
 		//여기까지 왔다는 것은 가장 적은 비용의 타일 선정되었다는 것
 		if (tileMin != nullptr)
 		{

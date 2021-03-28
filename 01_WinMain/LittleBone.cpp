@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "LittleBone.h"
 #include "TileSelect.h"
-#include "Bullet.h"
+#include "LittleHead.h"
 #include "Animation.h"
+#include "Effect.h"
+
 
 LittleBone::LittleBone(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -10,8 +12,7 @@ LittleBone::LittleBone(int indexX, int indexY, float sizeX, float sizeY)
 	IMAGEMANAGER->LoadFromFile(L"LittleBone", Resources(L"/skul/skul_little_bone.bmp"), 3780, 2400, 27, 24, true);
 	mImage = IMAGEMANAGER->FindImage(L"LittleBone");
 
-	IMAGEMANAGER->LoadFromFile(L"HeadImage", Resources(L"/skul/head.bmp"), 15, 13, true);
-	mHeadImage = IMAGEMANAGER->FindImage(L"HeadImage");
+	IMAGEMANAGER->LoadFromFile(L"Spark", Resources(L"/skul/spark.bmp"),700,100,7,1, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -132,6 +133,14 @@ void LittleBone::Update()
 
 	if (INPUT->GetKey('X')) //기본공격
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay()
+			and !mAnimationList[M rightAttack1Headless]->GetIsPlay() and !mAnimationList[M rightAttack2Headless]->GetIsPlay()
+			and !mAnimationList[M leftAttack1Headless]->GetIsPlay() and !mAnimationList[M leftAttack2Headless]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
+
 		if (mIsHead)
 		{
 			if (RIGHT) { SetAnimation(M rightAttack1);}
@@ -148,7 +157,10 @@ void LittleBone::Update()
 	if (INPUT->GetKeyDown('A') and mIsHead and mSkill1CoolTime==0) //머가리 던지기
 	{
 		mCurrentAnimation->Stop();
-		mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
+		mIsHead = !mIsHead;
+		UpdateAngle();
+		new LittleHead(this, mPhysicalAttackPower, mAngle, 500);
+
 		if (RIGHT) SetAnimation(M rightSkill1);
 		if (LEFT) SetAnimation(M leftSkill1);
 	}
@@ -156,7 +168,7 @@ void LittleBone::Update()
 
 	if (INPUT->GetKeyDown('S') and !mIsHead) //머가리 줍기
 	{
-		GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "skulHead");
+		GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "LittleHead");
 		if (head == nullptr) {mIsHead = !mIsHead; return;}
 
 		mX = head->GetX();
@@ -165,6 +177,7 @@ void LittleBone::Update()
 		mIndexY = TileList::GetInstance()->CalcIndexY(mX, mY);
 		mPath.clear(); mPathIndex = 1;
 		head->SetIsDestroy(true);
+		new Effect(L"Spark", mX, mY, EffectType::Normal);
 		mIsHead = !mIsHead;
 	}
 
@@ -176,7 +189,7 @@ void LittleBone::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -188,7 +201,7 @@ void LittleBone::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -196,21 +209,18 @@ void LittleBone::Update()
 		}
 	}
 
-	if (mCurrentAnimation != mAnimationList[M respawning])
+	if (mIsDash)
 	{
-		if (mIsDash)
+		Move(5 * mInitSpeed);
+	}
+	else
+	{
+		if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
 		{
-			Move(5 * mInitSpeed);
+			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
+				mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
 		}
-		else
-		{
-			if (Input::GetInstance()->GetKey(VK_RBUTTON) and mTileSelect)
-			{
-				if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY,
-					mTileSelect->GetIndexX(), mTileSelect->GetIndexY())) mPathIndex = 1;
-			}
-			Move(mSpeed);
-		}
+		Move(mSpeed);
 	}
 	mCurrentAnimation->Update();
 
@@ -276,14 +286,6 @@ void LittleBone::Skill1()
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
 		mSkill1CoolTime = 4;
-
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
-		{
-			mIsHead = !mIsHead;
-			UpdateAngle();
-			new Bullet(mHeadImage, "skulHead", this, 2 * mPhysicalAttackPower, 500, 500, mAngle, BulletType::SkulHead);
-
-		}
 	}
 }
 
@@ -294,7 +296,7 @@ void LittleBone::BasicAttack()
 		or mAnimationList[M rightAttack1Headless]->GetIsPlay() or mAnimationList[M leftAttack1Headless]->GetIsPlay()
 		or mAnimationList[M rightAttack2Headless]->GetIsPlay() or mAnimationList[M leftAttack2Headless]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 1)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime and mCurrentAnimation->GetNowFrameX() == 1)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
@@ -303,11 +305,15 @@ void LittleBone::BasicAttack()
 }
 void LittleBone::SkulSwitch(int indexX, int indexY)
 {
+	
 	SetAnimation(M switchAttack);// 일단 변경되서 들어오면 빙글빙글
 	Player::SkulSwitch(indexX, indexY);
 }
 void LittleBone::SkulReset() {
 	mCurrentAnimation->Stop();
+	GameObject* head = Obj->FindObject(ObjectLayer::Player_Bullet, "LittleHead");
+	if (head) head->SetIsDestroy(true);
+	mIsHead = true;
 }
 
 void LittleBone::SetAttackSpeed()

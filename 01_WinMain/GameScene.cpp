@@ -24,7 +24,6 @@ void GameScene::Init()
 	CAMERA->SetTarget(Obj->FindObject("player"));
 
 	IMAGEMANAGER->LoadFromFile(L"back", Resources(L"back.bmp"), 1280, 740, false);
-	mBack = new Image;
 	mBack = IMAGEMANAGER->FindImage(L"back");
 }
 
@@ -46,35 +45,15 @@ void GameScene::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+
+	
+	
 }
 
 void GameScene::Render(HDC hdc)
 {
 	mBack->Render(hdc, 0, 0);
-	//대충 최적화
-	//for (int y = 0; y <mTileList.size(); y++)
-	//{
-	//	for (int x = 0; x < mTileList.size(); x++)
-	//	{
-	//		if (x + y > 39 and x + y<110 and y - x>-42 and y - x < 42)
-	//		{
-	//			mTileList[y][x]->Render(hdc);
-	//		}
-	//		else if (y - x <= -42 or y+x>=110)
-	//		{
-	//			break;
-	//		}
-	//		else if ( y + x <= 39)
-	//		{
-	//			x = 39 - y;
-	//		}
-	//		else if (y - x >= 42)
-	//		{
-	//			x = y - 42;
-	//		}
-	//	}
-	//}
-
+	
 	if (x >= 1 and x < 75 and y >= 1 and y < 75)
 	{
 		if (mTileList[y - 1][x - 1])

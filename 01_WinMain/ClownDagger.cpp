@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ClownDagger.h"
+#include "Effect.h"
 
 ClownDagger::ClownDagger(GameObject* obj, int damage, float angle, float range, bool isExplosive)
 {
@@ -12,6 +13,8 @@ ClownDagger::ClownDagger(GameObject* obj, int damage, float angle, float range, 
 
 	IMAGEMANAGER->LoadFromFile(L"ClownDagger", Resources(L"skul/dagger.bmp"), 11, 8, 1,2, true);
 	mImage = IMAGEMANAGER->FindImage(L"ClownDagger");
+
+	IMAGEMANAGER->LoadFromFile(L"DaggerExplosion", Resources(L"skul/daggerExplosion.bmp"), 4600, 200, 23, 1, true);
 
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();
@@ -59,7 +62,7 @@ void ClownDagger::Update()
 
 	if (mRange <= 0)
 	{
-		if (mType == BulletType::Flask) Explosion(mDamage);
+		if (mType == BulletType::Flask)	Explosion(mDamage, 2, [this]() {new Effect(L"DaggerExplosion", mX, mY, EffectType::Normal);});
 		mIsDestroy = true;
 	}
 }
@@ -68,4 +71,13 @@ void ClownDagger::Render(HDC hdc)
 {
 	if(RIGHT) CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, 0,0,22,8);
 	if(LEFT) CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top, 0,1,22,8);
+}
+
+void ClownDagger::Damage(int val)
+{
+	if (mType == BulletType::Flask)
+	{
+		Explosion(mDamage, 2, [this]() {new Effect(L"DaggerExplosion", mX, mY, EffectType::Normal);});
+	}
+	mIsDestroy = true;
 }

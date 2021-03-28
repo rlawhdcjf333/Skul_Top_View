@@ -3,12 +3,16 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Effect.h"
+#include "Enemy.h"
 
 Warrior::Warrior(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
 {
 	IMAGEMANAGER->LoadFromFile(L"Warrior", Resources(L"/skul/skul_warrior.bmp"), 1650, 2400, 11, 16, true);
 	mImage = IMAGEMANAGER->FindImage(L"Warrior");
+
+	IMAGEMANAGER->LoadFromFile(L"WarriorHit", Resources(L"/skul/warriorHit.bmp"), 500, 300, 5, 3, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -80,7 +84,7 @@ void Warrior::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -92,7 +96,7 @@ void Warrior::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -116,6 +120,11 @@ void Warrior::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -207,12 +216,25 @@ void Warrior::SetAnimation(int listNum)
 
 void Warrior::BasicAttack()
 {
-	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay()
-		or mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
+	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
-			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 4 )
+			{
+				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			}
+		}
+	}	
+	else if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
+	{
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
+		{
+			if (mCurrentAnimation->GetCurrentFrameIndex() == 4)
+			{
+				Attack(mPhysicalAttackPower, 2, AttackType::Side);
+				CAMERA->PanningOn(3);
+			}
 		}
 	}
 }
@@ -224,14 +246,34 @@ void Warrior::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		mSkill1CoolTime = 4;
+		mSkill1CoolTime = 5;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 4)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime)
 		{
-			//넉백 함수 필요함!!
-			Attack(mPhysicalAttackPower, 3, AttackType::Side);
-			Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
-			CAMERA->PanningOn(5);
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{ //3타 다단히트 == 멀리 날릴 수 있다.
+			case 3:
+				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+			case 4:
+				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+			case 5:
+				Attack(mPhysicalAttackPower, 3, AttackType::Side);
+				CAMERA->PanningOn(5);
+
+			}
+			
+			if (mCurrentAnimation->GetCurrentFrameIndex() >= 4)
+			{
+				int i = mCurrentAnimation->GetCurrentFrameIndex() - 4;
+				if (LEFT)
+				{
+					new Effect(L"WarriorHit", mX - 100 + 50*i, mY - 15*i, EffectType::Normal);
+				}
+				else if (RIGHT)
+				{
+					new Effect(L"WarriorHit", mX + 100 - 50 * i, mY - 15 * i, EffectType::Normal);
+				}
+			}
 		}
 	}
 }
@@ -245,19 +287,58 @@ void Warrior::Skill2()
 	{
 		mSkill2CoolTime = 5;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
-			if (mAnimationList[M rightSkill2]->GetNowFrameX() == 1 or mAnimationList[M leftSkill2]->GetNowFrameX() == 7)
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
 			{
-				Attack(1, 3, AttackType::Stab);
-			}
 
-			if (mCurrentAnimation->GetNowFrameX() == 4)
-			{
-				//넉백 함수 필요함!!
+			case 1:
+				Dash(1); //전진하며 찌르기
+				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
+				new Effect(L"WarriorHit", mX , mY, EffectType::Normal);
+				for (auto elem : Obj->GetObjectList(ObjectLayer::Enemy))
+				{
+					Enemy* downcast = (Enemy*)elem;
+					if (downcast->GetHitTime() == 0.6f)
+					{
+						mSkill2Targets.push_back(elem);
+					}
+				}
+				break;
+
+			case 4:
+				mAngle += PI;
+				if (mAngle > PI2) mAngle -= PI2;
+				for (GameObject* elem : mSkill2Targets) //찔린 친구들 뒤로 넘기기
+				{
+					if (TILE[TILELIST->CalcIndexY(mX + cosf(mAngle) * TileSizeX, mY - sinf(mAngle) * TileSizeY)]
+						[TILELIST->CalcIndexX(mX + cosf(mAngle) * TileSizeX, mY - sinf(mAngle) * TileSizeY)]->GetType() != TileType::Block)
+					{
+						elem->SetX(mX + cosf(mAngle) * TileSizeX);
+						elem->SetY(mY - sinf(mAngle) * TileSizeY);
+						elem->SetIndexX(TILELIST->CalcIndexX(elem->GetX(), elem->GetY()));
+						elem->SetIndexY(TILELIST->CalcIndexY(elem->GetX(), elem->GetY()));
+						TILE[elem->GetIndexY()][elem->GetIndexX()]->SetObject(elem);
+						TILE[elem->GetIndexY()][elem->GetIndexX()]->Update();
+					}
+					else
+					{
+						elem->SetObjectOnTile(mIndexX, mIndexY);
+					}
+				}
 				Attack(mPhysicalAttackPower, 3, AttackType::Side);
-				Attack(mPhysicalAttackPower, 1, AttackType::Side, true);
+				mSkill2Targets.clear();
+				CAMERA->PanningOn(5);
+				break;
+
+			case 5:
+			case 6:
+			case 7:
+				new Effect(L"WarriorHit", mX - 100 + RAND->RandomInt(200), mY - 100 + RAND->RandomInt(200), EffectType::Normal);
+				new Effect(L"WarriorHit", mX - 100 + RAND->RandomInt(200), mY - 100 + RAND->RandomInt(200), EffectType::Normal);
+				break;
 			}
+		
 		}
 	}
 }
@@ -268,13 +349,13 @@ void Warrior::SkulSwitch(int indexX, int indexY)
 	if (LEFT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M leftDash);
 	}
 	if (RIGHT)
 	{
 		Dash(5);
-		Attack(1, 5, AttackType::Stab);
+		Attack(mPhysicalAttackPower, 5, AttackType::Stab);
 		SetAnimation(M rightDash);
 	}
 }

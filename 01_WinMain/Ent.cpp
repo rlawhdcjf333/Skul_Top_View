@@ -98,8 +98,8 @@ void Ent::Update()
 	{
 		if (mDashCoolTime == 0)
 		{
-			Dash(5);
-			Attack(1, 5, AttackType::Stab);
+			Dash(3);
+			Attack(1, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCoolTime = mInitDashCoolTime;
@@ -124,6 +124,11 @@ void Ent::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -241,16 +246,34 @@ void Ent::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 3 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
-			Attack(mPhysicalAttackPower, 1, AttackType::Side);
+
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 3:
+				Attack(mPhysicalAttackPower, 1, AttackType::Side);
+				break;
+			case 4:
+				if (RAND->Probablity(30)) Attack(mPhysicalAttackPower, 1, AttackType::Side); //30% 확률 추가 공격 패시브 로직
+				break;
+			}
 		}
 	}
+	
 	if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			Attack(mPhysicalAttackPower, 1, AttackType::Side);
+			switch (mCurrentAnimation->GetCurrentFrameIndex())
+			{
+			case 2:
+				Attack(mPhysicalAttackPower, 1, AttackType::Side);
+				break;
+			case 3:
+				if (RAND->Probablity(30)) Attack(mPhysicalAttackPower, 1, AttackType::Side); //30% 확률 추가 공격 패시브 로직
+				break;
+			}
 		}
 	}
 
@@ -265,24 +288,27 @@ void Ent::Skill1()
 	{
 		mSkill1CoolTime = 11;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.3f-dTime)
 		{
 			switch (mCurrentAnimation->GetNowFrameX())
 			{
 			case 0:
-				Dash(2);
-				CAMERA->PanningOn(5);
+				Dash(1);
 				break;
 			case 1:
 				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
-				Dash(2);
+				CAMERA->PanningOn(5);
+				Dash(1);
 				break;
 			case 2:
 				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
-				Dash(2);
+				CAMERA->PanningOn(5);
+				Dash(1);
 				break;
 			case 3:
 				Attack(mPhysicalAttackPower, 1, AttackType::Whirlwind);
+				CAMERA->PanningOn(5);
+				Dash(1);
 				break;
 			}
 		}
@@ -348,9 +374,9 @@ void Ent::SwitchAttack()
 			mCurrentAnimation->SetFrameUpdateTime(0.1f);
 		}
 
-		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 1 and mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime)
 		{
-			Attack(1, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
+			Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind); SKUL->Disinvincibilize();
 		}
 	}
 	

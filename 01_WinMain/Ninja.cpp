@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Hwadun.h"
 #include "Shuriken.h"
+#include "Effect.h"
 
 Ninja::Ninja(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -87,7 +88,7 @@ void Ninja::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -98,15 +99,15 @@ void Ninja::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount=2;
 			}
-			else if (mDashCount == 2) //3연 대쉬 가능
+			else if (mDashCount == 2) //3연 대쉬 가능, 닌자 패시브
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -130,6 +131,11 @@ void Ninja::Update()
 
 	if (INPUT->GetKey('X'))
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -227,16 +233,18 @@ void Ninja::BasicAttack()
 {
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M leftAttack1]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameIndex() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameIndex() == 2 and mCurrentAnimation->GetCurrentFrameTime() >mAttackSpeed/2- dTime)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side);
 		}
 	}
 	if (mAnimationList[M rightAttack2]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed - dTime)
 		{
 			Attack(mPhysicalAttackPower, 2, AttackType::Side);
+			if(LEFT) (new Effect(L"NinjaHit", mX - 100 + RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
+			else if(RIGHT)  (new Effect(L"NinjaHit", mX + 100 - RAND->RandomInt(100), mY - 50 + RAND->RandomInt(100), EffectType::Normal))->Scaling(50, 50);
 		}
 
 	}
@@ -250,11 +258,12 @@ void Ninja::Skill1()
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
 		mSkill1CoolTime = 8;
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			if (mCurrentAnimation->GetCurrentFrameIndex() % 2 == 1)
 			{
 				Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+				(new Effect(L"NinjaHit", mX-50 + RAND->RandomInt(100), mY-50+RAND->RandomInt(100), EffectType::Normal))->Scaling(75, 75);
 				CAMERA->PanningOn(5);
 			}
 		}
@@ -269,7 +278,7 @@ void Ninja::Skill2()
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
 		mSkill2CoolTime = 7;
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f - dTime)
 		{
 			UpdateAngle();
 			for (int i = 0; i < 6; i++) new Shuriken(this, mPhysicalAttackPower, mAngle, 500);
@@ -300,8 +309,8 @@ void Ninja::SkulReset()
 
 void Ninja::SetAttackSpeed()
 {
-	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M rightAttack1]->SetFrameUpdateTime(mAttackSpeed/2);
 	mAnimationList[M rightAttack2]->SetFrameUpdateTime(mAttackSpeed);
-	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed);
+	mAnimationList[M leftAttack1]->SetFrameUpdateTime(mAttackSpeed/2);
 	mAnimationList[M leftAttack2]->SetFrameUpdateTime(mAttackSpeed);
 }

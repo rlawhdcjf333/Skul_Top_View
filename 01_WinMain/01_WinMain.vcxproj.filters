@@ -106,8 +106,8 @@
     <Filter Include="FrameWork\Command\Figure">
       <UniqueIdentifier>{c81da49d-f8e8-47d3-831a-e79e4d881ce0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\Door">
-      <UniqueIdentifier>{afa228a4-4c76-485a-9f2f-2b184c3d93dd}</UniqueIdentifier>
+    <Filter Include="MainGame\Condition">
+      <UniqueIdentifier>{cd657cf6-cc01-4d4d-ac3a-6fdf0f796f6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -309,11 +309,29 @@
     <ClInclude Include="ClownDagger.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene2.h">
-      <Filter>MainGame\Scene</Filter>
+    <ClInclude Include="AlchPassive.h">
+      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>MainGame\Door</Filter>
+    <ClInclude Include="Meteor.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleHead.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GrimSoul.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>MainGame\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="Bleeding.h">
+      <Filter>MainGame\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="Burning.h">
+      <Filter>MainGame\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="TetanusBuff.h">
+      <Filter>MainGame\Condition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -500,11 +518,29 @@
     <ClCompile Include="ClownDagger.cpp">
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene2.cpp">
-      <Filter>MainGame\Scene</Filter>
+    <ClCompile Include="AlchPassive.cpp">
+      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>MainGame\Door</Filter>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleHead.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimSoul.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Condition.cpp">
+      <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="Bleeding.cpp">
+      <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="Burning.cpp">
+      <Filter>MainGame\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="TetanusBuff.cpp">
+      <Filter>MainGame\Condition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

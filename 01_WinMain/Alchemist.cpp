@@ -2,7 +2,9 @@
 #include "Alchemist.h"
 #include "TileSelect.h"
 #include "Bullet.h"
+#include "AlchPassive.h"
 #include "Animation.h"
+#include "Effect.h"
 
 Alchemist::Alchemist(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -10,14 +12,15 @@ Alchemist::Alchemist(int indexX, int indexY, float sizeX, float sizeY)
 	IMAGEMANAGER->LoadFromFile(L"Alchemist", Resources(L"/skul/skul_alchemist.bmp"), 800, 1400, 8, 14, true);
 	mImage = IMAGEMANAGER->FindImage(L"Alchemist");
 
-	IMAGEMANAGER->LoadFromFile(L"Projectile", Resources(L"/skul/projectile.bmp"), 30,30, true);
+	IMAGEMANAGER->LoadFromFile(L"Projectile", Resources(L"/skul/projectile.bmp"), 21, 20, true);
 	mProjectile = IMAGEMANAGER->FindImage(L"Projectile");
 
-	IMAGEMANAGER->LoadFromFile(L"DiseaseFlask", Resources(L"/skul/diseaseFlask.bmp"), 15, 23, true);
-	mFlask1 = IMAGEMANAGER->FindImage(L"DiseaseFlask");
+	IMAGEMANAGER->LoadFromFile(L"Flask", Resources(L"/skul/flask.bmp"), 18, 26, true);
+	mFlask = IMAGEMANAGER->FindImage(L"Flask");
 
-	IMAGEMANAGER->LoadFromFile(L"FireFlask", Resources(L"/skul/fireFlask.bmp"), 15, 23, true);
-	mFlask2 = IMAGEMANAGER->FindImage(L"FireFlask");
+	IMAGEMANAGER->LoadFromFile(L"GolemR", Resources(L"/skul/golemRight.bmp"), 1200, 200, 6, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"GolemL", Resources(L"/skul/golemLeft.bmp"), 1200, 200, 6,1, true);
+	IMAGEMANAGER->LoadFromFile(L"GolemFall", Resources(L"/skul/golemFall.bmp"), 3600, 200, 18, 1, true);
 
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
@@ -35,10 +38,10 @@ void Alchemist::Init()
 	mAnimationList[M rightDash] = new Animation(0, 4, 6, 4, false, false, 0.05f);
 	mAnimationList[M leftDash] = new Animation(0, 5, 6, 5, true, false, 0.05f);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 6, 7, 6, false, false, 0.03f);
-	mAnimationList[M leftSkill1] = new Animation(0, 7, 7, 7, true, false, 0.03f);
-	mAnimationList[M rightSkill2] = new Animation(0, 10, 7, 10, false, false, 0.03f);
-	mAnimationList[M leftSkill2] = new Animation(0, 11, 7, 11, true, false, 0.03f);
+	mAnimationList[M rightSkill1] = new Animation(0, 6, 7, 6, false, false, 0.1f);
+	mAnimationList[M leftSkill1] = new Animation(0, 7, 7, 7, true, false, 0.1f);
+	mAnimationList[M rightSkill2] = new Animation(0, 10, 7, 10, false, false, 0.1f);
+	mAnimationList[M leftSkill2] = new Animation(0, 11, 7, 11, true, false, 0.1f);
 
 	mSkill1CoolTime = 0;
 	mSkill1Count = 8;
@@ -46,7 +49,7 @@ void Alchemist::Init()
 	mSkill2Count = 5;
 
 	mAttackCoolTime = 0;
-
+	mGolemCoolTime = 0;
 }
 
 void Alchemist::Update()
@@ -78,6 +81,25 @@ void Alchemist::Update()
 		mAttackTarget = nullptr;
 	}
 
+	mGolemCoolTime -= dTime; //10초에 한번 골렘 소환 패시브
+	if (mGolemCoolTime < 0)
+	{
+		mGolemCoolTime = 10;
+		if (RIGHT) {
+			Effect* tmp = new Effect(L"GolemR", mX - 100, mY, EffectType::Normal);
+			tmp->SetUpdateTime(0.2f);
+			tmp->SetNextEffect(L"GolemFall", mX-100, mY);
+			new AlchPassive(this, 2*mMagicalAttackPower, mAngle);
+		}
+		else if (LEFT) {
+			Effect* tmp = new Effect(L"GolemL", mX + 100, mY, EffectType::Normal);
+			tmp->SetUpdateTime(0.2f);
+			tmp->SetNextEffect(L"GolemFall", mX + 100, mY);;
+			new AlchPassive(this, 2 * mMagicalAttackPower, mAngle);
+		}
+	}
+
+
 
 	mSpeed = mInitSpeed;
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
@@ -95,7 +117,7 @@ void Alchemist::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -107,7 +129,7 @@ void Alchemist::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -237,13 +259,13 @@ void Alchemist::Skill1()
 {
 	mSkill1CoolTime -= dTime;
 	if (mSkill1CoolTime < 0) {mSkill1Count++; mSkill1CoolTime = 4;}
-	if (mSkill1Count > 8) { mSkill1Count = 8; mSkill1CoolTime = 4;}
+	if (mSkill1Count > 8) { mSkill1Count = 8;}
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetNowFrameX() == 3)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime and mCurrentAnimation->GetNowFrameX() == 3)
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-			new Bullet(mFlask1, "DiseaseFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
+			new Bullet(mFlask, "DiseaseFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
+			mSkill1Count--;
 			CAMERA->PanningOn(5);
 
 		}
@@ -253,16 +275,16 @@ void Alchemist::Skill2()
 {
 	mSkill2CoolTime -= dTime;
 	if (mSkill2CoolTime < 0) { mSkill2Count++; mSkill2CoolTime = 13; }
-	if (mSkill2Count > 5) { mSkill2Count = 5; mSkill2CoolTime = 13; }
+	if (mSkill2Count > 5) { mSkill2Count = 5;}
 
 	if (mAnimationList[M rightSkill2]->GetIsPlay() or mAnimationList[M leftSkill2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() >0.1f- dTime)
 		{
 			if (mCurrentAnimation->GetNowFrameX() == 3)
 			{
-				mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
-				new Bullet(mFlask2, "FireFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
+				new Bullet(mFlask, "FireFlask", this, 5* mMagicalAttackPower, 600, 400, mAngle, BulletType::Flask);
+				mSkill2Count--;
 				CAMERA->PanningOn(5);
 			}
 		}
@@ -282,7 +304,7 @@ void Alchemist::SkulSwitch(int indexX, int indexY)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		new Bullet(Random::GetInstance()->RandomInt(50) > 25 ? mFlask1 : mFlask2, "Flask", this, mMagicalAttackPower, 300, 30, PI*i/2, BulletType::Flask);
+		new Bullet(mFlask, "DiseaseFlask", this, mMagicalAttackPower, 300, 30, PI*i/2, BulletType::Flask);
 	}
 }
 

@@ -75,6 +75,8 @@ public:
 		mMoveAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 	}
 
+	wstring GetKeyName() { return mImage->GetKeyName(); }
+
 	virtual void SkulSwitch(int indexX, int indexY);
 	virtual void SkulReset() {};
 

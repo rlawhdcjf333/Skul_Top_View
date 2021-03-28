@@ -11,7 +11,7 @@ ClownBox::ClownBox(GameObject* obj, int damage, float angle)
 	IMAGEMANAGER->LoadFromFile(L"ClownBox", Resources(L"/skul/box.bmp"), 26, 27, true);
 	mImage = IMAGEMANAGER->FindImage(L"ClownBox");
 
-	IMAGEMANAGER->LoadFromFile(L"ShowTime", Resources(L"/skul/boxBlowUp.bmp"), 1300, 100, 13,1,true);
+	IMAGEMANAGER->LoadFromFile(L"ShowTime", Resources(L"/skul/boxBlowUp.bmp"), 2600, 200, 13,1,true);
 
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();
@@ -47,8 +47,8 @@ void ClownBox::Update()
 
 	if (mShowTime < 0)
 	{
-		Explosion(mDamage);
-		new Effect(L"ShowTime", mX, mY, EffectType::Normal);
+		Explosion(mDamage, 2, [this]() {new Effect(L"ShowTime", mX, mY, EffectType::Normal);});
+		CAMERA->PanningOn(5);
 		mIsDestroy = true;
 	}
 }

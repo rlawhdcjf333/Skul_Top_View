@@ -26,6 +26,7 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
+
 }
 
 void Enemy::Damage(int damage)

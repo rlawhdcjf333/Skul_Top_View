@@ -20,7 +20,7 @@ void Tile::Update() //업데이트를 통해 내용 여부 체크
 	if (!mObjects.empty()) {
 		mIsTileEmpty = true;
 		for (int a = 0; a < mObjects.size(); a++) {
-			if (mObjects[a] == nullptr) {
+			if (mObjects[a] == nullptr || mObjects[a]->GetIsDestroy()) {
 				mObjects.erase(mObjects.begin() + a);
 				--a;
 				continue;
@@ -34,7 +34,7 @@ void Tile::Update() //업데이트를 통해 내용 여부 체크
 			}
 			Enemy* dumpEnemy =  dynamic_cast<Enemy*>(mObjects[a]);
 			if (dumpEnemy) {
-					mIsTileEmpty = false;
+				mIsTileEmpty = false;
 			}
 		}
 	}
@@ -125,3 +125,4 @@ void Tile::EnemyAttack(int damage) {
 	}
 	mAttackTest = true;
 }
+

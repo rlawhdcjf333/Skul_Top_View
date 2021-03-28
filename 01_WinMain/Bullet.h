@@ -2,13 +2,10 @@
 #include "GameObject.h"
 enum class BulletType : int {
 	Straight = 1,
-	Trajectory,
-	SkulHead,
 	Piercing,
 	Flask,
 	FrameProjectile,
 	Barricade,
-	MeteorStrike,
 	Protect,
 	Mark
 };
@@ -35,7 +32,7 @@ public:
 	
 	void Move();
 	void Damage(int a);
-	void Explosion(int damage, int range = 2);
+	void Explosion(int damage, int range = 2, function <void(void)> func =[]() {});
 	BulletType GetType() { return mType; }
 
 };

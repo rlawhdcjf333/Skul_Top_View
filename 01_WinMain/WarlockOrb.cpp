@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "WarlockOrb.h"
 #include "Animation.h"
+#include "Effect.h"
 
 WarlockOrb::WarlockOrb(GameObject* startUnit, float speed, float angle, float range, float damage, bool isCompleted)
 {
@@ -18,6 +19,9 @@ WarlockOrb::WarlockOrb(GameObject* startUnit, float speed, float angle, float ra
 	mDamage = damage;
 	mIsCompleted = isCompleted;
 	
+	IMAGEMANAGER->LoadFromFile(L"OrbCompDespawn", Resources(L"skul/orbCompDespawn.bmp"), 1900, 100, 19, 1, true);
+	IMAGEMANAGER->LoadFromFile(L"OrbIncompDespawn", Resources(L"skul/orbIncompDespawn.bmp"), 900, 100, 9, 1, true);
+
 
 	if (isCompleted)
 	{
@@ -30,8 +34,13 @@ WarlockOrb::WarlockOrb(GameObject* startUnit, float speed, float angle, float ra
 		mImage=IMAGEMANAGER->FindImage(L"OrbIncomp");
 	}
 
-	mSizeX = mImage->GetFrameWidth();
-	mSizeY = mImage->GetFrameHeight();
+	mSizeX = 200;
+	mSizeY = 200;
+	if (!mIsCompleted)
+	{
+		mSizeX = 150;
+		mSizeY = 150;
+	}
 
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 
@@ -46,7 +55,7 @@ void WarlockOrb::Update()
 {
 	if (mAnimation->GetCurrentFrameIndex() == 1 or mAnimation->GetCurrentFrameIndex() ==10)
 	{
-		if(mAnimation->GetCurrentFrameTime() < dTime)
+		if(mAnimation->GetCurrentFrameTime() > 0.05f-dTime)
 		Explosion(mDamage, 2);
 	}
 
@@ -58,6 +67,15 @@ void WarlockOrb::Update()
 	}
 	else
 	{
+		if (mIsCompleted) 
+		{
+			(new Effect(L"OrbCompDespawn", mX, mY, EffectType::Normal))->Scaling(mSizeX, mSizeY);
+			Explosion(mDamage, 3);
+		}
+		else
+		{
+			(new Effect(L"OrbIncompDespawn", mX, mY, EffectType::Normal))->Scaling(mSizeX, mSizeY);
+		}
 		mIsDestroy = true;
 	}
 
@@ -70,6 +88,6 @@ void WarlockOrb::Release()
 
 void WarlockOrb::Render(HDC hdc)
 {
-	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top-50, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), 200, 200);
+	CAMERA->ScaleFrameRender(hdc, mImage, mRect.left, mRect.top-50, mAnimation->GetNowFrameX(), mAnimation->GetNowFrameY(), mSizeX, mSizeY);
 
 }

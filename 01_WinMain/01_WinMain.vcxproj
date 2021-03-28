@@ -138,6 +138,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -215,6 +216,14 @@
     <ClInclude Include="Yaksha.h" />
     <ClInclude Include="ClownBox.h" />
     <ClInclude Include="ClownDagger.h" />
+    <ClInclude Include="AlchPassive.h" />
+    <ClInclude Include="Meteor.h" />
+    <ClInclude Include="LittleHead.h" />
+    <ClInclude Include="GrimSoul.h" />
+    <ClInclude Include="Condition.h" />
+    <ClInclude Include="Bleeding.h" />
+    <ClInclude Include="Burning.h" />
+    <ClInclude Include="TetanusBuff.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -285,6 +294,14 @@
     <ClCompile Include="Yaksha.cpp" />
     <ClCompile Include="ClownBox.cpp" />
     <ClCompile Include="ClownDagger.cpp" />
+    <ClCompile Include="AlchPassive.cpp" />
+    <ClCompile Include="Meteor.cpp" />
+    <ClCompile Include="LittleHead.cpp" />
+    <ClCompile Include="GrimSoul.cpp" />
+    <ClCompile Include="Condition.cpp" />
+    <ClCompile Include="Bleeding.cpp" />
+    <ClCompile Include="Burning.cpp" />
+    <ClCompile Include="TetanusBuff.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

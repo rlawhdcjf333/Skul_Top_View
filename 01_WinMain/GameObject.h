@@ -49,5 +49,7 @@ public:
 	inline void SetIsDestroy(bool b) { mIsDestroy = b; }
 
 	inline int GetDamage()const { return mDamage; }
+
+	void SetObjectOnTile(int indexX, int indexY);
 };
 

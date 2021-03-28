@@ -3,6 +3,9 @@
 #include "TileSelect.h"
 #include "Bullet.h"
 #include "Animation.h"
+#include "Enemy.h"
+#include "Bleeding.h"
+#include "TetanusBuff.h"
 
 Sword::Sword(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -96,6 +99,12 @@ void Sword::Update()
 
 	if (INPUT->GetKey('X')) //3타 연계 기본공격
 	{
+		if (!mAnimationList[M rightAttack1]->GetIsPlay() and !mAnimationList[M rightAttack2]->GetIsPlay()
+			and !mAnimationList[M leftAttack1]->GetIsPlay() and !mAnimationList[M leftAttack2]->GetIsPlay()
+			and !mAnimationList[M rightAttack3]->GetIsPlay() and !mAnimationList[M leftAttack3]->GetIsPlay())
+		{
+			UpdateAngle();
+		}
 		if (RIGHT) { SetAnimation(M rightAttack1); }
 		if (LEFT) { SetAnimation(M leftAttack1); }
 	}
@@ -139,7 +148,7 @@ void Sword::Update()
 		if (mDashCoolTime == 0)
 		{
 			mCurrentAnimation->Stop();
-			Dash(5);
+			Dash(3);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
 			mDashCount = 1;
@@ -151,7 +160,7 @@ void Sword::Update()
 			if (mDashCount == 1)
 			{
 				mCurrentAnimation->Stop();
-				Dash(5);
+				Dash(3);
 				if (LEFT) SetAnimation(M leftDash);
 				if (RIGHT) SetAnimation(M rightDash);
 				mDashCount = 0;
@@ -233,17 +242,35 @@ void Sword::BasicAttack()
 	if (mAnimationList[M rightAttack1]->GetIsPlay() or mAnimationList[M rightAttack2]->GetIsPlay()
 		or mAnimationList[M leftAttack1]->GetIsPlay() or mAnimationList[M leftAttack2]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed- dTime)
 		{
 			Attack(mPhysicalAttackPower, 1, AttackType::Side); 
+
+			for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
+			{
+				Enemy* downcast = (Enemy*)elem;
+				if (downcast->GetHitTime() == 0.6f and RAND->Probablity(5)) //5% 확률 출혈 부여 패시브. 최대 힛타임 0.6에서만 동작
+				{
+					new Bleeding(elem, mMagicalAttackPower, 3);
+				}
+			}
+
 		}
 	}
 	else if (mAnimationList[M rightAttack3]->GetIsPlay() or mAnimationList[M leftAttack3]->GetIsPlay())
 	{
-		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed- dTime)
 		{
-			Dash(2);
+			Dash(1);
 			Attack(mPhysicalAttackPower, 2, AttackType::Stab);
+			for (GameObject* elem : Obj->GetObjectList(ObjectLayer::Enemy))
+			{
+				Enemy* downcast = (Enemy*)elem;
+				if (downcast->GetHitTime() == 0.6f and RAND->Probablity(5)) //5% 확률 출혈 부여
+				{
+					new Bleeding(elem, mMagicalAttackPower, 3);
+				}
+			}
 		}
 	}
 }
@@ -257,10 +284,10 @@ void Sword::Skill1()
 	{
 		mSkill1CoolTime = 11;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime and mCurrentAnimation->GetCurrentFrameIndex() == 1)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f- dTime and mCurrentAnimation->GetCurrentFrameIndex() == 1)
 		{
-			Attack(mPhysicalAttackPower, 3, AttackType::Stab);
-			Dash(3);
+			Dash(5);
+			Attack(3*mPhysicalAttackPower, 5, AttackType::Stab);
 			CAMERA->PanningOn(5);
 		}
 	}
@@ -275,12 +302,12 @@ void Sword::Skill2()
 	{
 		mSkill2CoolTime = 6;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() < dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime)
 		{
 			if (mCurrentAnimation->GetNowFrameX() == 2 or mCurrentAnimation->GetNowFrameX() == 5 or mCurrentAnimation->GetNowFrameX() == 8)
 			{
-				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
 				Dash(3);
+				Attack(mPhysicalAttackPower, 3, AttackType::Stab);
 				CAMERA->PanningOn(5);
 			}
 		}
@@ -292,11 +319,13 @@ void Sword::SkulSwitch(int indexX, int indexY)
 	Player::SkulSwitch(indexX, indexY);
 	if (LEFT) SetAnimation(M leftSwitching);
 	if (RIGHT) SetAnimation(M rightSwitching);
+	
+	new TetanusBuff(this, 6); //교대 시 6초간 모든 공격에 출혈 발생
 }
+
 void Sword::SkulReset() {
 	mCurrentAnimation->Stop();
 }
-
 
 void Sword::SetAttackSpeed()
 {
