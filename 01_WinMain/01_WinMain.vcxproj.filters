@@ -106,6 +106,9 @@
     <Filter Include="FrameWork\Command\Figure">
       <UniqueIdentifier>{c81da49d-f8e8-47d3-831a-e79e4d881ce0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Door">
+      <UniqueIdentifier>{afa228a4-4c76-485a-9f2f-2b184c3d93dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -306,6 +309,12 @@
     <ClInclude Include="ClownDagger.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="GameScene2.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>MainGame\Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -490,6 +499,12 @@
     </ClCompile>
     <ClCompile Include="ClownDagger.cpp">
       <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene2.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>MainGame\Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

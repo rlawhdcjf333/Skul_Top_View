@@ -1,23 +1,24 @@
 #include "pch.h"
-#include "GameScene.h"
+#include "GameScene2.h"
 #include "Player.h"
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
-#include "Door.h"
 
-void GameScene::Init()
+void GameScene2::Init()
 {
 	MapLoad();
-	GameObject* little = new LittleBone(41, 57, 30, 30);
+	GameObject* little = new LittleBone(54, 52, 30, 30);
 	GameObject* alterSkul = new GrimReaper(30, 30, 30, 30);
-	GameObject* door = new Door(723, 975);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, alterSkul);
-	Obj->AddObject(ObjectLayer::Door, door);
 	SKUL->SetCurrentSkul((Player*)alterSkul);
 	SKUL->NewSkulGet((Player*)little);
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(47, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 45));
 	Obj->Init();
 
 	CAMERA->ChangeMode(Camera::Mode::Follow);
@@ -28,7 +29,7 @@ void GameScene::Init()
 	mBack = IMAGEMANAGER->FindImage(L"back");
 }
 
-void GameScene::Update()
+void GameScene2::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
@@ -48,7 +49,7 @@ void GameScene::Update()
 	//}}
 }
 
-void GameScene::Render(HDC hdc)
+void GameScene2::Render(HDC hdc)
 {
 	mBack->Render(hdc, 0, 0);
 	//대충 최적화
@@ -100,7 +101,7 @@ void GameScene::Render(HDC hdc)
 	ObjectManager::GetInstance()->Render(hdc);
 }
 
-void GameScene::Release()
+void GameScene2::Release()
 {
 	for (auto elem : mTileList)
 	{
@@ -111,10 +112,10 @@ void GameScene::Release()
 	}
 
 	Obj->Release();
-	
+
 }
 
-void GameScene:: MapLoad()
+void GameScene2::MapLoad()
 {
 	for (int y = 0; y < 75; y++)
 	{
@@ -140,7 +141,7 @@ void GameScene:: MapLoad()
 		mTileList.push_back(tmp);
 	}
 
-	ifstream loadStream(L"../04_Data/Stage1Map1/Tile.txt");
+	ifstream loadStream(L"../04_Data/Stage1Map2/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -177,7 +178,7 @@ void GameScene:: MapLoad()
 	}
 	loadStream.close();
 
-	loadStream.open(L"../04_Data/Stage1Map1/Object.txt");
+	loadStream.open(L"../04_Data/Stage1Map2/Object.txt");
 	if (loadStream.is_open())
 	{
 		while (loadStream.peek() != EOF) {

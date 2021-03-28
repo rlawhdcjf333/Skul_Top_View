@@ -16,6 +16,7 @@ enum class ObjectLayer : int
 	Enemy_Bullet,
 	MapObject,
 	Effect,
+	Door,
 	End
 };
 
