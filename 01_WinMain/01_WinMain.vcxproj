@@ -155,6 +155,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="DefineHeader.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Dumb.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="GameEventManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScene2.h" />
     <ClInclude Include="Gizmo.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
@@ -232,12 +234,14 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Dumb.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="GameEventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene2.cpp" />
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
