@@ -3,6 +3,7 @@
 class MainScene :public Scene
 {
 	Image* mBack;
+	Image* mAnyButton;
 public:
 	void Init()override;
 	void Update()override;
