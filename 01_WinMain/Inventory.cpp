@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Inventory.h"
 #include "Item.h"
+#include "Items.h"
 
 Inventory::Inventory()
 {
@@ -10,6 +11,9 @@ Inventory::Inventory()
 
 	mToggleInventory = false;
 	mCurrentItem = nullptr;
+	
+	mFirstSkulSlot = RectMake(345, 196, 38, 38);
+	mSecondSkulSlot = RectMake(429, 196, 38, 38);
 
 	mItemSlot[0] = RectMakeCenter(320, 450, 45, 45);
 	mItemSlot[1] = RectMakeCenter(405, 450, 45, 45);
@@ -23,16 +27,24 @@ Inventory::Inventory()
 	mItemSlot[7] = RectMakeCenter(405, 580, 45, 45);
 	mItemSlot[8] = RectMakeCenter(490, 580, 45, 45);
 
+	mImageArea = RectMake(828, 72, 73, 73);
 	mItemNameArea = RectMake(708, 175, 311, 34);
+	mExplanationArea = RectMake(571, 213,580,40);
 	mEffectArea = RectMake(594, 274, 540, 75);
-	mExplanationArea = RectMake(588, 423, 552,176);
+
+	mDetailImageSlot1 = RectMake(686, 396, 40, 40);
+	mDetailINameSlot1 = RectMake(586, 444, 239, 28);
+	mDetailExplanationSlot1 = RectMake(570, 500, 272, 121);
+
+	mDetailImageSlot2 = RectMake(1002, 396, 40, 40);
+	mDetailINameSlot2 = RectMake(586+1002-686, 444, 239, 28);
+	mDetailExplanationSlot2 = RectMake(570+1002-686, 500, 272, 121);
 		
 	mDelay = 2;
 }
 
 void Inventory::Update()
 {
-	mCurrentItem = nullptr;
 	for (int i=0; i<mItemList.size() ; i++)
 	{
 		if (PtInRect(&mItemSlot[i], nonC_mousePosition))
@@ -40,6 +52,15 @@ void Inventory::Update()
 			mCurrentItem = mItemList[i];
 		}
 	}
+	if (PtInRect(&mFirstSkulSlot, nonC_mousePosition))
+	{
+		mCurrentItem = mFirstSkul;
+	}
+	if (PtInRect(&mSecondSkulSlot, nonC_mousePosition))
+	{
+		mCurrentItem = mSecondSkul;
+	}
+
 
 	if (INPUT->GetKey('F') and mCurrentItem)
 	{
@@ -48,11 +69,14 @@ void Inventory::Update()
 	if (mDelay < 0) //아이템 제삭 트리거
 	{
 		mDelay = 2; 
-		mCurrentItem->GetDeactivationFunc()();
-		mItemList.erase(find(mItemList.begin(), mItemList.end(), mCurrentItem));
-		mCurrentItem->Release();
-		SafeDelete(mCurrentItem);
-		mCurrentItem = nullptr;
+		if (mCurrentItem->GetType() == ItemType::CommonItem)
+		{
+			mCurrentItem->GetDeactivationFunc()();
+			mItemList.erase(find(mItemList.begin(), mItemList.end(), mCurrentItem));
+			mCurrentItem->Release();
+			SafeDelete(mCurrentItem);
+			mCurrentItem = nullptr;
+		}
 	}
 	if (INPUT->GetKeyUp('F'))
 	{
@@ -66,28 +90,57 @@ void Inventory::Render(HDC hdc)
 	{
 		IMAGEMANAGER->FindImage(L"Black")->AlphaRender(hdc, 0, 0, 0.6f);
 		mImage->Render(hdc, 0, 0);
-		for (int i=0; i<mItemList.size(); i++)
+		for (int i=0; i<mItemList.size(); i++) //아이템 9개 좌하단 렌더링
 		{
-			IMAGEMANAGER->FindImage(mItemList[i]->GetImageKeyName())->ScaleRender(hdc, mItemSlot[i].left, mItemSlot[i].top, 45, 45); 
+			if(mItemList[i])
+				IMAGEMANAGER->FindImage(mItemList[i]->GetImageKeyName())->ScaleRender(hdc, mItemSlot[i].left, mItemSlot[i].top, 45, 45); 
 		}
+		
+		if (mFirstSkul)
+			IMAGEMANAGER->FindImage(mFirstSkul->GetImageKeyName())->ScaleRender(hdc, mFirstSkulSlot.left, mFirstSkulSlot.top, 38, 38);
+		if (mSecondSkul)
+			IMAGEMANAGER->FindImage(mSecondSkul->GetImageKeyName())->ScaleRender(hdc, mSecondSkulSlot.left, mSecondSkulSlot.top, 38, 38);
 
-		if (mCurrentItem)
+		if (mCurrentItem) //현재 커서락된 아이템 우측 상세 렌더링
 		{
 			switch (mCurrentItem->GetType())
 			{
 			case ItemType::CommonItem:
+
+				IMAGEMANAGER->FindImage(mCurrentItem->GetImageKeyName())->ScaleRender(hdc, mImageArea.left, mImageArea.top, 73, 73);
+				IMAGEMANAGER->FindImage(mCurrentItem->GetSlot1Key())->ScaleRender(hdc, mDetailImageSlot1.left, mDetailImageSlot1.top, 40, 40);
 				SetBkMode(hdc, TRANSPARENT);
-				DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-				DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
-				DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+				CallFont(hdc, 15, [&]() 
+					{
+						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetSlot1Name().c_str(), mCurrentItem->GetSlot1Name().size(), &mDetailINameSlot1, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER | DT_WORDBREAK);
+					}
+				);
 				SetBkMode(hdc, OPAQUE);
+
 				break;
 
 			case ItemType::SkulHead:
 
+				SetBkMode(hdc, TRANSPARENT);
+				CallFont(hdc, 15, [&]()
+					{
+						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
 
+						DrawText(hdc, mCurrentItem->GetSlot1Name().c_str(), mCurrentItem->GetSlot1Name().size(), &mDetailINameSlot1, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+						DrawText(hdc, mCurrentItem->GetSlot2Name().c_str(), mCurrentItem->GetSlot2Name().size(), &mDetailINameSlot2, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
+						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetSlot2Explanation().c_str(), mCurrentItem->GetSlot2Explanation().size(), &mDetailExplanationSlot2, DT_CENTER | DT_WORDBREAK);
 
+					}
+				);
+				SetBkMode(hdc, OPAQUE);
 
 				break;
 			}
@@ -104,6 +157,41 @@ void Inventory::Release()
 		elem->Release();
 		SafeDelete(elem);
 	}
+}
+
+void Inventory::GetSkul(Item* item)
+{
+	if (mFirstSkul == nullptr)
+	{
+		mFirstSkul = item;
+		return;
+	}
+	else if(mSecondSkul == nullptr)
+	{
+		mSecondSkul = item;
+		return;
+	}
+	else if(mFirstSkul->GetImageKeyName() == SKUL->GetCurrentSkul()->GetKeyName().append(L"Head"))
+	{
+		mFirstSkul->SetObjectOnTile(SKUL->GetCurrentSkul()->GetIndexX(), SKUL->GetCurrentSkul()->GetIndexY());
+		mFirstSkul->SetIsTrashed(true);
+		Obj->AddObject(ObjectLayer::Item, mFirstSkul);
+		mFirstSkul = item;
+		return;
+	}
+	else if (mSecondSkul->GetImageKeyName() == SKUL->GetCurrentSkul()->GetKeyName().append(L"Head"))
+	{
+		mSecondSkul->SetObjectOnTile(SKUL->GetCurrentSkul()->GetIndexX(), SKUL->GetCurrentSkul()->GetIndexY());
+		mSecondSkul->SetIsTrashed(true);
+		Obj->AddObject(ObjectLayer::Item, mSecondSkul);
+		mSecondSkul= item;
+		return;
+	}
+	else
+	{
+		//do nothing
+	}
+
 }
 
 

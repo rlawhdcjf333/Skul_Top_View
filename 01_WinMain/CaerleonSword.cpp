@@ -12,8 +12,14 @@ CaerleonSword::CaerleonSword(int indexX, int indexY)
 	mName = "CaerleonSword";
 
 	mItemName =L"보급형 칼레온 장검";
-	mExplanation = L"묵직한 칼레온 군 보급용 검. 성능은 의심이 들지만, 관리된 검날은 예사롭지 않다.";
+	mExplanation = L"묵직한 칼레온 군 보급용 검. \n성능은 의심이 들지만, 관리된 검날은 예사롭지 않다.";
 	mEffect = L"물리공격력이 25% 증가합니다.";
+
+	IMAGEMANAGER->LoadFromFile(L"March", Resources(L"/item/March.bmp"), 78, 78, true);
+	mSlot1Name = L"행군";
+	mSlot1Image = IMAGEMANAGER->FindImage(L"March");
+	mSlot1Explanation = L"물리공격력이 5/10/15/25/40/65/100/145% 증폭됩니다.";
+
 	
 	IMAGEMANAGER->LoadFromFile(L"CaerleonSword", Resources(L"item/CaerleonSword.bmp"), 22, 22, true);
 	mImage = IMAGEMANAGER->FindImage(L"CaerleonSword");
@@ -80,10 +86,15 @@ void CaerleonSword::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		TextOut(hdc, mRect.left-CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
-		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
-		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
-		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top + 10 - CAMERA->GetRect().top, to_wstring(mValue).c_str(), to_wstring(mValue).size());
+		SetBkMode(hdc, TRANSPARENT);
+		CallFont(hdc, 15, [&]()
+			{
+				TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
+				TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
+				TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
+			});
+		SetBkMode(hdc, OPAQUE);
+
 	}
 	
 }

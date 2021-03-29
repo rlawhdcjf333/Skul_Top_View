@@ -103,3 +103,12 @@ inline Diam DiamMake(float x, float y, float w, float h)
 
 	return {top, right, bottom, left};
 }
+
+inline void CallFont(HDC hdc, int fontSize, function<void(void)> bindFunc)
+{
+	HFONT tmp =CreateFont(fontSize, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	HFONT recall = (HFONT)SelectObject(hdc, tmp);
+	bindFunc();
+	SelectObject(hdc, recall);
+	DeleteObject(tmp);
+}

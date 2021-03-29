@@ -52,6 +52,7 @@ public:
 	inline int GetDamage()const { return mDamage; }
 
 	void SetObjectOnTile(int indexX, int indexY);
-	virtual bool const GetIsTrashed() {return mIsTrashed;}
+	bool const GetIsTrashed() {return mIsTrashed;}
+	void SetIsTrashed(bool b) { mIsTrashed = b; }
 };
 

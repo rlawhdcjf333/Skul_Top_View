@@ -6,11 +6,13 @@
 #include "Stage1_SwordMan.h"
 #include "Door.h"
 #include "Items.h"
+#include "Inventory.h"
 
 void GameScene::Init()
 {
 	MapLoad();
 	GameObject* little = new LittleBone(41, 57, 30, 30);
+	SKUL->GetInventory()->GetSkul(new LittleBoneHead(0,0));
 	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);
