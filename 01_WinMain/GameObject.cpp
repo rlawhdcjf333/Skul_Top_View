@@ -14,6 +14,7 @@ void GameObject::SetObjectOnTile(int indexX, int indexY)
 	mIndexY = indexY;
 	mX = destination->GetCenterX();
 	mY = destination->GetCenterY();
+	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
 	destination->SetObject(this);
 	destination->Update();

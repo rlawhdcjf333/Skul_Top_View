@@ -50,6 +50,7 @@ using namespace std;
 #include "PathFinder.h"
 #include "Tile.h"
 #include "SkulManager.h"
+#include "ItemManager.h"
 
 //#ifdef UNICODE
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")

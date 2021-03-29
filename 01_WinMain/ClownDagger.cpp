@@ -62,7 +62,7 @@ void ClownDagger::Update()
 
 	if (mRange <= 0)
 	{
-		if (mType == BulletType::Flask)	Explosion(mDamage, 2, [this]() {new Effect(L"DaggerExplosion", mX, mY, EffectType::Normal);});
+		if (mType == BulletType::Flask)	Explosion(2*mMagicalAttackPower, 2, [this]() {new Effect(L"DaggerExplosion", mX, mY, EffectType::Normal);});
 		mIsDestroy = true;
 	}
 }

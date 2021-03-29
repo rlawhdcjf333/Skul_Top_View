@@ -121,6 +121,9 @@
     <Filter Include="MainGame\Font">
       <UniqueIdentifier>{b2c5035d-1a4f-4265-9ef6-d2dd1751a1cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Item\SkulHead">
+      <UniqueIdentifier>{ae2b50df-fa93-4a9c-bc94-ffd212a9162e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -387,9 +390,6 @@
     <ClInclude Include="Item.h">
       <Filter>MainGame\Item</Filter>
     </ClInclude>
-    <ClInclude Include="LittleBoneHead.h">
-      <Filter>MainGame\Item</Filter>
-    </ClInclude>
     <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Item</Filter>
     </ClInclude>
@@ -398,6 +398,51 @@
     </ClInclude>
     <ClInclude Include="Door.h">
       <Filter>MainGame\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="PettyThiefHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleBoneHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="BerserkerHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="EntHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="WerewolfHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="AlchemistHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="ClownHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="HunterHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="MinoHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="HighWarlockHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="NinjaHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="GrimReaperHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="YakshaHead.h">
+      <Filter>MainGame\Item\SkulHead</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -647,9 +692,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
-    <ClCompile Include="LittleBoneHead.cpp">
-      <Filter>MainGame\Item</Filter>
-    </ClCompile>
     <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
@@ -658,6 +700,51 @@
     </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>MainGame\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleBoneHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="BerserkerHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="EntHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="PettyThiefHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="WerewolfHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="AlchemistHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="ClownHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="HunterHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="MinoHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="HighWarlockHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="NinjaHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimReaperHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="YakshaHead.cpp">
+      <Filter>MainGame\Item\SkulHead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

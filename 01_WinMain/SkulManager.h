@@ -51,7 +51,7 @@ public:
 	Player* GetAlterSkul() { return mAlterSkul; }
 	void SetCurrentSkul(Player* skul) { mCurrentSkul = skul;}
 
-	Player* NewSkulGet(Player* skul);
+	void NewSkulGet(Player* skul);
 
 	void Invincibilize() { mInvincibility = true; }
 	void Disinvincibilize() { mInvincibility = false; }
@@ -71,6 +71,7 @@ public:
 	Inventory* GetInventory() { return mInventory; }
 
 	void Reset() { if(mCurrentSkul != nullptr)mCurrentSkul->PathReset();}
+	void SceneInit();
 };
 #define SKUL SkulManager::GetInstance()
 #define mAttackSpeed SkulManager::GetInstance()->GetAtkSpeed()

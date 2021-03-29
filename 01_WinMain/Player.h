@@ -70,6 +70,7 @@ public:
 	virtual void SetAnimation(int listNum) {};
 	virtual void SetAttackSpeed() {};
 	void PathReset() { mPath.clear(); mPathIndex = 1;}
+	RECT GetHitBox() { return mHitBox; }
 };
 
 #define M (int)Motion::

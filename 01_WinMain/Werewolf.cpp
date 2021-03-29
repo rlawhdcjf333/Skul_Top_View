@@ -233,7 +233,7 @@ void Werewolf::Skill1()
 
 	if (mAnimationList[M rightSkill1]->GetIsPlay() or mAnimationList[M leftSkill1]->GetIsPlay())
 	{
-		mSkill1CoolTime = 4;
+		mSkill1CoolTime = 5;
 
 		if (mCurrentAnimation->GetCurrentFrameTime()>0.1f-dTime)
 		{

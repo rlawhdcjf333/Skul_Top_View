@@ -32,10 +32,12 @@ protected:
 	//아이템 각인 2 이름 혹은 스컬 스킬 2 이름
 	wstring mSlot2Explanation;
 
-	function <void(void)> mDeactivationFunc; //아이템을 소유 목록에서 제거했을 때 실행할 코드 내지는 스컬 파괴 트리거 작동 코드
+	function <void(void)> mActivationFunc; //특별히 액티브 효과가 있는 경우 매프레임 실행할 코드
+	function <void(void)> mDeactivationFunc; //아이템을 소유 목록에서 제거했을 때 실행할 코드 
 
 	ItemType mType;
 	float mDuration = 2;
+	float mDelay = 0;
 	bool mIsCollision;
 
 public:
@@ -44,6 +46,8 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
+	void SetDelay(float val) { mDelay = val; }
+	void Activation() { mActivationFunc(); }
 
 	wstring GetImageKeyName() { return mImage->GetKeyName(); }
 	wstring GetItemName() { return mItemName; }
@@ -51,7 +55,7 @@ public:
 	wstring GetExplanation() { return mExplanation; }
 
 	wstring GetSlot1Key() { return mSlot1Image->GetKeyName(); }
-	wstring GetSlot2Key() { return mSlot1Image->GetKeyName(); }
+	wstring GetSlot2Key() { return mSlot2Image->GetKeyName(); }
 	wstring GetSlot1Name() { return mSlot1Name; }
 	wstring GetSlot2Name() {return mSlot2Name;}
 	wstring GetSlot1Explanation() { return mSlot1Explanation; }
@@ -59,4 +63,5 @@ public:
 
 	ItemType GetType() { return mType; }
 	function <void(void)> GetDeactivationFunc() { return mDeactivationFunc; }
+
 };

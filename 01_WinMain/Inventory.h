@@ -12,10 +12,17 @@ class Inventory
 	float mDelay;
 
 	Item* mCurrentItem;
-
+	
+	//보유 스컬
+	RECT mHoldingSkuls;
 	RECT mFirstSkulSlot;
 	RECT mSecondSkulSlot;
+	//현재 스컬
+	RECT mCurrent;
+	RECT mCurrentSkulSlot;
 
+	// 보유 아이템
+	RECT mHoldingItems;
 	RECT mItemSlot[9];
 	//이미지 영역
 	RECT mImageArea;
@@ -50,5 +57,6 @@ public:
 	bool GetIsToggle() { return mToggleInventory; }
 	void SetIsToggle(bool b) { mToggleInventory = b; }
 
+	Item* GetFirstSkul() { return mFirstSkul; }
 
 };

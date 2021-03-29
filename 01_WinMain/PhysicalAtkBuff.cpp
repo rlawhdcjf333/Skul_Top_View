@@ -9,6 +9,10 @@ PhysicalAtkBuff::PhysicalAtkBuff(int percentage, float duration, string name)
 	{
 		Obj->ReleaseObject(ObjectLayer::Condition, "BerserkerPhysicalAtkBuff");
 	}
+	if (mName == "WarriorPhysicalAtkBuff" and Obj->FindObject(ObjectLayer::Condition, "WarriorPhysicalAtkBuff"))
+	{
+		Obj->ReleaseObject(ObjectLayer::Condition, "WarriorPhysicalAtkBuff");
+	}
 	
 	mIsActive = true;
 	mIsDestroy = false;

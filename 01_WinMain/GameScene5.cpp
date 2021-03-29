@@ -14,7 +14,7 @@ void GameScene5::Init()
 	Obj->Init();
 
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
-	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
+	if (SKUL->GetAlterSkul())Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
 	SKUL->GetCurrentSkul()->SetObjectOnTile(22, 52);
 
