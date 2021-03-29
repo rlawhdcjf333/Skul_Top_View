@@ -19,6 +19,7 @@ enum class ObjectLayer : int
 	Effect,
 	Door,
 	Item,
+	Font,
 	End
 };
 

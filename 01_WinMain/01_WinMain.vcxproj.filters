@@ -115,6 +115,9 @@
     <Filter Include="MainGame\Door">
       <UniqueIdentifier>{38e75d37-b5c6-441c-b511-360e069d20e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Font">
+      <UniqueIdentifier>{ce0cf58d-62ab-4cd5-84bf-d5c76b9634f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -387,6 +390,12 @@
     <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedSysFont.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -640,6 +649,12 @@
     </ClCompile>
     <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedSysFont.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

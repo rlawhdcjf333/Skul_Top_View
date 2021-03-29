@@ -2,6 +2,7 @@
 #include "Animation.h"
 #include "Image.h"
 #include "Stage1_SwordMan.h"
+#include "FixedSysFont.h"
 
 Stage1_SwordMan::Stage1_SwordMan(int indexX, int indexY)
 	:Enemy(indexX,indexY)
@@ -131,11 +132,19 @@ void Stage1_SwordMan::Release()
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[1].begin(); itr != mAnimationMap[1].end(); itr++) {
 		SafeDelete(itr->second.animation);
 	}
+	while (mDamages.size() > 0) {
+		new FixedSysFont(mX, mY, 100, 100, to_wstring(mDamages.top()), FontColor::Blue);
+		mDamages.pop();
+	}
 }
 
 void Stage1_SwordMan::Render(HDC hdc)
 {
-
+	
+	while(mDamages.size() > 0) {
+		new FixedSysFont(mX,mY,100,100, to_wstring(mDamages.top()),FontColor::Blue);
+		mDamages.pop();
+	}
 	//CAMERA->RenderRect(hdc, mRect);
 	if (mCurrentImage) {
 		CAMERA->CenterBottomFrameRender(hdc,mCurrentImage,mX,mY,mCurrentAnimation->GetNowFrameX(),mCurrentAnimation->GetNowFrameY());
@@ -199,6 +208,7 @@ void Stage1_SwordMan::Hit()
 void Stage1_SwordMan::Damage(int Damage)
 {
 	mHp -= Damage;
+	mDamages.emplace(Damage);
 	Hit();
 }
 

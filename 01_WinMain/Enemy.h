@@ -43,7 +43,7 @@ protected:
 	bool mKnockBackMove;
 	bool mIsKnockBack;
 	Tile* mKnockTile;
-
+	stack<int> mDamages;
 public :
 	Enemy(int indexX, int indexY);
 	virtual void Init() override;
