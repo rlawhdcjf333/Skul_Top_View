@@ -8,7 +8,7 @@ class AtkSpeedBuff : public Condition
 
 public:
 
-	AtkSpeedBuff(int percentage, float duration);
+	AtkSpeedBuff(int percentage, float duration, string Name = "AtkSpeedBuff");
 	void Update();
 	void Render(HDC hdc);
 	void Release();

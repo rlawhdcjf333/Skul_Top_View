@@ -17,13 +17,15 @@ private:
 	int mGold;
 
 	float mAtkSpeed;
-	int mPhysicalAtk;
-	int mMagicalAtk;
+	float mPhysicalAtk;
+	float mMagicalAtk;
 
 	bool mInvincibility;
 
 	float mSwitchingCoolTime;
 	float mInitSwitchingCoolTime;
+
+	float mHitTime;
 
 	Inventory* mInventory;
 
@@ -39,11 +41,10 @@ public:
 	void PlusHp(int val); 
 	void MinusHp(int val) { mHp -= val; }
 	int GetHp() { return mHp; }
+	int GetLostHpPercentage();
 	void PlusGold(int val);
 	void MinusGold(int val) { if(mGold-val>=0) mGold -= val;}
 	int GetGold() { return mGold; }
-
-	void RegBuff(function <void()> func, float duration);
 
 	Player* GetCurrentSkul() { return mCurrentSkul; }
 	Player* GetAlterSkul() { return mAlterSkul; }
@@ -57,11 +58,14 @@ public:
 	float GetAtkSpeed() { return mAtkSpeed; }
 	void SetAtkSpeed(float val) { mAtkSpeed = val; }
 
-	int GetPhysicalAtk() { return mPhysicalAtk; }
-	void SetPhysicalAtk(int val) { mPhysicalAtk = val; }
+	float GetPhysicalAtk() { return mPhysicalAtk; }
+	void SetPhysicalAtk(float val) { mPhysicalAtk = val; }
 
-	int GetMagicalAtk() { return mMagicalAtk; }
-	void SetMagicalAtk(int val) { mMagicalAtk = val; }
+	float GetMagicalAtk() { return mMagicalAtk; }
+	void SetMagicalAtk(float val) { mMagicalAtk = val; }
+
+	float GetHitTime() { return mHitTime; }
+	void SetHitTime(float val) { mHitTime = val; }
 
 	Inventory* GetInventory() { return mInventory; }
 
@@ -70,3 +74,5 @@ public:
 #define mAttackSpeed SkulManager::GetInstance()->GetAtkSpeed()
 #define mPhysicalAttackPower SkulManager::GetInstance()->GetPhysicalAtk()
 #define mMagicalAttackPower SkulManager::GetInstance()->GetMagicalAtk()
+#define mHit SkulManager::GetInstance()->GetHitTime()
+#define mInitPhysicalPower 4.f

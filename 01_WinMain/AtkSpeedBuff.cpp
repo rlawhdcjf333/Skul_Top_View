@@ -1,22 +1,29 @@
 #include "pch.h"
 #include "AtkSpeedBuff.h"
 
-AtkSpeedBuff::AtkSpeedBuff(int percentage, float duration)
+AtkSpeedBuff::AtkSpeedBuff(int percentage, float duration, string name)
 {
-	mName = "AtkSpeedBuff";
-	mIsActive = true;
-	mIsDestroy = false;
+	mName = name;
 
-	mDuration = duration;
+	if (mName == "BerserkerAtkSpeedBuff" and Obj->FindObject(ObjectLayer::Condition, "BerserkerAtkSpeedBuff")) //이미 존재하는 버프라면 갱신, 중첩버프로 사기칠 생각 ㄴ
+	{
+		dynamic_cast<Condition*>(Obj->FindObject(ObjectLayer::Condition, "BerserkerAtkSpeedBuff"))->SetDuration(duration);
+		delete (this);
+	}
+	else
+	{
+		mIsActive = true;
+		mIsDestroy = false;
 
-	mValue = (mAttackSpeed * percentage) / (100 + percentage);
-	if (mValue > 0.08f) mValue = 0.08f;
+		mDuration = duration;
 
-	SKUL->SetAtkSpeed(mAttackSpeed - mValue);
-	SKUL->GetCurrentSkul()->SetAttackSpeed();
-	if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+		mValue = (float)(mAttackSpeed * percentage) / (float)(100 + percentage);
 
-	Obj->AddObject(ObjectLayer::Condition, this);
+		SKUL->SetAtkSpeed(mAttackSpeed - mValue);
+		SKUL->GetCurrentSkul()->SetAttackSpeed();
+		if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+		Obj->AddObject(ObjectLayer::Condition, this);
+	}
 }
 
 void AtkSpeedBuff::Update()

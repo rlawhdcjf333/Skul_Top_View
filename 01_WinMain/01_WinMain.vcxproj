@@ -238,6 +238,7 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="LittleBoneHead.h" />
+    <ClInclude Include="ItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -329,6 +330,7 @@
     <ClCompile Include="CaerleonSword.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LittleBoneHead.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

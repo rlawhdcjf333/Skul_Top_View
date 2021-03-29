@@ -4,6 +4,10 @@
 class LittleBoneHead :public Item
 {
 
+
+
+
+
 public:
 
 	LittleBoneHead(int indexX, int indexY);

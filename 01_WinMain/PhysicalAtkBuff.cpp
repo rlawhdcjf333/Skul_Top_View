@@ -1,20 +1,26 @@
 #include "pch.h"
 #include "PhysicalAtkBuff.h"
 
-PhysicalAtkBuff::PhysicalAtkBuff(int percentage, float duration)
+PhysicalAtkBuff::PhysicalAtkBuff(int percentage, float duration, string name)
 {
-	mName = "PhysicalAtkBuff";
+	mName = name;
+
+	if (mName == "BerserkerPhysicalAtkBuff" and Obj->FindObject(ObjectLayer::Condition, "BerserkerPhysicalAtkBuff"))
+	{
+		Obj->ReleaseObject(ObjectLayer::Condition, "BerserkerPhysicalAtkBuff");
+	}
+	
 	mIsActive = true;
 	mIsDestroy = false;
 
 	mDuration = duration;
 
-	mValue = mPhysicalAttackPower * percentage / 100;
-	if (mValue == 0) mValue = 1;
+	mValue = mPhysicalAttackPower * (float)percentage / 100.f;
 
 	SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 
 	Obj->AddObject(ObjectLayer::Condition, this);
+	
 }
 
 void PhysicalAtkBuff::Update()

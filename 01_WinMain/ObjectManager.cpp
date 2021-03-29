@@ -248,3 +248,17 @@ vector<class GameObject*> ObjectManager::GetObjectList(ObjectLayer layer)
 {
 	return mObjectList[layer];
 }
+
+void ObjectManager::ReleaseObject(ObjectLayer layer, const string& name)
+{
+	ObjectIter iter = mObjectList.find(layer);
+	for (int i = 0; i < iter->second.size(); ++i)
+	{
+		if (iter->second[i]->GetName() == name)
+		{
+			iter->second[i]->Release();
+			SafeDelete(iter->second[i]);
+			iter->second.erase(iter->second.begin()+i);
+		}
+	}
+}

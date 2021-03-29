@@ -15,5 +15,7 @@ public:
 	void Release() {};
 	void Update();
 	void Render(HDC hdc);
+	void SetDuration(float val) { mDuration = val; }
+
 
 };

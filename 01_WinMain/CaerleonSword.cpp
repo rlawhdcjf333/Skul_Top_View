@@ -22,8 +22,7 @@ CaerleonSword::CaerleonSword(int indexX, int indexY)
 	mSizeY = mImage->GetHeight();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
-	mValue = mPhysicalAttackPower / 4;
-	if (mValue == 0) mValue = 1;
+	mValue = mPhysicalAttackPower /4.f;
 
 	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue);};
 	mIsCollision = false;
@@ -82,6 +81,7 @@ void CaerleonSword::Render(HDC hdc)
 		TextOut(hdc, mRect.left-CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
+		TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top + 10 - CAMERA->GetRect().top, to_wstring(mValue).c_str(), to_wstring(mValue).size());
 	}
 	
 }

@@ -24,6 +24,8 @@ class Inventory
 	RECT mExplanationArea;
 	RECT mEffectArea;
 
+	RECT mSkill1Explanation;
+
 public:
 
 	Inventory();

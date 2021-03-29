@@ -35,6 +35,7 @@ protected:
 	float mSkill1CoolTime;
 	float mSkill2CoolTime;
 
+
 public:
 
 	Player(int indexX, int indexY, float sizeX, float sizeY);
@@ -68,6 +69,7 @@ public:
 
 	virtual void SetAnimation(int listNum) {};
 	virtual void SetAttackSpeed() {};
+
 };
 
 #define M (int)Motion::

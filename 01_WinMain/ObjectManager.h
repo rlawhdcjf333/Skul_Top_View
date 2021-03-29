@@ -48,6 +48,7 @@ public:
 	vector<class GameObject*> FindObjects(const string& name);
 	vector<class GameObject*> FindObjects(ObjectLayer layer, const string& name);
 	vector<class GameObject*> GetObjectList(ObjectLayer layer);
+	void ReleaseObject(ObjectLayer layer, const string& name);
 
 	void SetTimeStop(bool b) { mTimeStop = b; }
 

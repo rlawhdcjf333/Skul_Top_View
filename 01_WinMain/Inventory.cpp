@@ -8,7 +8,7 @@ Inventory::Inventory()
 	mImage = IMAGEMANAGER->FindImage(L"Inventory");
 
 	mToggleInventory = false;
-	mCurrentItem = {};
+	mCurrentItem = nullptr;
 
 	mItemSlot[0] = RectMakeCenter(320, 450, 45, 45);
 	mItemSlot[1] = RectMakeCenter(405, 450, 45, 45);
@@ -72,11 +72,26 @@ void Inventory::Render(HDC hdc)
 
 		if (mCurrentItem)
 		{
-			SetBkMode(hdc, TRANSPARENT);
-			DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-			DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
-			DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
-			SetBkMode(hdc, OPAQUE);
+			switch (mCurrentItem->GetType())
+			{
+			case ItemType::CommonItem:
+				SetBkMode(hdc, TRANSPARENT);
+				DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+				DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
+				DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+				SetBkMode(hdc, OPAQUE);
+				break;
+
+			case ItemType::SkulHead:
+
+
+
+
+
+				break;
+			}
+			
+
 		}
 	}
 }

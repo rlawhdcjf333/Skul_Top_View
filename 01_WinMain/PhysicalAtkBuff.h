@@ -4,11 +4,11 @@
 class PhysicalAtkBuff : public Condition
 {
 
-	int mValue;
+	float mValue;
 
 public:
 
-	PhysicalAtkBuff(int percentage, float duration);
+	PhysicalAtkBuff(int percentage, float duration, string name ="PhyscialAtkBuff");
 	void Update();
 	void Render(HDC hdc);
 	void Release();

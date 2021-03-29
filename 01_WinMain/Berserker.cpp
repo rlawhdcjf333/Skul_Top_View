@@ -78,6 +78,19 @@ void Berserker::Update()
 
 	mTileSelect->Update();
 
+	if (SKUL->GetHitTime() == 0.6f) //패시브, 피격시 3초간 50퍼센트 공속 업, 중첩 불가 단 다른 공속버프와는 중첩가능
+	{
+		new AtkSpeedBuff(50, 3, "BerserkerAtkSpeedBuff");
+	}
+
+	if (SKUL->GetLostHpPercentage() > 0) //패시브, 잃은 체력에 비례하여 최대 80%까지 공격력 상승.  매 프레임 잃은 체력을 체크하여 작동
+	{
+		int param;
+		param = SKUL->GetLostHpPercentage();
+		if (param > 80) param = 80;
+		new PhysicalAtkBuff(param, dTime, "BerserkerPhysicalAtkBuff");
+	}
+
 	mDashCoolTime -= dTime;
 	if (mDashCoolTime < 0) mDashCoolTime = 0;
 

@@ -3,7 +3,7 @@
 
 class CaerleonSword :public Item
 {
-	int mValue;
+	float mValue;
 
 public:
 

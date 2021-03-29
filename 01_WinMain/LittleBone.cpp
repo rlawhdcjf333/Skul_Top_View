@@ -244,7 +244,6 @@ void LittleBone::Render(HDC hdc)
 
 	mTileSelect->Render(hdc);
 
-	TextOut(hdc, 200, 100, to_wstring(mPhysicalAttackPower).c_str(), to_wstring(mPhysicalAttackPower).size());
 
 	//{{ 개발자용 타일 체크 렌더링
 	//TILE[mIndexY][mIndexX]->SelectRender(hdc);

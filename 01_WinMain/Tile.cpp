@@ -121,6 +121,7 @@ void Tile::EnemyAttack(int damage) {
 		Player* dumpPlayer = dynamic_cast<Player*> (elem);
 		if (dumpPlayer != nullptr) {
 			SKUL->Damage(damage);
+			SKUL->SetHitTime(0.6f);
 		}
 	}
 	mAttackTest = true;

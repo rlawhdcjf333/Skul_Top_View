@@ -384,6 +384,9 @@
     <ClInclude Include="LittleBoneHead.h">
       <Filter>MainGame\Item</Filter>
     </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>MainGame\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -636,6 +639,9 @@
       <Filter>MainGame\Item</Filter>
     </ClCompile>
     <ClCompile Include="LittleBoneHead.cpp">
+      <Filter>MainGame\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
   </ItemGroup>

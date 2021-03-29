@@ -26,10 +26,11 @@ void SkulManager::Init()
 	mGold = 0;
 
 	mAtkSpeed = 0.1f;
-	mPhysicalAtk = 1;
-	mMagicalAtk = 1;
+	mPhysicalAtk = 4;
+	mMagicalAtk = 4;
 
 	mInvincibility = false;
+	mHitTime = 0;
 
 	mInventory = new Inventory();
 }
@@ -55,6 +56,9 @@ void SkulManager::Update()
 		{
 			mInventory->Update(); // 인벤토리 활성 중일때 인벤토리 업데이트 == 커서가 위치한 곳에 따라 렌더 바꾸기
 		}
+
+		mHitTime -= dTime;
+		if (mHitTime < 0) mHitTime = 0;
 
 		mSwitchingCoolTime -= dTime;
 		if (mSwitchingCoolTime < 0) mSwitchingCoolTime = 0;
@@ -84,6 +88,7 @@ void SkulManager::Release()
 void SkulManager::Render(HDC hdc)
 {
 	mInventory->Render(hdc);
+	TextOut(hdc, 200, 100, to_wstring(mHp).c_str(), to_wstring(mHp).size());
 }
 
 void SkulManager::ChangeSkul()
@@ -125,4 +130,9 @@ Player* SkulManager::NewSkulGet(Player* skul)
 	mAlterSkul = mCurrentSkul;
 	mCurrentSkul = skul;
 	return nullptr;
+}
+
+int SkulManager::GetLostHpPercentage()
+{
+	return (float)100 * (mMaxHp - mHp) / (float)mMaxHp;
 }
