@@ -112,6 +112,9 @@
     <Filter Include="MainGame\Player\SkulManager">
       <UniqueIdentifier>{f9621100-4df5-4a29-acfe-c2c743f56560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Door">
+      <UniqueIdentifier>{38e75d37-b5c6-441c-b511-360e069d20e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
