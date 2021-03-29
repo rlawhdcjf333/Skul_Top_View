@@ -29,7 +29,6 @@ void GameScene4::Init()
 	SKUL->GetCurrentSkul()->SetObjectOnTile(7, 41);
 
 	IMAGEMANAGER->LoadFromFile(L"back2", Resources(L"back2.bmp"), 1280, 740, false);
-	mBack = new Image;
 	mBack = IMAGEMANAGER->FindImage(L"back2");
 }
 

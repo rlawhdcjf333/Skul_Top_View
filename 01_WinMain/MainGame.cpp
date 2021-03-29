@@ -10,13 +10,14 @@
 #include "GameScene6.h"
 #include "GameScene7.h"
 #include "GameScene8.h"
+#include "MainScene.h"
 
 /*
-Initialize : 초기??
-?�으�?게임???�작?�기 ?�에 초기??�??�성?� ?�기??진행
-게임 ?�작?�기 ?�에 ???�번�??�행?�는 ?�수
+Initialize : 초기화
+앞으로 게임을 시작하기 전에 초기화 및 생성은 여기서 진행
+게임 시작하기 전에 딱 한번만 실행되는 함수
 */
-void MainGame::Init()
+void MainGame::Init() 
 {
 	ShowCursor(false);
 	mBackBuffer = new Image();
@@ -70,6 +71,7 @@ void MainGame::Init()
 	CameraManager::GetInstance()->SetMainCamera(mCamera);
 
 	//SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
+	SceneManager::GetInstance()->AddScene(L"MainScene", new MainScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene2", new GameScene2);
 	SceneManager::GetInstance()->AddScene(L"GameScene3", new GameScene3);
@@ -78,25 +80,25 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
 	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
 	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
-	SceneManager::GetInstance()->LoadScene(L"GameScene");
+	SceneManager::GetInstance()->LoadScene(L"MainScene");
 
 }
 
 /*
-Release : 메모�??�제????불러주는 ?�수
-?�니?�라�?OnDestroy
-?�당 ?�래???�스?�스가 메모�??�제 ???????�번 ?�출?�주???�??
+Release : 메모리 해제할 때 불러주는 함수
+유니티라면 OnDestroy
+해당 클래스 인스턴스가 메모리 해제 될 때 단 한번 호출해주는 녀석
 */
 void MainGame::Release()
 {
-	Random::ReleaseInstance();	//?��????�스?�스 ??��
+	Random::ReleaseInstance();	//싱글톤 인스턴스 삭제
 	SKUL->Release();
 	SafeDelete(mBackBuffer);
 	SafeDelete(mCamera);
 }
 
 /*
-Update : �??�레???�행?�는 ?�수, ?�기???�산 처리 ?�다.
+Update : 매 프레임 실행되는 함수, 여기서 연산 처리 한다.
 */
 void MainGame::Update()
 {
@@ -111,16 +113,16 @@ void MainGame::Update()
 }
 
 /*
-Render : �??�레???�행?�는 ?�수, Update가 ?�나�?Render가 ?�행?�다.
-?�면??그려주는 것들?� ?��? ?�기??처리
+Render : 매 프레임 실행되는 함수, Update가 끝나고 Render가 실행된다.
+화면에 그려주는 것들은 전부 여기서 처리
 
-매개변??hdc : ?�도??창의 HDC가 ?�어??
+매개변수 hdc : 윈도우 창의 HDC가 들어옴
 */
 void MainGame::Render(HDC hdc)
 {
-	//백버?�의 HDC 가?�온??
+	//백버퍼의 HDC 가져온다
 	HDC backDC = mBackBuffer->GetHDC();
-	//HDC ?�역???�정 ?�으�?밀?�버리는 ?�??
+	//HDC 영역을 특정 색으로 밀어버리는 녀석
 	PatBlt(backDC, 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
 	// ==================================================
 	{
@@ -130,7 +132,7 @@ void MainGame::Render(HDC hdc)
 		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
 	}
 	//====================================================
-	//?�면버퍼 ?�용???�도??창에 고속 복사
+	//후면버퍼 내용을 윈도우 창에 고속 복사
 	mBackBuffer->Render(hdc, 0, 0);
 }
 

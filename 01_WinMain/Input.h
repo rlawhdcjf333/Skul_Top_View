@@ -29,6 +29,8 @@ public:
 	bool GetKey(const int& key);
 	//토글 키
 	bool ToggleKey(const int& key);
+	//전체 키 입력
+	bool GetAllKeyDown();
 
 
 };

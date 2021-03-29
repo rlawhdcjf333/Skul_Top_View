@@ -74,3 +74,16 @@ bool Input::ToggleKey(const int& key)
 
 	return false;
 }
+
+bool Input::GetAllKeyDown()
+{
+	
+	for (int key = 0; key < KeyMax; key++) {
+		if (GetAsyncKeyState(key) & 0x8000)
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}

@@ -181,6 +181,7 @@
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="LoopEffect.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MainScene.h" />
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="MapObjectPallete.h" />
     <ClInclude Include="Math.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="LoopEffect.cpp" />
     <ClCompile Include="MainGame + MainProc.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="MapObjectPallete.cpp" />
     <ClCompile Include="Math.cpp" />
