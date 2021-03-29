@@ -111,7 +111,7 @@ void GameScene::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 	
 }

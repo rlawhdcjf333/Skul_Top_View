@@ -68,10 +68,10 @@ void GameScene2::Update()
 	//	}
 	//}
 
-	if (INPUT->GetKeyDown(VK_CONTROL))
-	{
-		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
-	}
+	//if (INPUT->GetKeyDown(VK_CONTROL))
+	//{
+	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//}
 	
 	if(mRespawnCount<=0)
 	Obj->FindObject("Door")->SetIsActive(true);
@@ -147,8 +147,6 @@ void GameScene2::Render(HDC hdc)
 			}
 		}
 	}
-
-
 	ObjectManager::GetInstance()->Render(hdc);
 }
 
@@ -161,7 +159,7 @@ void GameScene2::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 
 }

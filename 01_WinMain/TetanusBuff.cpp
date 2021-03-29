@@ -35,7 +35,6 @@ TetanusBuff::TetanusBuff(GameObject* target, float duration)
 
 void TetanusBuff::Update()
 {
-
 	if (mDuration < 0 or !mTarget) { mIsDestroy = true; return; }
 	else
 	{

@@ -46,6 +46,34 @@ Effect::Effect(wstring keyname, float x, float y, EffectType type)
 
 	Obj->AddObject(ObjectLayer::Effect,this);
 }
+Effect::Effect(wstring keyname, float x, float y, function<void(void)> nextFunc)
+	:GameObject(), mNextImageKeyname(L""), mNextX(NULL), mNextY(NULL)
+{
+	mName.assign(keyname.begin(), keyname.end());
+	mImage = IMAGEMANAGER->FindImage(keyname);
+	mX = x;
+	mY = y;
+	mType = EffectType::Normal;
+	mSizeX = mImage->GetFrameWidth();
+	mSizeY = mImage->GetFrameHeight();
+	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
+	mAnimation = new Animation();
+	if (mImage->GetFrameY() != 0)
+	{
+		mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, mImage->GetFrameY() - 1, false);
+
+	}
+	else
+	{
+		mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, 0, false);
+	}
+	mAnimation->SetCallbackFunc([this]() {mAnimation->SetCurrentFrameIndex(mAnimation->GetFrameSize() - 1); });
+	mAnimation->SetFrameUpdateTime(0.05f);
+	mAnimation->Play();
+	mAlpha = 1.f;
+
+	Obj->AddObject(ObjectLayer::Effect, this);
+}
 
 void Effect::Init()
 {

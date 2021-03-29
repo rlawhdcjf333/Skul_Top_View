@@ -47,10 +47,10 @@ void GameScene8::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	if (INPUT->GetKeyDown(VK_CONTROL))
-	{
-		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
-	}
+	//if (INPUT->GetKeyDown(VK_CONTROL))
+	//{
+	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//}
 
 	if (mRespawnCount <= 0)
 		Obj->FindObject("Door")->SetIsActive(true);
@@ -135,7 +135,7 @@ void GameScene8::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 
 }

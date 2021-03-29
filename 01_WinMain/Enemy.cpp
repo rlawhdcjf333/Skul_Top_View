@@ -4,7 +4,7 @@
 
 
 Enemy::Enemy(int indexX, int indexY)
-	:GameObject(), mCurrentAnimation(nullptr), mCurrentImage(nullptr), mAngle(0), mAttackReadyDelay(0), mAttackEnd(true), mPathIndex(0)
+	:GameObject(), mCurrentAnimation(nullptr), mCurrentImage(nullptr), mAngle(0), mAttackReadyDelay(0), mAttackEnd(true), mPathIndex(0), mCurrentSkulTileCheckTime(0)
 {
 	mIndexX = indexX;
 	mIndexY = indexY;

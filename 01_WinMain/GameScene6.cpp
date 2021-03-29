@@ -52,26 +52,26 @@ void GameScene6::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	//RECT temp;
-	//RECT temp2 = Obj->FindObject("Door")->GetRect();
-	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
-	//if (IntersectRect(&temp, &temp2, &temp3))
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	if (IntersectRect(&temp, &temp2, &temp3))
+	{
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene7");
+		}
+	}
+
+	//if (INPUT->GetKeyDown('F'))
 	//{
-	//	if (INPUT->GetKeyDown('F'))
-	//	{
-	//		SceneManager::GetInstance()->LoadScene(L"GameScene7");
-	//	}
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene7");
 	//}
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene7");
-	}
-
-	if (INPUT->GetKeyDown(VK_CONTROL))
-	{
-		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
-	}
+	//if (INPUT->GetKeyDown(VK_CONTROL))
+	//{
+	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//}
 
 	if (mRespawnCount <= 0)
 		Obj->FindObject("Door")->SetIsActive(true);
@@ -161,7 +161,7 @@ void GameScene6::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 
 }

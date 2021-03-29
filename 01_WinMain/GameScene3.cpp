@@ -63,10 +63,10 @@ void GameScene3::Update()
 	//	}
 	//}
 
-	if (INPUT->GetKeyDown(VK_CONTROL))
-	{
-		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
-	}
+	//if (INPUT->GetKeyDown(VK_CONTROL))
+	//{
+	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//}
 
 	if (mRespawnCount <= 0)
 		Obj->FindObject("Door")->SetIsActive(true);
@@ -156,7 +156,7 @@ void GameScene3::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 
 }

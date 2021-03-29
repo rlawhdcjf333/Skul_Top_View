@@ -5,6 +5,7 @@
 Inventory::Inventory()
 {
 	IMAGEMANAGER->LoadFromFile(L"Inventory", Resources(L"/item/Inventory.bmp"), 1280, 720, true);
+	IMAGEMANAGER->LoadFromFile(L"Black", Resources(L"Black.bmp"), 1280, 720, true);
 	mImage = IMAGEMANAGER->FindImage(L"Inventory");
 
 	mToggleInventory = false;
@@ -63,8 +64,8 @@ void Inventory::Render(HDC hdc)
 {
 	if (mToggleInventory)
 	{
+		IMAGEMANAGER->FindImage(L"Black")->AlphaRender(hdc, 0, 0, 0.6f);
 		mImage->Render(hdc, 0, 0);
-
 		for (int i=0; i<mItemList.size(); i++)
 		{
 			IMAGEMANAGER->FindImage(mItemList[i]->GetImageKeyName())->ScaleRender(hdc, mItemSlot[i].left, mItemSlot[i].top, 45, 45); 

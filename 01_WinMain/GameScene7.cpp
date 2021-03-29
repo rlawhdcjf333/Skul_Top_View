@@ -52,26 +52,26 @@ void GameScene7::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	//RECT temp;
-	//RECT temp2 = Obj->FindObject("Door")->GetRect();
-	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
-	//if (IntersectRect(&temp, &temp2, &temp3))
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	if (IntersectRect(&temp, &temp2, &temp3))
+	{
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene8");
+		}
+	}
+
+	//if (INPUT->GetKeyDown('F'))
 	//{
-	//	if (INPUT->GetKeyDown('F'))
-	//	{
-	//		SceneManager::GetInstance()->LoadScene(L"GameScene8");
-	//	}
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene8");
 	//}
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene8");
-	}
-
-	if (INPUT->GetKeyDown(VK_CONTROL))
-	{
-		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
-	}
+	//if (INPUT->GetKeyDown(VK_CONTROL))
+	//{
+	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//}
 
 	if (mRespawnCount <= 0)
 		Obj->FindObject("Door")->SetIsActive(true);
@@ -117,10 +117,10 @@ void GameScene7::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 44));
 	}
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene8");
-	}
+	//if (INPUT->GetKeyDown('F'))
+	//{
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene8");
+	//}
 }
 
 void GameScene7::Render(HDC hdc)
@@ -161,7 +161,7 @@ void GameScene7::Release()
 			SafeDelete(elemelem);
 		}
 	}
-
+	SKUL->Reset();
 	Obj->Release();
 
 }

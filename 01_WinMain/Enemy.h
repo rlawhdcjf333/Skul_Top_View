@@ -39,6 +39,7 @@ protected:
 	Tile* mTargetSkulTile; //현재 스컬 타일
 	int mPathIndex;
 	float mHitTime; //경직 시간
+	float mCurrentSkulTileCheckTime; // 스컬 타일 체킹 시간
 	bool mKnockBackMove;
 	bool mIsKnockBack;
 	Tile* mKnockTile;
@@ -61,3 +62,4 @@ public :
 	void Stun(float val) { mHitTime = val; }
 };
 
+#define TileCheckTime 3.f

@@ -69,7 +69,7 @@ public:
 
 	virtual void SetAnimation(int listNum) {};
 	virtual void SetAttackSpeed() {};
-
+	void PathReset() { mPath.clear(); mPathIndex = 1;}
 };
 
 #define M (int)Motion::

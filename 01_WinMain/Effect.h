@@ -18,8 +18,10 @@ class Effect : public GameObject
 	float mNextY;
 	EffectType mType;
 	float mAlpha;
+	function<void(void)> mNextFunc;
 public :
 	Effect(wstring keyname,float x, float y, EffectType type);
+	Effect(wstring keyname, float x, float y, function<void(void)> nextFunc);
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;

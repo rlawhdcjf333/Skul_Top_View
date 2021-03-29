@@ -56,33 +56,27 @@ void Stage1_SwordMan::Update()
 		}
 	}
 	mCurrentSkul = SKUL->GetCurrentSkul();
-	mTargetSkulTile = TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()];
-	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
-	if (mType == StateType::Idle) {
-		if (mType != StateType::Walk) {
-			if (mType != StateType::Attack&&AttackCheck(1)) {
-				//근접으로 한칸
-				Attack();
-				mAttackEnd = true;
-			}
-			else if(mType != StateType::Attack) {
-				if (WalkCheck()) {
-					Walk();
-				}
-				else {
-					MoveReset();
-				}
-				
-			}
-		}
+	if (mTargetSkulTile != nullptr) {
+		mCurrentSkulTileCheckTime += dTime;
+	}
+	else {
+		mCurrentSkulTileCheckTime = 0;
 	}
 	if (mType == StateType::Walk) {
+		if (mTargetSkulTile == nullptr) {
+			if (WalkCheck()) {
+				Walk();
+			}
+			else {
+				MoveReset();
+			}
+		}
 		float mAngle = Math::GetAngle(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY());
 		if (LEFT && mDirection == Direction::right) {
 			mDirection = Direction::left;
 			Walk();
 		}
-		else if(RIGHT && mDirection == Direction::left) {
+		else if (RIGHT && mDirection == Direction::left) {
 			mDirection = Direction::right;
 			Walk();
 		}
@@ -97,12 +91,31 @@ void Stage1_SwordMan::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(1,5);
+				AttackDamage(1, 5);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
 			mCurrentAnimation->Stop();
-			CurrentSet(StateType::Idle,mDirection);
+			CurrentSet(StateType::Idle, mDirection);
+		}
+	}
+	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
+	if (mType == StateType::Idle) {
+		if (mType != StateType::Walk) {
+			if (mType != StateType::Attack && AttackCheck(1)) {
+				//근접으로 한칸
+				Attack();
+				mAttackEnd = true;
+			}
+			else if (mType != StateType::Attack) {
+				if (WalkCheck()) {
+					Walk();
+				}
+				else {
+					MoveReset();
+				}
+
+			}
 		}
 	}
 	mCurrentAnimation->Update();
@@ -194,14 +207,19 @@ void Stage1_SwordMan::Move(int speed)
 	
 	if (!mPath.empty()) {
 		mTargetTile->Update();
-		if (mPath.size() <= mPathIndex || !mTargetTile->GetTileEmpty()
-			|| mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()]) //목적지까지 이동 완료
+		if (mPath.size() <= mPathIndex) //목적지까지 이동 완료
 		{
 			mPath.clear();
 			mPathIndex = 1;
 			mTargetTile = nullptr;
 			mTargetSkulTile = nullptr;
 			Idle();
+		}
+		else if ((mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()] || !mTargetTile->GetTileEmpty())&&(mCurrentSkulTileCheckTime > TileCheckTime)) {
+			mPath.clear();
+			mPathIndex = 1;
+			mTargetTile = nullptr;
+			mTargetSkulTile = nullptr;
 		}
 		else //이동 중
 		{
@@ -443,6 +461,7 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
+			mTargetSkulTile = TILE[SKUL->GetCurrentSkul()->GetIndexY()][SKUL->GetCurrentSkul()->GetIndexX()];
 			return true;
 		}
 		else {

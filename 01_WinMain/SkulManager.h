@@ -69,6 +69,7 @@ public:
 
 	Inventory* GetInventory() { return mInventory; }
 
+	void Reset() { if(mCurrentSkul != nullptr)mCurrentSkul->PathReset();}
 };
 #define SKUL SkulManager::GetInstance()
 #define mAttackSpeed SkulManager::GetInstance()->GetAtkSpeed()
