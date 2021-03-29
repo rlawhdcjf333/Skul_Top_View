@@ -113,10 +113,10 @@ void Inventory::Render(HDC hdc)
 				CallFont(hdc, 15, [&]() 
 					{
 						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK |DT_VCENTER|DT_SINGLELINE);
 						DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
 						DrawText(hdc, mCurrentItem->GetSlot1Name().c_str(), mCurrentItem->GetSlot1Name().size(), &mDetailINameSlot1, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER |DT_WORDBREAK);
 					}
 				);
 				SetBkMode(hdc, OPAQUE);
@@ -129,7 +129,7 @@ void Inventory::Render(HDC hdc)
 				CallFont(hdc, 15, [&]()
 					{
 						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK);
+						DrawText(hdc, mCurrentItem->GetExplanation().c_str(), mCurrentItem->GetExplanation().size(), &mExplanationArea, DT_CENTER | DT_WORDBREAK |DT_VCENTER|DT_SINGLELINE);
 						DrawText(hdc, mCurrentItem->GetEffect().c_str(), mCurrentItem->GetEffect().size(), &mEffectArea, DT_CENTER | DT_WORDBREAK);
 
 						DrawText(hdc, mCurrentItem->GetSlot1Name().c_str(), mCurrentItem->GetSlot1Name().size(), &mDetailINameSlot1, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
@@ -156,6 +156,16 @@ void Inventory::Release()
 	{
 		elem->Release();
 		SafeDelete(elem);
+	}
+	if (mFirstSkul)
+	{
+		mFirstSkul->Release();
+		SafeDelete(mFirstSkul)
+	}
+	if (mSecondSkul)
+	{
+		mSecondSkul->Release();
+		SafeDelete(mSecondSkul)
 	}
 }
 

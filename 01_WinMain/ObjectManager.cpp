@@ -35,11 +35,8 @@ void ObjectManager::Release()
 	{
 		for (int i = 0; i < iter->second.size(); ++i)
 		{
-			if (iter->first == ObjectLayer::Player)
-				continue;
-			if (iter->first == ObjectLayer::Item && iter->second[i]->GetIsTrashed() == false) {
-				continue;
-			}
+			if (iter->first == ObjectLayer::Player) continue;
+			if (iter->first == ObjectLayer::Item && iter->second[i]->GetIsTrashed() == false) continue;
 			iter->second[i]->Release();
 			SafeDelete(iter->second[i]);
 		}
