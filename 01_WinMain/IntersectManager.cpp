@@ -8,16 +8,3 @@ IntersectManager::IntersectManager()
 //	mEnemy = &ObjectManager::GetInstance()->GetObjectList(ObjectLayer::Enemy);
 }
 
-//void IntersectManager::IntersectBullet()
-//{
-//	for (int a = 0; a < mPlayerBullets->size(); a++) {
-//		for (int b = 0; b < mEnemy->size(); b++) {
-//			RECT PlayerBullet = (*mPlayerBullets)[a]->GetRect();
-//			RECT Enmey = (*mEnemyBullets)[b]->GetRect();
-//			RECT temp;
-//			if (IntersectRect(&temp,&PlayerBullet,&Enemy) {
-//
-//			}
-//		}
-//	}
-//}
