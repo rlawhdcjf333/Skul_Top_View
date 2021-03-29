@@ -27,11 +27,12 @@ private:
 
 	float mHitTime;
 
+	stack<int> mDamages;
 	Inventory* mInventory;
 
 public:
 	void Init();
-	void Damage(int damage) { if(!mInvincibility) mHp -= damage; }
+	void Damage(int damage) { if (!mInvincibility) { mHp -= damage; mDamages.emplace(damage); } }
 	void Update();
 	void Release();
 	void Render(HDC hdc);

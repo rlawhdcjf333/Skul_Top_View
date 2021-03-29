@@ -35,8 +35,6 @@ void GameScene3::Init()
 
 void GameScene3::Update()
 {
-	ObjectManager::GetInstance()->Update();
-
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
 	float left = cameraRect.left;
@@ -51,17 +49,43 @@ void GameScene3::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+	Door* door = (Door*)Obj->FindObject(ObjectLayer::Door, "Door");
+	if (mDoorOpen && !door->DoorOpenCheck()) {
+		if (mDoorEventTime > 0) {
+			mDoorEventTime -= dTime;
+			CAMERA->ChangeMode(Camera::Mode::Follow);
+			CAMERA->SetTarget(door);
+		}
+		else {
+			if (!door->GetIsActive()) {
+				door->SetIsActive(true);
+			}
+			door->Update();
 
-	//RECT temp;
-	//RECT temp2 = Obj->FindObject("Door")->GetRect();
-	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
-	//if (IntersectRect(&temp, &temp2, &temp3))
-	//{
-	//	if (INPUT->GetKeyDown('F'))
-	//	{
-	//		SceneManager::GetInstance()->LoadScene(L"GameScene4");
-	//	}
-	//}
+		}
+		CAMERA->PanningOn(2);
+		CAMERA->Panning();
+		return;
+	}
+	else if (mOpenTime > 0 && door->DoorOpenCheck()) {
+		mOpenTime -= dTime;
+		door->Update();
+		return;
+	}
+	else {
+		CAMERA->SetTarget(SKUL->GetCurrentSkul());
+	}
+	ObjectManager::GetInstance()->Update();
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	if (IntersectRect(&temp, &temp2, &temp3))
+	{
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene4");
+		}
+	}
 
 	//if (INPUT->GetKeyDown(VK_CONTROL))
 	//{
@@ -69,7 +93,7 @@ void GameScene3::Update()
 	//}
 
 	if (mRespawnCount <= 0)
-		Obj->FindObject("Door")->SetIsActive(true);
+		mDoorOpen = true;
 
 	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
@@ -112,10 +136,10 @@ void GameScene3::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 27));
 	}
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene4");
-	}
+	//if (INPUT->GetKeyDown('F'))
+	//{
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene4");
+	//}
 }
 
 void GameScene3::Render(HDC hdc)

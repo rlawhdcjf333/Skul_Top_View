@@ -4,6 +4,7 @@
 #include "Effect.h"
 #include "Condition.h"
 #include "Inventory.h"
+#include "FixedSysFont.h"
 
 void SkulManager::Init()
 {
@@ -87,6 +88,10 @@ void SkulManager::Release()
 
 void SkulManager::Render(HDC hdc)
 {
+	while (mDamages.size() > 0) {
+		new FixedSysFont(mCurrentSkul->GetX(),mCurrentSkul->GetY(), 100, 100, to_wstring(mDamages.top()), FontColor::Red);
+		mDamages.pop();
+	}
 	mInventory->Render(hdc);
 	TextOut(hdc, 200, 100, to_wstring(mHp).c_str(), to_wstring(mHp).size());
 }

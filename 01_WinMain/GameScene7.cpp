@@ -35,8 +35,6 @@ void GameScene7::Init()
 
 void GameScene7::Update()
 {
-	ObjectManager::GetInstance()->Update();
-
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
 	float left = cameraRect.left;
@@ -51,7 +49,33 @@ void GameScene7::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+	Door* door = (Door*)Obj->FindObject(ObjectLayer::Door, "Door");
+	if (mDoorOpen && !door->DoorOpenCheck()) {
+		if (mDoorEventTime > 0) {
+			mDoorEventTime -= dTime;
+			CAMERA->ChangeMode(Camera::Mode::Follow);
+			CAMERA->SetTarget(door);
+		}
+		else {
+			if (!door->GetIsActive()) {
+				door->SetIsActive(true);
+			}
+			door->Update();
 
+		}
+		CAMERA->PanningOn(2);
+		CAMERA->Panning();
+		return;
+	}
+	else if (mOpenTime > 0 && door->DoorOpenCheck()) {
+		mOpenTime -= dTime;
+		door->Update();
+		return;
+	}
+	else {
+		CAMERA->SetTarget(SKUL->GetCurrentSkul());
+	}
+	ObjectManager::GetInstance()->Update();
 	RECT temp;
 	RECT temp2 = Obj->FindObject("Door")->GetRect();
 	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
@@ -74,7 +98,7 @@ void GameScene7::Update()
 	//}
 
 	if (mRespawnCount <= 0)
-		Obj->FindObject("Door")->SetIsActive(true);
+		mDoorOpen = true;
 
 	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{

@@ -10,7 +10,9 @@ class GameScene : public Scene
 	int offsetX;
 	int offsetY;
 	Image* mBack;
-
+	bool mDoorOpen = false;
+	float mOpenTime = 1.0f;
+	float mDoorEventTime = 3.0f;
 public:
 	void Init()override;
 	void Update()override;

@@ -6,8 +6,9 @@ enum class FontColor : int {
 };
 class FixedSysFont : public GameObject
 {
-	int mStartX;
-	int mStartY;
+	float mStartX;
+	float mStartY;
+	float mXcount;
 	wstring mNum;
 	FontColor mColor;
 	float mTime;

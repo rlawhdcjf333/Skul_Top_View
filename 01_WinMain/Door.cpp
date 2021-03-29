@@ -3,7 +3,7 @@
 #include "Animation.h"
 
 Door::Door(int x, int y)
-	:GameObject("Door")
+	:GameObject("Door"), mDoorOpen(false)
 {
 	mX = x;
 	mY = y;
@@ -45,6 +45,7 @@ void Door::Update()
 		mCurrentAnm->Stop();
 		mCurrentAnm = mAnm2;
 		mCurrentAnm->Play();
+		mDoorOpen = true;
 	}
 }
 

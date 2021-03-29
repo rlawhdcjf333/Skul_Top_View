@@ -6,6 +6,9 @@ class Player;
 class GameScene7 : public Scene
 {
 	vector <vector<Tile*>> mTileList;
+	bool mDoorOpen = false;
+	float mOpenTime = 1.0f;
+	float mDoorEventTime = 3.0f;
 public:
 	int x;
 	int y;

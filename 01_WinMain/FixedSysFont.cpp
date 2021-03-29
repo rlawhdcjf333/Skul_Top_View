@@ -5,11 +5,13 @@ FixedSysFont::FixedSysFont(int x, int y, int sizeX, int sizeY, wstring num, Font
 	:GameObject("FixedSysFont"), mNum(num), mColor(color), mTime(0)
 {
 	mX = x;
-	mY = y;
+	mY = y - 20.f;
 	mStartX = x;
-	mStartY = y;
+	mStartY = y - 20.f;
 	mSizeX = sizeX;
 	mSizeY = sizeY;
+	srand(time(NULL) + (int)mX);
+	mXcount = RAND->RandomInt(-20, 20) / 50.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 	Obj->AddObject(ObjectLayer::Font,this);
 }
@@ -21,9 +23,15 @@ void FixedSysFont::Init()
 void FixedSysFont::Update()
 {
 	mTime += dTime;
-	mY -=2;
+	if (mTime < 0.4f) {
+		mY -= 0.2;
+	}
+	else {
+		mY += 0.2;
+	}
+	mX += mXcount;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-	if (mTime > 2.f) {
+	if (mTime > 0.6f) {
 		mIsDestroy = true;
 	}
 }
