@@ -399,6 +399,9 @@
     <ClInclude Include="Door.h">
       <Filter>MainGame\Door</Filter>
     </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -658,6 +661,9 @@
     </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>MainGame\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include "GameScene6.h"
 #include "GameScene7.h"
 #include "GameScene8.h"
+#include "MainScene.h"
 
 /*
 Initialize : 초기??
@@ -70,6 +71,7 @@ void MainGame::Init()
 	CameraManager::GetInstance()->SetMainCamera(mCamera);
 
 	//SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
+	SceneManager::GetInstance()->AddScene(L"MainScene", new MainScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene2", new GameScene2);
 	SceneManager::GetInstance()->AddScene(L"GameScene3", new GameScene3);
@@ -78,7 +80,7 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
 	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
 	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
-	SceneManager::GetInstance()->LoadScene(L"GameScene");
+	SceneManager::GetInstance()->LoadScene(L"MainScene");
 
 }
 
