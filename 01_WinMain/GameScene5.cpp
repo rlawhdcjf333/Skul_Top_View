@@ -4,10 +4,13 @@
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
+#include "Door.h"
 
 void GameScene5::Init()
 {
 	MapLoad();
+	GameObject* door = new Door(1545, 972);
+	Obj->AddObject(ObjectLayer::Door, door);
 	Obj->Init();
 
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
@@ -38,6 +41,17 @@ void GameScene5::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+
+	//RECT temp;
+	//RECT temp2 = Obj->FindObject("Door")->GetRect();
+	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	//if (IntersectRect(&temp, &temp2, &temp3))
+	//{
+	//	if (INPUT->GetKeyDown('F'))
+	//	{
+	//		SceneManager::GetInstance()->LoadScene(L"GameScene6");
+	//	}
+	//}
 
 	if (INPUT->GetKeyDown('F'))
 	{

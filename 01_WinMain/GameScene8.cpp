@@ -4,10 +4,14 @@
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
+#include "Door.h"
 
 void GameScene8::Init()
 {
 	MapLoad();
+	GameObject* door = new Door(1220, 724);
+	Obj->AddObject(ObjectLayer::Door, door);
+	door->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(16, 43));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(17, 39));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(19, 41));
@@ -42,6 +46,55 @@ void GameScene8::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+
+	if (INPUT->GetKeyDown(VK_CONTROL))
+	{
+		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	}
+
+	if (mRespawnCount <= 0)
+		Obj->FindObject("Door")->SetIsActive(true);
+
+	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		mRespawnCount--;
+	}
+
+	if (mRespawnCount == 3 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 26));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(55, 23));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(49, 18));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 14));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(43, 13));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(44, 10));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(41, 7));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(38, 9));
+	}
+	if (mRespawnCount == 2 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(41, 7));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(38, 9));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(36, 9));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(33, 15));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(28, 16));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(28, 24));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 33));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(23, 36));
+
+	}
+
+	if (mRespawnCount == 1 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 33));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(23, 36));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(16, 42));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(17, 46));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(21, 51));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 53));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 50));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 44));
+	}
 }
 
 void GameScene8::Render(HDC hdc)

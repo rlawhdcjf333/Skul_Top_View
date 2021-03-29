@@ -248,3 +248,8 @@ vector<class GameObject*> ObjectManager::GetObjectList(ObjectLayer layer)
 {
 	return mObjectList[layer];
 }
+
+vector<class GameObject*>* ObjectManager::GetObjectListPt(ObjectLayer layer)
+{
+	return &mObjectList[layer];
+}

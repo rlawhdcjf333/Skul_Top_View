@@ -37,5 +37,4 @@ void Door::Update()
 void Door::Render(HDC hdc)
 {
 	CAMERA->FrameRender(hdc, mImage, mX, mY, mAnm->GetNowFrameX(), mAnm->GetNowFrameY());
-	CAMERA->RenderRect(hdc, mRect);
 }
