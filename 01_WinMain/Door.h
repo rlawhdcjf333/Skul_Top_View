@@ -4,7 +4,9 @@
 class Door : public GameObject
 {
 	Image* mImage;
-	Animation* mAnm;
+	Animation* mAnm1;
+	Animation* mAnm2;
+	Animation* mCurrentAnm;
 
 public:
 	Door(int x, int y);
