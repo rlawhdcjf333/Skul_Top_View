@@ -3,6 +3,7 @@
 #include "Animation.h"
 
 Door::Door(int x, int y)
+	:GameObject("Door")
 {
 	mX = x;
 	mY = y;
@@ -36,4 +37,5 @@ void Door::Update()
 void Door::Render(HDC hdc)
 {
 	CAMERA->FrameRender(hdc, mImage, mX, mY, mAnm->GetNowFrameX(), mAnm->GetNowFrameY());
+	CAMERA->RenderRect(hdc, mRect);
 }

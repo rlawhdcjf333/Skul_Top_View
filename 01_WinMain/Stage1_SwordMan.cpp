@@ -63,6 +63,7 @@ void Stage1_SwordMan::Update()
 			if (mType != StateType::Attack&&AttackCheck(1)) {
 				//±ÙÁ¢À¸·Î ÇÑÄ­
 				Attack();
+				mAttackEnd = true;
 			}
 			else if(mType != StateType::Attack) {
 				if (WalkCheck()) {
@@ -96,7 +97,7 @@ void Stage1_SwordMan::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage();
+				AttackDamage(1,5);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
@@ -226,8 +227,27 @@ void Stage1_SwordMan::Move(int speed)
 	}
 }
 
-void Stage1_SwordMan::AttackDamage()
+void Stage1_SwordMan::AttackDamage(int range, int damage)
 {
+	for (int y = mIndexY - range; y <= mIndexY + range; y++) {
+		for (int x = mIndexX - range; x <= mIndexX + range; x++) {
+			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
+				continue;
+			}
+			
+			if (mDirection == Direction::right) //¿ìÃø
+			{
+				if (y - x > mIndexY - mIndexX) continue;
+				TILE[y][x]->EnemyAttack(damage);
+			}
+			else if (mDirection == Direction::left) //ÁÂÃø
+			{
+				if (y - x < mIndexY - mIndexX) continue;
+				TILE[y][x]->EnemyAttack(damage);
+			}
+		}
+	}
+	mAttackEnd == false;
 }
 
 void Stage1_SwordMan::ReMove()
@@ -326,6 +346,11 @@ void Stage1_SwordMan::KnockBack()
 			mKnockTile = TILE[mIndexY][mIndexX + 1];
 		}
 	}
+	if (mKnockTile != nullptr) {
+		if (mKnockTile->GetType() == TileType::Block) {
+			mKnockTile = TILE[mIndexY][mIndexX];
+		}
+	}
 	EnemyInTileCheck();
 	mIsKnockBack = true; //³Ë¹éÀÌ ÀÏ¾î³µÀ» ¶§
 }
@@ -412,17 +437,18 @@ bool Stage1_SwordMan::WalkCheck() //ºó Ä­ Ã¼Å© ÈÄ ÀÌµ¿
 		}
 	}
 	moveTileList.clear();
-	if (!(mTargetTile == nullptr))
-	{
-		if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
-			mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
-			if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
-				return true;
-			}
-			else {
-				mTargetTile = nullptr;
-				return false;
-			}
+	//if (!(mTargetTile == nullptr))
+	//{
+	//	
+	//}
+	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
+		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
+		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
+			return true;
+		}
+		else {
+			mTargetTile = nullptr;
+			return false;
 		}
 	}
 	mTargetTile = nullptr;
