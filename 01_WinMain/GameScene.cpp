@@ -13,6 +13,7 @@ void GameScene::Init()
 	GameObject* little = new LittleBone(41, 57, 30, 30);
 	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
 	GameObject* door = new Door(680, 744);
+	door->SetIsActive(false);
 	alterSkul->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, little);
 	Obj->AddObject(ObjectLayer::Player, alterSkul);
@@ -49,17 +50,26 @@ void GameScene::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	RECT temp;
-	//RECT temp2 = Obj->FindObject("door")->GetRect();
-	RECT temp2 = Obj->FindObject("Door")->GetRect();
-	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
-	//RECT temp3 = Obj->FindObject("Player")->GetRect();
-	if (IntersectRect(&temp, &temp2, &temp3))
+	//RECT temp;
+	//RECT temp2 = Obj->FindObject("Door")->GetRect();
+	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	//if (IntersectRect(&temp, &temp2, &temp3))
+	//{
+	//	if (INPUT->GetKeyDown('F'))
+	//	{
+	//		SceneManager::GetInstance()->LoadScene(L"GameScene2");
+	//	}
+	//}
+
+	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
-		if (INPUT->GetKeyDown('F'))
-		{
-			SceneManager::GetInstance()->LoadScene(L"GameScene2");
-		}
+		if (INPUT->GetKeyDown('G'))
+		Obj->FindObject("Door")->SetIsActive(true);
+	}
+
+	if (INPUT->GetKeyDown('F'))
+	{
+		SceneManager::GetInstance()->LoadScene(L"GameScene2");
 	}
 }
 

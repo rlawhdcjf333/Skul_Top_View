@@ -11,13 +11,20 @@ Door::Door(int x, int y)
 
 void Door::Init()
 {
-	IMAGEMANAGER->LoadFromFile(L"Door", Resources(L"Door.bmp"), 800, 279, 5,1, true);
+	IMAGEMANAGER->LoadFromFile(L"Door", Resources(L"Door.bmp"), 1600, 279, 10,1, true);
 	mImage = IMAGEMANAGER->FindImage(L"Door");
-	mAnm = new Animation();
-	mAnm->InitFrameByStartEnd(0, 0, 4, 0, false);
-	mAnm->SetIsLoop(true);
-	mAnm->SetFrameUpdateTime(0.3f);
-	mAnm->Play();
+	mAnm1 = new Animation();
+	mAnm1->InitFrameByStartEnd(0, 0, 4, 0, false);
+	mAnm1->SetIsLoop(true);
+	mAnm1->SetFrameUpdateTime(0.1f);
+	mCurrentAnm = mAnm1;
+	mCurrentAnm->Play();
+
+	mAnm2 = new Animation();
+	mAnm2->InitFrameByStartEnd(5, 0, 9, 0, false);
+	mAnm2->SetIsLoop(true);
+	mAnm2->SetFrameUpdateTime(0.3f);
+
 	mSizeX = mImage->GetFrameWidth();
 	mSizeY = mImage->GetFrameHeight();
 
@@ -26,16 +33,22 @@ void Door::Init()
 
 void Door::Release()
 {
-	SafeDelete(mAnm);
+	SafeDelete(mAnm1);
+	SafeDelete(mAnm2);
 }
 
 void Door::Update()
 {
-	mAnm->Update();
+	mCurrentAnm->Update();
+	if (mCurrentAnm->GetNowFrameX() == 4)
+	{
+		mCurrentAnm->Stop();
+		mCurrentAnm = mAnm2;
+		mCurrentAnm->Play();
+	}
 }
 
 void Door::Render(HDC hdc)
 {
-	CAMERA->FrameRender(hdc, mImage, mX, mY, mAnm->GetNowFrameX(), mAnm->GetNowFrameY());
-	CAMERA->RenderRect(hdc, mRect);
+	CAMERA->FrameRender(hdc, mImage, mX, mY, mCurrentAnm->GetNowFrameX(), 0);
 }

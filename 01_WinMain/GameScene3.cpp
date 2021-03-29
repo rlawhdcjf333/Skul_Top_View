@@ -4,14 +4,23 @@
 #include "Tile.h"
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
+#include "Door.h"
 
 void GameScene3::Init()
 {
+	mRespawnCount = 4;
 	MapLoad();
+	GameObject* door = new Door(1627, 743);
+	Obj->AddObject(ObjectLayer::Door, door);
+	door->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(26, 34));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 42));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(30, 38));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 41));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 32));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(28, 51));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 29));
 	Obj->Init();
 
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
@@ -42,6 +51,66 @@ void GameScene3::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+
+	//RECT temp;
+	//RECT temp2 = Obj->FindObject("Door")->GetRect();
+	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	//if (IntersectRect(&temp, &temp2, &temp3))
+	//{
+	//	if (INPUT->GetKeyDown('F'))
+	//	{
+	//		SceneManager::GetInstance()->LoadScene(L"GameScene4");
+	//	}
+	//}
+
+	if (INPUT->GetKeyDown(VK_CONTROL))
+	{
+		Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	}
+
+	if (mRespawnCount <= 0)
+		Obj->FindObject("Door")->SetIsActive(true);
+
+	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		mRespawnCount--;
+	}
+
+	if (mRespawnCount == 3 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(28, 35));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(26, 44));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 35));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 46));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(41, 44));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(42, 38));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45, 44));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(44, 29));
+	}
+	if (mRespawnCount == 2 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(45, 44));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(44, 29));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(42, 46));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 52));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 50));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 44));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(58, 43));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 36));
+
+	}
+
+	if (mRespawnCount == 1 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
+	{
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(58, 43));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 36));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(61, 39));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(60, 34));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(57, 28));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(52, 27));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 31));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 27));
+	}
 
 	if (INPUT->GetKeyDown('F'))
 	{

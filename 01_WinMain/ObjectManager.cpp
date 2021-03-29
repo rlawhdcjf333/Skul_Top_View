@@ -258,7 +258,12 @@ void ObjectManager::ReleaseObject(ObjectLayer layer, const string& name)
 		{
 			iter->second[i]->Release();
 			SafeDelete(iter->second[i]);
-			iter->second.erase(iter->second.begin()+i);
+			iter->second.erase(iter->second.begin() + i);
 		}
 	}
+}
+
+vector<class GameObject*>* ObjectManager::GetObjectListPt(ObjectLayer layer)
+{
+	return &mObjectList[layer];
 }

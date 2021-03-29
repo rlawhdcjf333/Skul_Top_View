@@ -336,9 +336,6 @@
     <ClInclude Include="TetanusBuff.h">
       <Filter>MainGame\Condition</Filter>
     </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene2.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
@@ -595,9 +592,6 @@
     </ClCompile>
     <ClCompile Include="TetanusBuff.cpp">
       <Filter>MainGame\Condition</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameScene2.cpp">
       <Filter>MainGame\Scene</Filter>
