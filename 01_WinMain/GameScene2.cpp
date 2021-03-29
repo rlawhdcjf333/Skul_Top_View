@@ -8,16 +8,16 @@
 void GameScene2::Init()
 {
 	MapLoad();
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(40, 38));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 44));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(56, 45));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(53, 42));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(51, 39));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(54, 38));
 	Obj->Init();
 	
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	SKUL->GetCurrentSkul()->SetObjectOnTile(18, 39);
+	SKUL->GetCurrentSkul()->SetObjectOnTile(54, 53);
 
 	//CAMERA->ChangeMode(Camera::Mode::Follow);
 	//CAMERA->SetTarget(Obj->FindObject("player"));

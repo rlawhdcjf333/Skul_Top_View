@@ -8,16 +8,16 @@
 void GameScene3::Init()
 {
 	MapLoad();
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(18, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(15, 47));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(20, 50));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(22, 54));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(26, 34));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 42));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(30, 38));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 41));
 	Obj->Init();
 
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	SKUL->GetCurrentSkul()->SetObjectOnTile(7, 41);
+	SKUL->GetCurrentSkul()->SetObjectOnTile(18, 39);
 
 	IMAGEMANAGER->LoadFromFile(L"back2", Resources(L"back2.bmp"), 1280, 740, false);
 	mBack = new Image;

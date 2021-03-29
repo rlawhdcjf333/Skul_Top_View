@@ -26,7 +26,7 @@ public :
 	void Hit();
 	void Damage(int Damage)override;
 	void Move(int speed);
-	void AttackDamage(); //공격 모션 데미지 판정
+	void AttackDamage(int range, int damage); //공격 모션 데미지 판정
 	void ReMove(); //타일에서 밀려났을 때
 
 	void AnimationSet();
