@@ -37,6 +37,9 @@ void ObjectManager::Release()
 		{
 			if (iter->first == ObjectLayer::Player)
 				continue;
+			if (iter->first == ObjectLayer::Item && iter->second[i]->GetIsTrashed() == false) {
+				continue;
+			}
 			iter->second[i]->Release();
 			SafeDelete(iter->second[i]);
 		}
@@ -201,6 +204,10 @@ GameObject * ObjectManager::FindObject(const string & name)
 GameObject * ObjectManager::FindObject(ObjectLayer layer, const string & name)
 {
 	ObjectIter iter = mObjectList.find(layer);
+	if (iter == mObjectList.end()) {
+		return nullptr;
+	}
+
 	for (int i = 0; i < iter->second.size(); ++i)
 	{
 		if (iter->second[i]->GetName() == name)
