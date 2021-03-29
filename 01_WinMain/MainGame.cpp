@@ -80,7 +80,7 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
 	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
 	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
-	SceneManager::GetInstance()->LoadScene(L"MainScene");
+	SceneManager::GetInstance()->LoadScene(L"GameScene");
 
 }
 
