@@ -234,7 +234,6 @@ void Stage1_SwordMan::AttackDamage(int range, int damage)
 			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
 				continue;
 			}
-			
 			if (mDirection == Direction::right) //¿ìÃø
 			{
 				if (y - x > mIndexY - mIndexX) continue;
@@ -247,7 +246,7 @@ void Stage1_SwordMan::AttackDamage(int range, int damage)
 			}
 		}
 	}
-	mAttackEnd == false;
+	mAttackEnd = false;
 }
 
 void Stage1_SwordMan::ReMove()
