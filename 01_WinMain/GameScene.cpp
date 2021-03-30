@@ -76,6 +76,7 @@ void GameScene::Update()
 		CAMERA->SetTarget(SKUL->GetCurrentSkul());
 	}
 	ObjectManager::GetInstance()->Update();
+	mAnm->Update();
 
 	RECT temp;
 	RECT temp2 = Obj->FindObject("Door")->GetRect();
@@ -100,7 +101,6 @@ void GameScene::Update()
 	//{
 	//	SceneManager::GetInstance()->LoadScene(L"GameScene2");
 	//}
-	mAnm->Update();
 }
 
 void GameScene::Render(HDC hdc)

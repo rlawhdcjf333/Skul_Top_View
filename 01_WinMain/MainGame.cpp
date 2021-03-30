@@ -108,11 +108,14 @@ void MainGame::Update()
 	{
 		SceneManager::GetInstance()->Update();
 	}
-	else if (SKUL->GetInventory()->GetIsToggle()==false)
+	else
 	{
 		SkulManager::GetInstance()->Update();
-		CAMERA->Update();
-		SceneManager::GetInstance()->Update();
+		if (SKUL->GetInventory()->GetIsToggle() == false) 
+		{
+			CAMERA->Update();
+			SceneManager::GetInstance()->Update();
+		}
 	}
 	
 	//if (INPUT->GetKeyDown(VK_ESCAPE)) SceneManager::LoadScene();
