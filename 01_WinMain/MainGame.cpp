@@ -10,6 +10,7 @@
 #include "GameScene6.h"
 #include "GameScene7.h"
 #include "GameScene8.h"
+#include "GameScene9.h"
 #include "MainScene.h"
 
 /*
@@ -80,6 +81,7 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
 	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
 	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
+	SceneManager::GetInstance()->AddScene(L"GameScene9", new GameScene9);
 	SceneManager::GetInstance()->LoadScene(L"MainScene");
 
 }

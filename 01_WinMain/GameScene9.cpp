@@ -1,46 +1,35 @@
 #include "pch.h"
-#include "GameScene8.h"
-#include "Player.h"
+#include "GameScene9.h"
 #include "Tile.h"
 #include "MapObject.h"
-#include "Stage1_SwordMan.h"
 #include "Door.h"
-#include "Stage1_SwordMan.h"
-#include "Stage1_Hammer.h"
-#include "Stage1_Hunter.h"
-#include "Stage1_NormalEnt.h"
-#include "Stage1_Wizard.h"
+#include "Items.h"
+#include "Animation.h"
 
-void GameScene8::Init()
+void GameScene9::Init()
 {
-	mRespawnCount = 4;
+	SoundPlayer::GetInstance()->Stop(L"Stage2");
+	SoundPlayer::GetInstance()->Play(L"Airman", 0.1);
 	MapLoad();
-	GameObject* door = new Door(1220, 724);
-	Obj->AddObject(ObjectLayer::Door, door);
+
+	SKUL->GetCurrentSkul()->SetObjectOnTile(50, 48);
+	
+	GameObject* door = new Door(630, 900);
 	door->SetIsActive(false);
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(18, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(18, 37));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(20, 43));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(20, 38));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(30, 46));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(30, 36));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(24, 34));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(24, 42));
+	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
+	Obj->AddObject(ObjectLayer::Door, door);
 	Obj->Init();
 
-	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
-	if (SKUL->GetAlterSkul())Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
-	SKUL->GetCurrentSkul()->SetObjectOnTile(3, 40);
+	CAMERA->ChangeMode(Camera::Mode::Follow);
+	CAMERA->SetTarget(SKUL->GetCurrentSkul());
 
 	IMAGEMANAGER->LoadFromFile(L"back5", Resources(L"back5.bmp"), 1280, 740, false);
 	mBack = IMAGEMANAGER->FindImage(L"back5");
 }
 
-void GameScene8::Update()
+void GameScene9::Update()
 {
-	ObjectManager::GetInstance()->Update();
-
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
 	float left = cameraRect.left;
@@ -55,60 +44,52 @@ void GameScene8::Update()
 	if (offsetY > offsetX / 2 + TileSizeY / 2) { y++; }
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
+	Door* door = (Door*)Obj->FindObject(ObjectLayer::Door, "Door");
+	if (mDoorOpen && !door->DoorOpenCheck()) {
+		if (mDoorEventTime > 0) {
+			mDoorEventTime -= dTime;
+			CAMERA->ChangeMode(Camera::Mode::Follow);
+			CAMERA->SetTarget(door);
+		}
+		else {
+			if (!door->GetIsActive()) {
+				door->SetIsActive(true);
+			}
+			door->Update();
 
-	//if (INPUT->GetKeyDown(VK_CONTROL))
+		}
+		CAMERA->PanningOn(2);
+		CAMERA->Panning();
+		return;
+	}
+	else if (mOpenTime > 0 && door->DoorOpenCheck()) {
+		mOpenTime -= dTime;
+		door->Update();
+		return;
+	}
+	else {
+		CAMERA->SetTarget(SKUL->GetCurrentSkul());
+	}
+	ObjectManager::GetInstance()->Update();
+
+	//RECT temp;
+	//RECT temp2 = Obj->FindObject("Door")->GetRect();
+	//RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
+	//if (IntersectRect(&temp, &temp2, &temp3))
 	//{
-	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
+	//	if (INPUT->GetKeyDown('F'))
+	//	{
+	//		SceneManager::GetInstance()->LoadScene(L"GameScene");
+	//	}
 	//}
 
 	if (mRespawnCount <= 0)
 	{
 		Obj->FindObject("Door")->SetIsActive(true);
 	}
-
-	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
-	{
-		mRespawnCount--;
-	}
-
-	if (mRespawnCount == 3 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
-	{
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(40, 44));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(39, 40));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(49, 36));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(43, 45));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(42, 40));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(41, 36));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(45, 45));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(45, 41));
-	}
-	if (mRespawnCount == 2 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
-	{
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(35, 62));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(40, 66));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(37, 60));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(41, 63));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(39, 58));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(43, 60));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(42, 55));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(47, 57));
-
-	}
-
-	if (mRespawnCount == 1 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
-	{
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(48, 43));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(57, 45));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(49, 37));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(57, 38));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(52, 35));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(57, 34));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(52, 31));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(52, 25));
-	}
 }
 
-void GameScene8::Render(HDC hdc)
+void GameScene9::Render(HDC hdc)
 {
 	mBack->Render(hdc, 0, 0);
 
@@ -137,7 +118,7 @@ void GameScene8::Render(HDC hdc)
 	ObjectManager::GetInstance()->Render(hdc);
 }
 
-void GameScene8::Release()
+void GameScene9::Release()
 {
 	for (auto elem : mTileList)
 	{
@@ -147,13 +128,13 @@ void GameScene8::Release()
 		}
 	}
 	mTileList.clear();
-
 	SKUL->Reset();
 	Obj->Release();
 
+	SafeDelete(mAnm);
 }
 
-void GameScene8::MapLoad()
+void GameScene9::MapLoad()
 {
 	for (int y = 0; y < 75; y++)
 	{
@@ -179,7 +160,7 @@ void GameScene8::MapLoad()
 		mTileList.push_back(tmp);
 	}
 
-	ifstream loadStream(L"../04_Data/Stage1Map8/Tile.txt");
+	ifstream loadStream(L"../04_Data/Stage1Map7/Tile.txt");
 	if (loadStream.is_open())
 	{
 		for (int y = 0; y < mTileList.size(); ++y)
@@ -216,7 +197,7 @@ void GameScene8::MapLoad()
 	}
 	loadStream.close();
 
-	loadStream.open(L"../04_Data/Stage1Map8/Object.txt");
+	loadStream.open(L"../04_Data/Stage1Map7/Object.txt");
 	if (loadStream.is_open())
 	{
 		while (loadStream.peek() != EOF) {
