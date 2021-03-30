@@ -124,6 +124,24 @@
     <Filter Include="MainGame\Item\SkulHead">
       <UniqueIdentifier>{ae2b50df-fa93-4a9c-bc94-ffd212a9162e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Item\MarchItem">
+      <UniqueIdentifier>{95a74fa2-8ce3-4463-a36a-b551d24013a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Item\BlackMagicItem">
+      <UniqueIdentifier>{4999c87d-4be3-41a7-aa02-3bc512f06142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Item\StrategyItem">
+      <UniqueIdentifier>{a434a540-bdca-4ea8-965c-0595d6f1f900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Item\ScrugeItem">
+      <UniqueIdentifier>{8581a35f-1f44-4f31-b714-d8355c304802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Item\HeartItem">
+      <UniqueIdentifier>{53d183e9-db5f-4ca3-809e-a669831e5e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Item\MadnessItem">
+      <UniqueIdentifier>{651b0805-bce8-4472-8618-0f214fe1bafc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -378,9 +396,6 @@
     <ClInclude Include="AtkSpeedBuff.h">
       <Filter>MainGame\Condition</Filter>
     </ClInclude>
-    <ClInclude Include="CaerleonSword.h">
-      <Filter>MainGame\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>MainGame\Player\SkulManager</Filter>
     </ClInclude>
@@ -443,6 +458,78 @@
     </ClInclude>
     <ClInclude Include="YakshaHead.h">
       <Filter>MainGame\Item\SkulHead</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneOfBrave.h">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CaerleonSword.h">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClInclude>
+    <ClInclude Include="GiantAxe.h">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClInclude>
+    <ClInclude Include="HerosGlove.h">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClInclude>
+    <ClInclude Include="RitualDagger.h">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClInclude>
+    <ClInclude Include="RitualStaff.h">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneOfMana.h">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClInclude>
+    <ClInclude Include="DimLightDarkcite.h">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="HatredStone.h">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClInclude>
+    <ClInclude Include="DeterminationOfKnight.h">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartOfNaias.h">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartOfRuby.h">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="MedalOfCarleon.h">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="LuckyStone.h">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenIncenseBurner.h">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="BerserkersGlove.h">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClInclude>
+    <ClInclude Include="RageClaw.h">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssassinationDagger.h">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneOfSpeed.h">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneSandglass.h">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClInclude>
+    <ClInclude Include="MagesNecklace.h">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ManaEater.h">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClInclude>
+    <ClInclude Include="InfinityBone.h">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -683,9 +770,6 @@
     <ClCompile Include="PhysicalAtkBuff.cpp">
       <Filter>MainGame\Condition</Filter>
     </ClCompile>
-    <ClCompile Include="CaerleonSword.cpp">
-      <Filter>MainGame\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>MainGame\Player\SkulManager</Filter>
     </ClCompile>
@@ -745,6 +829,78 @@
     </ClCompile>
     <ClCompile Include="YakshaHead.cpp">
       <Filter>MainGame\Item\SkulHead</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneOfBrave.cpp">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CaerleonSword.cpp">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GiantAxe.cpp">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClCompile>
+    <ClCompile Include="HerosGlove.cpp">
+      <Filter>MainGame\Item\MarchItem</Filter>
+    </ClCompile>
+    <ClCompile Include="RitualDagger.cpp">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClCompile>
+    <ClCompile Include="RitualStaff.cpp">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneOfMana.cpp">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClCompile>
+    <ClCompile Include="DimLightDarkcite.cpp">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClCompile>
+    <ClCompile Include="HatredStone.cpp">
+      <Filter>MainGame\Item\StrategyItem</Filter>
+    </ClCompile>
+    <ClCompile Include="DeterminationOfKnight.cpp">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClCompile>
+    <ClCompile Include="HeartOfNaias.cpp">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClCompile>
+    <ClCompile Include="HeartOfRuby.cpp">
+      <Filter>MainGame\Item\HeartItem</Filter>
+    </ClCompile>
+    <ClCompile Include="MedalOfCarleon.cpp">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="LuckyStone.cpp">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenIncenseBurner.cpp">
+      <Filter>MainGame\Item\ScrugeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="BerserkersGlove.cpp">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClCompile>
+    <ClCompile Include="RageClaw.cpp">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssassinationDagger.cpp">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneOfSpeed.cpp">
+      <Filter>MainGame\Item\MadnessItem</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneSandglass.cpp">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClCompile>
+    <ClCompile Include="MagesNecklace.cpp">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ManaEater.cpp">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClCompile>
+    <ClCompile Include="InfinityBone.cpp">
+      <Filter>MainGame\Item\BlackMagicItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
