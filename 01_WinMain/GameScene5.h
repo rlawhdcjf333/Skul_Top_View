@@ -12,7 +12,9 @@ public:
 	int offsetX;
 	int offsetY;
 	class Image* mBack;
+	Image* mStoreMaster2;
 	Image* mStoreMaster;
+	bool mtogle;
 	Animation* mAnm;
 	void Init()override;
 	void Update()override;

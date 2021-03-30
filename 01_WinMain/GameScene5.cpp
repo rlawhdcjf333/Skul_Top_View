@@ -26,12 +26,15 @@ void GameScene5::Init()
 	mBack = IMAGEMANAGER->FindImage(L"back3");
 	IMAGEMANAGER->LoadFromFile(L"StoreMaster", Resources(L"StoreMaster.bmp"), 1816, 151, 8, 1, true);
 	mStoreMaster = IMAGEMANAGER->FindImage(L"StoreMaster");
+	IMAGEMANAGER->LoadFromFile(L"StoreMaster2", Resources(L"StoreMaster2.bmp"), 1280, 720, 8, 1, true);
+	mStoreMaster2 = IMAGEMANAGER->FindImage(L"StoreMaster2");
 
 	mAnm = new Animation();
 	mAnm->InitFrameByStartEnd(0, 0, 7, 0, false);
 	mAnm->SetIsLoop(true);
 	mAnm->SetFrameUpdateTime(0.1f);
 	mAnm->Play();
+	mtogle = false;
 }
 
 void GameScene5::Update()
@@ -61,6 +64,22 @@ void GameScene5::Update()
 		if (INPUT->GetKeyDown('F'))
 		{
 			SceneManager::GetInstance()->LoadScene(L"GameScene6");
+		}
+	}
+
+	if (INPUT->GetKeyDown('T'))
+	{
+		if (mtogle == true)mtogle = false;
+
+		else if (mtogle == false)mtogle = true;
+	}
+
+	if (INPUT->GetKeyDown('Y'))
+	{
+		if (SKUL->GetGold() >= 100)
+		{
+			SKUL->PlusHp(20);
+			SKUL->PlusGold(-100);
 		}
 	}
 
@@ -98,6 +117,8 @@ void GameScene5::Render(HDC hdc)
 
 	ObjectManager::GetInstance()->Render(hdc);
 	CAMERA->FrameRender(hdc, mStoreMaster, 535, 955,mAnm->GetNowFrameX(),0);
+	if(mtogle==true)
+	mStoreMaster2->Render(hdc, 0, 0);
 }
 
 void GameScene5::Release()

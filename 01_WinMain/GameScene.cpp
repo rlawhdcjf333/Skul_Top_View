@@ -98,11 +98,6 @@ void GameScene::Update()
 			
 		//Obj->FindObject("Door")->SetIsActive(true);
 	}
-
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene5");
-	}
 }
 
 void GameScene::Render(HDC hdc)
