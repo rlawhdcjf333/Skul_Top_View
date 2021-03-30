@@ -54,6 +54,37 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"WereWolf2", Resources(L"SkulImage/WereWolf2.bmp"), 42, 42, true);
 	IMAGEMANAGER->LoadFromFile(L"Yaksha1", Resources(L"SkulImage/Yaksha1.bmp"), 90, 90, true);
 	IMAGEMANAGER->LoadFromFile(L"Yaksha1", Resources(L"SkulImage/Yaksha2.bmp"), 42, 42, true);
+
+	IMAGEMANAGER->LoadFromFile(L"AlchemistSkill1", Resources(L"skillImage/AlchemistSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"AlchemistSkill2", Resources(L"skillImage/AlchemistSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"BerserkerSkill1", Resources(L"skillImage/BerserkerSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"BerserkerSkill2", Resources(L"skillImage/BerserkerSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"ClownSkill1", Resources(L"skillImage/ClownSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"ClownSkill2", Resources(L"skillImage/ClownSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"EntSkill1", Resources(L"skillImage/EntSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"EntSkill2", Resources(L"skillImage/EntSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill1", Resources(L"skillImage/GrimReaperSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill2", Resources(L"skillImage/GrimReaperSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill1", Resources(L"skillImage/HighWarlockSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill2", Resources(L"skillImage/HighWarlockSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"HunterSkill1", Resources(L"skillImage/HunterSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"HunterSkill2", Resources(L"skillImage/HunterSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"LittleBoneSkill1", Resources(L"skillImage/LittleBone1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"LittleBoneSkill2", Resources(L"skillImage/LittleBone2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"MinoSkill1", Resources(L"skillImage/MinoSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"MinoSkill2", Resources(L"skillImage/MinoSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"NinjaSkill1", Resources(L"skillImage/NinjaSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"NinjaSkill2", Resources(L"skillImage/NinjaSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"PettyThiefSkill1", Resources(L"skillImage/PettyThiefSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"PettyThiefSkill2", Resources(L"skillImage/PettyThiefSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"SwordSkill1", Resources(L"skillImage/SwordSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"SwordSkill2", Resources(L"skillImage/SwordSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"WarriorSkill1", Resources(L"skillImage/WarriorSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"WarriorSkill2", Resources(L"skillImage/WarriorSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"WerewolfSkill1", Resources(L"skillImage/WereWolfSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"WerewolfSkill2", Resources(L"skillImage/WereWolfSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"YakshaSkill1", Resources(L"skillImage/YakshaSkill1.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"YakshaSkill2", Resources(L"skillImage/YakshaSkill2.bmp"), 24, 24, true);
 	
 	mPlayerFrame = IMAGEMANAGER->FindImage(L"PlayerFrame");
 	mTimerFrame = IMAGEMANAGER->FindImage(L"TimerFrame");
@@ -79,6 +110,8 @@ void SkulManager::Init()
 	mInventory = nullptr;
 
 	mCurrentSkulFace = IMAGEMANAGER->FindImage(L"LittleBone1");
+	mSkill1 = IMAGEMANAGER->FindImage(L"LittleBoneSkill1");
+	mSkill2 = IMAGEMANAGER->FindImage(L"LittleBoneSkill2");
 }
 
 
@@ -140,7 +173,10 @@ void SkulManager::Update()
 		name2 = mAlterSkul->GetKeyName();
 	mSecondSkulFace = IMAGEMANAGER->FindImage(name2.append(L"2"));
 
-
+	name = mCurrentSkul->GetKeyName();
+	mSkill1= IMAGEMANAGER->FindImage(name.append(L"Skill1"));
+	name = mCurrentSkul->GetKeyName();
+	mSkill2 = IMAGEMANAGER->FindImage(name.append(L"Skill2"));
 }
 
 void SkulManager::Release()
@@ -157,22 +193,34 @@ void SkulManager::Render(HDC hdc)
 	mTimerFrame->Render(hdc, 0, 0);
 
 	mHpBar->ScaleRender(hdc, 86, 676, 236 * (float)((float)mHp / (float)mMaxHp), 20);
+	if(mCurrentSkulFace)
 	mCurrentSkulFace->Render(hdc, 10, 588);
-	if(mSecondSkulFace)
+
+	if (mSecondSkulFace)
 	mSecondSkulFace->Render(hdc, 20, 650);
+	
+	if (mSkill1 && mSkill2)
+	{
+		mSkill1->ScaleRender(hdc, 116, 618, 48, 48);
+		mSkill2->ScaleRender(hdc, 186, 618, 48, 48);
+	}
 
 	while (mDamages.size() > 0) {
 		new FixedSysFont(mCurrentSkul->GetX(),mCurrentSkul->GetY(), 100, 100, to_wstring(mDamages.top()), FontColor::Red);
 		mDamages.pop();
 	}
 	mInventory->Render(hdc);
-	TextOut(hdc, 200, 100, to_wstring(mPhysicalAtk).c_str(), to_wstring(mPhysicalAtk).size());
+	//TextOut(hdc, 200, 100, to_wstring(mPhysicalAtk).c_str(), to_wstring(mPhysicalAtk).size());
 
 	SetBkMode(hdc, TRANSPARENT);
 	SetTextColor(hdc, RGB(255, 255, 255));
 	TextOut(hdc, 220, 678, to_wstring(mMaxHp).c_str(), to_wstring(mMaxHp).size());
 	TextOut(hdc, 200, 678, L"/", 1);
 	TextOut(hdc, 160, 678, to_wstring(mHp).c_str(), to_wstring(mHp).size());
+	TextOut(hdc, 38, 12, to_wstring((int)Time::GetInstance()->GetWorldTime()/60).c_str(), to_wstring((int)Time::GetInstance()->GetWorldTime() / 60).size());
+	TextOut(hdc, 63, 12, L":", 1);
+	TextOut(hdc, 88, 12, to_wstring((int)Time::GetInstance()->GetWorldTime() % 60).c_str(), to_wstring((int)Time::GetInstance()->GetWorldTime() % 60).size());
+	TextOut(hdc, 1000, 670, to_wstring(mGold).c_str(), to_wstring(mGold).size());
 	SetBkMode(hdc, OPAQUE);
 	SetTextColor(hdc, RGB(0, 0, 0));
 }

@@ -24,8 +24,7 @@ NinjaHead::NinjaHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"NinjaHead", Resources(L"skulImage/NinjaHead.bmp"), 30, 22, true);
-	IMAGEMANAGER->LoadFromFile(L"NinjaSkill1", Resources(L"skillImage/NinjaSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"NinjaSkill2", Resources(L"skillImage/NinjaSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"NinjaHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"NinjaSkill1");

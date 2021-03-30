@@ -25,8 +25,7 @@ HunterHead::HunterHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"HunterHead", Resources(L"skulImage/HunterHead.bmp"), 27, 22, true);
-	IMAGEMANAGER->LoadFromFile(L"HunterSkill1", Resources(L"skillImage/HunterSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"HunterSkill2", Resources(L"skillImage/HunterSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"HunterHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"HunterSkill1");

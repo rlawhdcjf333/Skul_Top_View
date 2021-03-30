@@ -24,8 +24,7 @@ SwordHead::SwordHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"SwordHead", Resources(L"skulImage/SwordHead.bmp"), 23, 20, true);
-	IMAGEMANAGER->LoadFromFile(L"SwordSkill1", Resources(L"skillImage/SwordSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"SwordSkill2", Resources(L"skillImage/SwordSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"SwordHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"SwordSkill1");

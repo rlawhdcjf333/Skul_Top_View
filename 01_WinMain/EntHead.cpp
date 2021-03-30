@@ -26,8 +26,7 @@ EntHead::EntHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"EntHead", Resources(L"skulImage/EntHead.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"EntSkill1", Resources(L"skillImage/EntSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"EntSkill2", Resources(L"skillImage/EntSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"EntHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"EntSkill1");

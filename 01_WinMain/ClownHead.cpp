@@ -25,8 +25,7 @@ ClownHead::ClownHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"ClownHead", Resources(L"skulImage/ClownHead.bmp"), 37, 26, true);
-	IMAGEMANAGER->LoadFromFile(L"ClownSkill1", Resources(L"skillImage/ClownSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"ClownSkill2", Resources(L"skillImage/ClownSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"ClownHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"ClownSkill1");

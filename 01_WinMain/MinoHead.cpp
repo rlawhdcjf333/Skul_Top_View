@@ -24,8 +24,7 @@ MinoHead::MinoHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"MinoHead", Resources(L"skulImage/MinotaurusHead.bmp"), 38, 35, true);
-	IMAGEMANAGER->LoadFromFile(L"MinoSkill1", Resources(L"skillImage/MinoSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"MinoSkill2", Resources(L"skillImage/MinoSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"MinoHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"MinoSkill1");

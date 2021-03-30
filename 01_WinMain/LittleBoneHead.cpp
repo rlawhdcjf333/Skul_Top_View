@@ -26,8 +26,7 @@ LittleBoneHead::LittleBoneHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"LittleBoneHead", Resources(L"skulImage/LittleBoneHead.bmp"), 15, 13, true);
-	IMAGEMANAGER->LoadFromFile(L"LittleBoneSkill1", Resources(L"skillImage/LittleBone1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"LittleBoneSkill2", Resources(L"skillImage/LittleBone2.bmp"), 24, 24, true);
+	
 	mImage = IMAGEMANAGER->FindImage(L"LittleBoneHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"LittleBoneSkill1");
 	mSlot2Image = IMAGEMANAGER->FindImage(L"LittleBoneSkill2");

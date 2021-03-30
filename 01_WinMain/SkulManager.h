@@ -38,6 +38,8 @@ private:
 	Image* mHpBar;
 	Image* mCurrentSkulFace;
 	Image* mSecondSkulFace;
+	Image* mSkill1;
+	Image* mSkill2;
 
 	wstring name;
 	wstring name2;

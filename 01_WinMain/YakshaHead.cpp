@@ -24,8 +24,7 @@ YakshaHead::YakshaHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"YakshaHead", Resources(L"skulImage/YakshaHead.bmp"), 25, 25, true);
-	IMAGEMANAGER->LoadFromFile(L"YakshaSkill1", Resources(L"skillImage/YakshaSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"YakshaSkill2", Resources(L"skillImage/YakshaSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"YakshaHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"YakshaSkill1");

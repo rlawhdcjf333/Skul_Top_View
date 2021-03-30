@@ -36,7 +36,7 @@ void TileSelect::Render(HDC hdc)
 	{
 		mCurrentTile->SelectRender(hdc);
 
-		TextOut(hdc, 50, 350, to_wstring(mCurrentTile->GetIndexX()).c_str(), to_wstring(mCurrentTile->GetIndexX()).length());
-		TextOut(hdc, 50, 375, to_wstring(mCurrentTile->GetIndexY()).c_str(), to_wstring(mCurrentTile->GetIndexY()).length());
+		//TextOut(hdc, 50, 350, to_wstring(mCurrentTile->GetIndexX()).c_str(), to_wstring(mCurrentTile->GetIndexX()).length());
+		//TextOut(hdc, 50, 375, to_wstring(mCurrentTile->GetIndexY()).c_str(), to_wstring(mCurrentTile->GetIndexY()).length());
 	}
 }

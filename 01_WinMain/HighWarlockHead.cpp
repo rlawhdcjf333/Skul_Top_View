@@ -25,8 +25,7 @@ HighWarlockHead::HighWarlockHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"HighWarlockHead", Resources(L"skulImage/HighWarlockHead.bmp"), 26, 21, true);
-	IMAGEMANAGER->LoadFromFile(L"HighWarlockSkill1", Resources(L"skillImage/HighWarlockSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"HighWarlockSkill2", Resources(L"skillImage/HighWarlockSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"HighWarlockHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"HighWarlockSkill1");

@@ -23,11 +23,10 @@ WerewolfHead::WerewolfHead(int indexX, int indexY)
 	mSlot2Explanation = L"할퀴기 공격으로 마법데미지를 입힙니다.\n할퀴기 공격으로 처치한 적 1명당 체력을 1 회복합니다.\n\n쿨다운 15초.";
 
 
-	IMAGEMANAGER->LoadFromFile(L"WerewolfHead", Resources(L"skulImage/WerewolfHead.bmp"), 29, 25, true);
-	IMAGEMANAGER->LoadFromFile(L"WerewolfSkill1", Resources(L"skillImage/WereWolfSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"WerewolfSkill2", Resources(L"skillImage/WereWolfSkill2.bmp"), 24, 24, true);
+	IMAGEMANAGER->LoadFromFile(L"WereWolfHead", Resources(L"skulImage/WerewolfHead.bmp"), 29, 25, true);
+	
 
-	mImage = IMAGEMANAGER->FindImage(L"WerewolfHead");
+	mImage = IMAGEMANAGER->FindImage(L"WereWolfHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"WerewolfSkill1");
 	mSlot2Image = IMAGEMANAGER->FindImage(L"WerewolfSkill2");
 

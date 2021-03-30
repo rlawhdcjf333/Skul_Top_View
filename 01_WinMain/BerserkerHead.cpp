@@ -26,8 +26,7 @@ BerserkerHead::BerserkerHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"BerserkerHead", Resources(L"skulImage/BerserkerHead.bmp"), 35, 19, true);
-	IMAGEMANAGER->LoadFromFile(L"BerserkerSkill1", Resources(L"skillImage/BerserkerSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"BerserkerSkill2", Resources(L"skillImage/BerserkerSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"BerserkerHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"BerserkerSkill1");

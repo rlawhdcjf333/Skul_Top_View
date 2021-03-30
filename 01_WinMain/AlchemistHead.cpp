@@ -25,8 +25,6 @@ AlchemistHead::AlchemistHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"AlchemistHead", Resources(L"skulImage/AlchemistHead.bmp"), 26, 21, true);
-	IMAGEMANAGER->LoadFromFile(L"AlchemistSkill1", Resources(L"skillImage/AlchemistSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"AlchemistSkill2", Resources(L"skillImage/AlchemistSkill2.bmp"), 24, 24, true);
 		
 	mImage = IMAGEMANAGER->FindImage(L"AlchemistHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"AlchemistSkill1");

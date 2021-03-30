@@ -25,8 +25,6 @@ GrimReaperHead::GrimReaperHead(int indexX, int indexY)
 	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"GrimReaperHead", Resources(L"skulImage/GrimReaperHead.bmp"), 36, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill1", Resources(L"skillImage/GrimReaperSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill2", Resources(L"skillImage/GrimReaperSkill2.bmp"), 24, 24, true);
 
 	mImage = IMAGEMANAGER->FindImage(L"GrimReaperHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"GrimReaperSkill1");

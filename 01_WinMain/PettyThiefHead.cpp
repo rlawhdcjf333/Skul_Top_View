@@ -24,8 +24,7 @@ PettyThiefHead::PettyThiefHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"PettyThiefHead", Resources(L"skulImage/PettyThiefHead.bmp"), 21, 21, true);
-	IMAGEMANAGER->LoadFromFile(L"PettyThiefSkill1", Resources(L"skillImage/PettyThiefSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"PettyThiefSkill2", Resources(L"skillImage/PettyThiefSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"PettyThiefHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"PettyThiefSkill1");

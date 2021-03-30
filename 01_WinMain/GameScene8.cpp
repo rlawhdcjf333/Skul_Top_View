@@ -61,6 +61,46 @@ void GameScene8::Update()
 	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
 	//}
 
+	Door* door = (Door*)Obj->FindObject(ObjectLayer::Door, "Door");
+	if (mDoorOpen && !door->DoorOpenCheck()) {
+		if (mDoorEventTime > 0) {
+			mDoorEventTime -= dTime;
+			CAMERA->ChangeMode(Camera::Mode::Follow);
+			CAMERA->SetTarget(door);
+		}
+		else {
+			if (!door->GetIsActive()) {
+				ITEM->RandomSpawn(50, 23);
+				SKUL->PlusGold(RAND->RandomInt(80, 130));
+				door->SetIsActive(true);
+			}
+			door->Update();
+
+		}
+		CAMERA->PanningOn(2);
+		CAMERA->Panning();
+		return;
+	}
+	else if (mOpenTime > 0 && door->DoorOpenCheck()) {
+		mOpenTime -= dTime;
+		door->Update();
+		return;
+	}
+	else {
+		CAMERA->SetTarget(SKUL->GetCurrentSkul());
+	}
+	ObjectManager::GetInstance()->Update();
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
+	if (IntersectRect(&temp, &temp2, &temp3))
+	{
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene9");
+		}
+	}
+
 	if (mRespawnCount <= 0)
 	{
 		Obj->FindObject("Door")->SetIsActive(true);

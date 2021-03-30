@@ -24,8 +24,7 @@ WarriorHead::WarriorHead(int indexX, int indexY)
 
 
 	IMAGEMANAGER->LoadFromFile(L"WarriorHead", Resources(L"skulImage/WarriorHead.bmp"), 19, 17, true);
-	IMAGEMANAGER->LoadFromFile(L"WarriorSkill1", Resources(L"skillImage/WarriorSkill1.bmp"), 24, 24, true);
-	IMAGEMANAGER->LoadFromFile(L"WarriorSkill2", Resources(L"skillImage/WarriorSkill2.bmp"), 24, 24, true);
+	
 
 	mImage = IMAGEMANAGER->FindImage(L"WarriorHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"WarriorSkill1");
