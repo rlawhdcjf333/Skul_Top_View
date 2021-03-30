@@ -15,6 +15,8 @@ class Stage1_Wizard : public Enemy
 	StateType mType;
 	bool mNowTeleport;
 	RECT mAttackTarget;
+	float mNextAttackTime;
+	float mNextTeleportTime;
 public:
 	Stage1_Wizard(int indexX, int indexY);
 	void Init() override;

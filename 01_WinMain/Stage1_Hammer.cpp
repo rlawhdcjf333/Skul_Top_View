@@ -6,19 +6,19 @@
 Stage1_Hammer::Stage1_Hammer(int indexX, int indexY)
 	:Enemy(indexX, indexY)
 {
-	mHp = 60;
+	mHp = 200;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-	mResources = L"Monster/stage1/SwordMan/";
+	mResources = L"Monster/stage1/Hamer/";
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Attack],
-		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 864, 218, 8, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 432, 109, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Idle],
-		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 545, 200, 6, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 273, 100, 6, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Walk],
-		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 896, 200, 8, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 448, 100, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Tackle],
-		Resources(mResources + mStateType[(int)StateType::Tackle] + L".bmp"), 309, 226, 3, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Tackle] + L".bmp"), 115, 113, 3, 2, true);
 
 	AnimationSet();
 	mDirection = Direction::right;
@@ -84,14 +84,14 @@ void Stage1_Hammer::Update()
 	}
 	if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetNowFrameX() == 0) {
-			mCurrentAnimation->SetFrameUpdateTime(1.f);
+			mCurrentAnimation->SetFrameUpdateTime(1.2f);
 		}
 		if (mCurrentAnimation->GetNowFrameX() != 0) {
-			mCurrentAnimation->SetFrameUpdateTime(0.1f);
+			mCurrentAnimation->SetFrameUpdateTime(0.2f);
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(1, 5);
+				AttackDamage(2, 10);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {

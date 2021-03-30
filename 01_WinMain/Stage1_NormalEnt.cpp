@@ -2,6 +2,8 @@
 #include "Animation.h"
 #include "Image.h"
 #include "Stage1_NormalEnt.h"
+#include "FixedSysFont.h"
+
 Stage1_NormalEnt::Stage1_NormalEnt(int indexX, int indexY)
 	:Enemy(indexX, indexY)
 {
@@ -22,12 +24,11 @@ Stage1_NormalEnt::Stage1_NormalEnt(int indexX, int indexY)
 	AnimationSet();
 	mDirection = Direction::right;
 	CurrentSet(StateType::Idle, mDirection);
-	mAttackDelay = 1.f; // 공격 간격 1초6
+	mAttackDelay = 1.f; // 공격 간격 1초
 }
 
 void Stage1_NormalEnt::Init()
 {
-
 }
 
 void Stage1_NormalEnt::Update()
@@ -55,26 +56,21 @@ void Stage1_NormalEnt::Update()
 		}
 	}
 	mCurrentSkul = SKUL->GetCurrentSkul();
-	mTargetSkulTile = TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()];
-	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
-	if (mType == StateType::Idle) {
-		if (mType != StateType::Walk) {
-			if (mType != StateType::Attack && AttackCheck(1)) {
-				//근접으로 한칸
-				Attack();
-			}
-			else if (mType != StateType::Attack) {
-				if (WalkCheck()) {
-					Walk();
-				}
-				else {
-					MoveReset();
-				}
-
-			}
-		}
+	if (mTargetSkulTile != nullptr) {
+		mCurrentSkulTileCheckTime += dTime;
+	}
+	else {
+		mCurrentSkulTileCheckTime = 0;
 	}
 	if (mType == StateType::Walk) {
+		if (mTargetSkulTile == nullptr) {
+			if (WalkCheck()) {
+				Walk();
+			}
+			else {
+				MoveReset();
+			}
+		}
 		float mAngle = Math::GetAngle(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY());
 		if (LEFT && mDirection == Direction::right) {
 			mDirection = Direction::left;
@@ -95,12 +91,31 @@ void Stage1_NormalEnt::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage();
+				AttackDamage(1, 5);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
 			mCurrentAnimation->Stop();
 			CurrentSet(StateType::Idle, mDirection);
+		}
+	}
+	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
+	if (mType == StateType::Idle) {
+		if (mType != StateType::Walk) {
+			if (mType != StateType::Attack && AttackCheck(1)) {
+				//근접으로 한칸
+				Attack();
+				mAttackEnd = true;
+			}
+			else if (mType != StateType::Attack) {
+				if (WalkCheck()) {
+					Walk();
+				}
+				else {
+					MoveReset();
+				}
+
+			}
 		}
 	}
 	mCurrentAnimation->Update();
@@ -116,10 +131,19 @@ void Stage1_NormalEnt::Release()
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[1].begin(); itr != mAnimationMap[1].end(); itr++) {
 		SafeDelete(itr->second.animation);
 	}
+	while (mDamages.size() > 0) {
+		new FixedSysFont(mX, mY, 100, 100, to_wstring(mDamages.top()), FontColor::Blue);
+		mDamages.pop();
+	}
 }
 
 void Stage1_NormalEnt::Render(HDC hdc)
 {
+
+	while (mDamages.size() > 0) {
+		new FixedSysFont(mX, mY, 100, 100, to_wstring(mDamages.top()), FontColor::Blue);
+		mDamages.pop();
+	}
 	//CAMERA->RenderRect(hdc, mRect);
 	if (mCurrentImage) {
 		CAMERA->CenterBottomFrameRender(hdc, mCurrentImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY());
@@ -169,13 +193,13 @@ void Stage1_NormalEnt::Hit()
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
 		mCurrentAnimation->Update();
 		mCurrentAnimation->Pause();
-		mHitTime = 0.6f;
+		if (mHitTime < 0.6f) mHitTime = 0.6f;
 	}
 	else {
 		CurrentSet(StateType::Hit, mDirection);
 		mCurrentAnimation->Pause();
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
-		mHitTime = 0.6f;
+		mHitTime = 0.6f; //이 타이밍으로 애들 피격 순간 체크를 하고 있으므로 변경되면 알려주시길 바람
 	}
 	KnockBack();
 }
@@ -183,21 +207,28 @@ void Stage1_NormalEnt::Hit()
 void Stage1_NormalEnt::Damage(int Damage)
 {
 	mHp -= Damage;
+	mDamages.emplace(Damage);
 	Hit();
 }
 
 void Stage1_NormalEnt::Move(int speed)
 {
+
 	if (!mPath.empty()) {
 		mTargetTile->Update();
-		if (mPath.size() <= mPathIndex || !mTargetTile->GetTileEmpty()
-			|| mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()]) //목적지까지 이동 완료
+		if (mPath.size() <= mPathIndex) //목적지까지 이동 완료
 		{
 			mPath.clear();
 			mPathIndex = 1;
 			mTargetTile = nullptr;
 			mTargetSkulTile = nullptr;
 			Idle();
+		}
+		else if ((mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()] || !mTargetTile->GetTileEmpty()) && (mCurrentSkulTileCheckTime > TileCheckTime)) {
+			mPath.clear();
+			mPathIndex = 1;
+			mTargetTile = nullptr;
+			mTargetSkulTile = nullptr;
 		}
 		else //이동 중
 		{
@@ -223,8 +254,26 @@ void Stage1_NormalEnt::Move(int speed)
 	}
 }
 
-void Stage1_NormalEnt::AttackDamage()
+void Stage1_NormalEnt::AttackDamage(int range, int damage)
 {
+	for (int y = mIndexY - range; y <= mIndexY + range; y++) {
+		for (int x = mIndexX - range; x <= mIndexX + range; x++) {
+			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
+				continue;
+			}
+			if (mDirection == Direction::right) //우측
+			{
+				if (y - x > mIndexY - mIndexX) continue;
+				TILE[y][x]->EnemyAttack(damage);
+			}
+			else if (mDirection == Direction::left) //좌측
+			{
+				if (y - x < mIndexY - mIndexX) continue;
+				TILE[y][x]->EnemyAttack(damage);
+			}
+		}
+	}
+	mAttackEnd = false;
 }
 
 void Stage1_NormalEnt::ReMove()
@@ -323,6 +372,11 @@ void Stage1_NormalEnt::KnockBack()
 			mKnockTile = TILE[mIndexY][mIndexX + 1];
 		}
 	}
+	if (mKnockTile != nullptr) {
+		if (mKnockTile->GetType() == TileType::Block) {
+			mKnockTile = TILE[mIndexY][mIndexX];
+		}
+	}
 	EnemyInTileCheck();
 	mIsKnockBack = true; //넉백이 일어났을 때
 }
@@ -409,9 +463,14 @@ bool Stage1_NormalEnt::WalkCheck() //빈 칸 체크 후 이동
 		}
 	}
 	moveTileList.clear();
+	//if (!(mTargetTile == nullptr))
+	//{
+	//	
+	//}
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
+			mTargetSkulTile = TILE[SKUL->GetCurrentSkul()->GetIndexY()][SKUL->GetCurrentSkul()->GetIndexX()];
 			return true;
 		}
 		else {

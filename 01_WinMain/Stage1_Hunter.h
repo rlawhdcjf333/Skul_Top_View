@@ -12,6 +12,7 @@ class Stage1_Hunter:public Enemy
 	wstring mStateType[(int)StateType::End] = { L"Attack",L"Idle",L"Walk",L"Hit" };
 	map<StateType, AnimationPair> mAnimationMap[2];
 	StateType mType;
+	float mShotTime;
 public:
 	Stage1_Hunter(int indexX, int indexY);
 	void Init() override;
@@ -23,11 +24,13 @@ public:
 	void Attack();
 	void Idle();
 	void Hit();
+	void Shot();
+
 	void Damage(int Damage)override;
 	void Move(int speed);
 	void AttackDamage(int range, int damage); //공격 모션 데미지 판정
 	void ReMove(); //타일에서 밀려났을 때
-
+	
 	void AnimationSet();
 	void CurrentSet(StateType type, Direction direction);
 	void MoveReset();

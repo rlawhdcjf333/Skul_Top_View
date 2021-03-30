@@ -2,23 +2,24 @@
 #include "Stage1_Hunter.h"
 #include "Animation.h"
 #include "FixedSysFont.h"
+#include "EnemyArrow.h"
 
 Stage1_Hunter::Stage1_Hunter(int indexX, int indexY)
-	:Enemy(indexX, indexY)
+	:Enemy(indexX, indexY), mShotTime(2.f)
 {
 	mHp = 60;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-	mResources = L"Monster/stage1/SwordMan/";
+	mResources = L"Monster/stage1/Hunter/";
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hunter" + mStateType[(int)StateType::Attack],
-		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 312, 128, 4, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 228, 98, 4, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hunter" + mStateType[(int)StateType::Hit],
-		Resources(mResources + mStateType[(int)StateType::Hit] + L".bmp"), 92, 102, 2, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Hit] + L".bmp"), 102, 96, 2, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hunter" + mStateType[(int)StateType::Idle],
-		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 204, 112, 6, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 190, 104, 5, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hunter" + mStateType[(int)StateType::Walk],
-		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 416, 100, 8, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 228, 98, 6, 2, true);
 
 	AnimationSet();
 	mDirection = Direction::right;
@@ -83,26 +84,22 @@ void Stage1_Hunter::Update()
 		Move(150);
 	}
 	if (mType == StateType::Attack) {
-		if (mCurrentAnimation->GetNowFrameX() == 0) {
-			mCurrentAnimation->SetFrameUpdateTime(1.f);
-		}
-		if (mCurrentAnimation->GetNowFrameX() != 0) {
+		if (mCurrentAnimation->GetNowFrameX() != 3) {
 			mCurrentAnimation->SetFrameUpdateTime(0.1f);
 		}
-		if (mCurrentAnimation->GetNowFrameX() == 2) {
-			if (mAttackEnd) {
-				AttackDamage(1, 5);
-			}
+		else if (mCurrentAnimation->GetNowFrameX() == 3) {
+			mCurrentAnimation->SetFrameUpdateTime(2.5f);
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
-			mCurrentAnimation->Stop();
+			//mCurrentAnimation->Stop();
+			Shot();
 			CurrentSet(StateType::Idle, mDirection);
 		}
 	}
 	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
 	if (mType == StateType::Idle) {
 		if (mType != StateType::Walk) {
-			if (mType != StateType::Attack && AttackCheck(1)) {
+			if (mType != StateType::Attack && AttackCheck(5)) {
 				//근접으로 한칸
 				Attack();
 				mAttackEnd = true;
@@ -177,6 +174,7 @@ void Stage1_Hunter::Attack()
 	else {
 		mDirection = Direction::right;
 	}
+
 	CurrentSet(StateType::Attack, mDirection);
 }
 
@@ -202,6 +200,12 @@ void Stage1_Hunter::Hit()
 		mHitTime = 0.6f; //이 타이밍으로 애들 피격 순간 체크를 하고 있으므로 변경되면 알려주시길 바람
 	}
 	KnockBack();
+}
+
+void Stage1_Hunter::Shot()
+{
+	float angle = Math::GetAngle(mX,mY,SKUL->GetCurrentSkul()->GetX(), SKUL->GetCurrentSkul()->GetY());
+	new EnemyArrow(mX,mY, angle,500.f);
 }
 
 void Stage1_Hunter::Damage(int Damage)
@@ -412,13 +416,9 @@ void Stage1_Hunter::KnockBackMove()
 }
 bool Stage1_Hunter::AttackCheck(int area)
 {
-	int indexX = mCurrentSkul->GetIndexX();
-	int indexY = mCurrentSkul->GetIndexY();
-
-	if (indexX - area <= mIndexX && indexX + area >= mIndexX) {
-		if (indexY - area <= mIndexY && indexY + area >= mIndexY) {
-			return true;
-		}
+	float m = Math::GetDistance(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY());
+	if (m < 500.f) {
+		return true;
 	}
 	return false;
 }
@@ -437,8 +437,8 @@ bool Stage1_Hunter::WalkCheck() //빈 칸 체크 후 이동
 	int indexX = mCurrentSkul->GetIndexX();
 	int indexY = mCurrentSkul->GetIndexY();
 	vector<Tile*> moveTileList;
-	for (int y = indexY - 1; y < indexY + 2; y++) {
-		for (int x = indexX - 1; x < indexX + 2; x++) {
+	for (int y = indexY - 5; y < indexY + 6; y++) {
+		for (int x = indexX - 5; x < indexX + 6; x++) {
 			if ((y >= 0 && y < TILESizeY) && (x >= 0 && x < TILESizeX)
 				&& !(x == indexX && y == indexY)) {
 				if (TILE[y][x]->GetType() != TileType::Block) {

@@ -5,7 +5,7 @@
 #include "FirePillar.h"
 
 Stage1_Wizard::Stage1_Wizard(int indexX, int indexY)
-	:Enemy(indexX, indexY), mNowTeleport(false)
+	:Enemy(indexX, indexY), mNowTeleport(false), mNextAttackTime(0), mNextTeleportTime(0)
 {
 	mHp = 40;
 	mSizeX = 30.f;
@@ -17,7 +17,7 @@ Stage1_Wizard::Stage1_Wizard(int indexX, int indexY)
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Wizard" + mStateType[(int)StateType::Hit],
 		Resources(mResources + mStateType[(int)StateType::Hit] + L".bmp"), 116, 98, 2, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Wizard" + mStateType[(int)StateType::Idle],
-		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 215, 112, 6, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 215, 112, 5, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Wizard" + mStateType[(int)StateType::Teleport_In],
 		Resources(mResources + mStateType[(int)StateType::Teleport_In] + L".bmp"), 344, 130, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Wizard" + mStateType[(int)StateType::Teleport_Out],
@@ -37,6 +37,14 @@ void Stage1_Wizard::Init()
 
 void Stage1_Wizard::Update()
 {
+	mNextAttackTime -= dTime;
+	mNextTeleportTime -= dTime;
+	if (mNextAttackTime < 0) {
+		mNextAttackTime = 0;
+	}
+	if (mNextTeleportTime < 0) {
+		mNextTeleportTime = 0;
+	}
 	if (mHp <= 0) {
 		mIsDestroy = true;
 		return;
@@ -79,7 +87,7 @@ void Stage1_Wizard::Update()
 	}
 	else if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetIsPlay()) {
-			mAttackTarget = RectMakeBottom(mTargetTile->GetX()+30,mTargetTile->GetY()+40,60,90);
+			mAttackTarget = RectMakeBottom(mTargetTile->GetX()+30,mTargetTile->GetY()+50,60,100);
 			//추후 불기둥에 해당 Rect값을 보내 렉트 출돌 체크 후 데미지
 		}
 		else if (!mCurrentAnimation->GetIsPlay()) {
@@ -165,6 +173,7 @@ void Stage1_Wizard::Attack()
 	//}
 	//CurrentSet(StateType::Attack, mDirection);
 	new FirePillar(mTargetTile->GetX(),mTargetTile->GetY(),mAttackTarget);
+	mNextAttackTime = 5.f;
 }
 
 void Stage1_Wizard::Idle()
@@ -198,6 +207,7 @@ void Stage1_Wizard::Teleport()
 	TILE[mIndexY][mIndexX]->SetObject(this);
 	CurrentSet(StateType::Teleport_Out,mDirection);
 	mTargetTile = nullptr;
+	mNextTeleportTime = 10.f;
 }
 void Stage1_Wizard::Damage(int Damage)
 {
@@ -343,6 +353,9 @@ void Stage1_Wizard::KnockBackMove()
 }
 bool Stage1_Wizard::TeleportCheck()
 {
+	if (mNextTeleportTime != 0) {
+		return false;
+	}
 	float m = Math::GetDistance(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY()); //거리
 	if (m > 800.f) {
 		return false;
@@ -383,6 +396,10 @@ bool Stage1_Wizard::TeleportCheck()
 }
 bool Stage1_Wizard::AttackCheck(int area)
 {
+	if (mNextAttackTime !=0) {
+		return false;
+	}
+
 	int indexX = mCurrentSkul->GetIndexX();
 	int indexY = mCurrentSkul->GetIndexY();
 
