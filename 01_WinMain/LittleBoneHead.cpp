@@ -23,6 +23,7 @@ LittleBoneHead::LittleBoneHead(int indexX, int indexY)
 	mSlot2Name = L"머리가 본체";
 	mSlot2Explanation =L"머리가 없는 상태일 때, 머리로 이동합니다.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"LittleBoneHead", Resources(L"skulImage/LittleBoneHead.bmp"), 15, 13, true);
 	IMAGEMANAGER->LoadFromFile(L"LittleBoneSkill1", Resources(L"skillImage/LittleBone1.bmp"), 24, 24, true);

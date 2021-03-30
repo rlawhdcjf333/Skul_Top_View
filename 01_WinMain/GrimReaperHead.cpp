@@ -22,6 +22,7 @@ GrimReaperHead::GrimReaperHead(int indexX, int indexY)
 	mSlot2Name = L"수확";
 	mSlot2Explanation = L"무적상태로 주변 적들의 멈춘 뒤\n낫을 크게 휘둘러 마법 데미지를 입힙니다.\n\n쿨다운 45초.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"GrimReaperHead", Resources(L"skulImage/GrimReaperHead.bmp"), 36, 24, true);
 	IMAGEMANAGER->LoadFromFile(L"GrimReaperSkill1", Resources(L"skillImage/GrimReaperSkill1.bmp"), 24, 24, true);

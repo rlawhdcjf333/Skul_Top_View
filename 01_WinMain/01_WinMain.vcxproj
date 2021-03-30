@@ -277,6 +277,7 @@
     <ClInclude Include="NinjaHead.h" />
     <ClInclude Include="GrimReaperHead.h" />
     <ClInclude Include="YakshaHead.h" />
+    <ClInclude Include="MagicalAtkBuff.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -407,6 +408,7 @@
     <ClCompile Include="NinjaHead.cpp" />
     <ClCompile Include="GrimReaperHead.cpp" />
     <ClCompile Include="YakshaHead.cpp" />
+    <ClCompile Include="MagicalAtkBuff.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

@@ -34,6 +34,7 @@ SwordHead::SwordHead(int indexX, int indexY)
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+	mType = ItemType::SkulHead;
 
 	mIsCollision = false;
 

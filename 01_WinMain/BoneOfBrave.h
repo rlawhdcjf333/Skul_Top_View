@@ -4,6 +4,8 @@
 class BoneOfBrave :public Item
 {
 	float mValue;
+	bool mIsEffective;
+	float mDelay;
 
 public:
 

@@ -13,7 +13,7 @@ RitualStaff::RitualStaff(int indexX, int indexY)
 
 	mItemName = L"의식용 지팡이";
 	mExplanation = L"유사시에는 둔기로 사용되기도 한다.";
-	mEffect = L"마법공격력이 50% 증가합니다.\n밸런스 타입 스컬의 스킬 쿨다운 속도가 45 % 증가합니다.";
+	mEffect = L"마법공격력이 50% 증가합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Strategy", Resources(L"/item/Strategy.bmp"), 78, 78, true);
 	mSlot1Name = L"전술";
@@ -29,10 +29,10 @@ RitualStaff::RitualStaff(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = mMagicalAttackPower / 2.f;
 
 	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mDeactivationFunc = [this]() {SKUL->SetMagicalAtk(mMagicalAttackPower - mValue); };
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +50,7 @@ void RitualStaff::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
+			SKUL->SetMagicalAtk(mMagicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +92,12 @@ void RitualStaff::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

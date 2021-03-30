@@ -22,6 +22,7 @@ ClownHead::ClownHead(int indexX, int indexY)
 	mSlot2Name = L"±ôÂ¦ »óÀÚ";
 	mSlot2Explanation = L"ºü¸£°Ô ´Þ·Á³ª°¡¸ç ±ôÂ¦»óÀÚ¸¦ »Ñ¸³´Ï´Ù.\n±ôÂ¦ »óÀÚ´Â Áö¸é¿¡ ´ê¾Æ Æø¹ßÇÏ¿©\n¹°¸® µ¥¹ÌÁö¸¦ ÀÔÈü´Ï´Ù.\n\nÄð´Ù¿î 14ÃÊ.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"ClownHead", Resources(L"skulImage/ClownHead.bmp"), 37, 26, true);
 	IMAGEMANAGER->LoadFromFile(L"ClownSkill1", Resources(L"skillImage/ClownSkill1.bmp"), 24, 24, true);

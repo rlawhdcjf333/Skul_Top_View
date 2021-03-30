@@ -36,6 +36,7 @@ WerewolfHead::WerewolfHead(int indexX, int indexY)
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
 	mIsCollision = false;
+	mType = ItemType::SkulHead;
 
 	mIsTrashed = true;
 	Obj->AddObject(ObjectLayer::Item, this);

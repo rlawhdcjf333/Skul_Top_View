@@ -15,11 +15,13 @@ private:
 	int mMaxHp;
 	
 	int mGold;
+	float mGoldBonusRatio;
 
 	float mAtkSpeed;
 	float mPhysicalAtk;
 	float mMagicalAtk;
 
+	float mInitMovingSpeed;
 	bool mInvincibility;
 
 	float mSwitchingCoolTime;
@@ -39,6 +41,8 @@ public:
 	
 	void ChangeSkul();
 
+	float const GetSwitchingCoolTime() { return mSwitchingCoolTime; }
+	float const GetInitSwitchingCoolTime() { return mInitSwitchingCoolTime; }
 	void PlusHp(int val); 
 	void MinusHp(int val) { mHp -= val; }
 	int GetHp() { return mHp; }
@@ -46,6 +50,8 @@ public:
 	void PlusGold(int val);
 	void MinusGold(int val) { if(mGold-val>=0) mGold -= val;}
 	int GetGold() { return mGold; }
+	void SetGoldBonusRatio(float val) { mGoldBonusRatio = val; }
+	float GetGoldBonusRatio() { return mGoldBonusRatio; }
 
 	Player* GetCurrentSkul() { return mCurrentSkul; }
 	Player* GetAlterSkul() { return mAlterSkul; }
@@ -70,6 +76,9 @@ public:
 
 	Inventory* GetInventory() { return mInventory; }
 
+	float GetInitMovingSpeed() { return mInitMovingSpeed; }
+	void SetInitMovingSpeed(float val) { mInitMovingSpeed = val; }
+
 	void Reset() { if(mCurrentSkul != nullptr)mCurrentSkul->PathReset();}
 	void SceneInit();
 };
@@ -79,3 +88,4 @@ public:
 #define mMagicalAttackPower SkulManager::GetInstance()->GetMagicalAtk()
 #define mHit SkulManager::GetInstance()->GetHitTime()
 #define mInitPhysicalPower 4.f
+#define mInitSpeed SkulManager::GetInstance()->GetInitMovingSpeed()

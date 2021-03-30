@@ -13,7 +13,7 @@ BoneOfBrave::BoneOfBrave(int indexX, int indexY)
 
 	mItemName = L"용기의 뼈";
 	mExplanation = L"묵직한 것을 보니 이 뼈는 아마도 물에 뜨지 않을 것 같다.";
-	mEffect = L"3초마다 다음 물리공격의 데미지가 20% 증폭됩니다.\n보유한 파워 타입 스컬의 개수에 따라 이 아이템의 효과로 증가하는 데미지량이(40 % / 80 %)로 증가합니다.";
+	mEffect = L"3초마다 다음 물리공격의 데미지가 20% 증폭됩니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"March", Resources(L"/item/March.bmp"), 78, 78, true);
 	mSlot1Name = L"행군";
@@ -28,11 +28,23 @@ BoneOfBrave::BoneOfBrave(int indexX, int indexY)
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
 	mType = ItemType::CommonItem;
+	
+	mDelay = 3.f;
+	mIsEffective = true;
+	mValue = mPhysicalAttackPower / 5.f;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mActivationFunc = [this]() 
+	{
+		mDelay -= dTime;
+		if (mDelay < 0) mDelay = 0;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+		if (mDelay == 0 and Obj->EnemyHitCheck())
+		{
+			mDelay = 3.f;
+			Obj->DamageUpToEnemy(mValue); //20프로 추뎀 적용
+		}
+	};
+	mDeactivationFunc = []() {};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +62,6 @@ void BoneOfBrave::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +103,12 @@ void BoneOfBrave::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

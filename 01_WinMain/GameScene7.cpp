@@ -78,7 +78,7 @@ void GameScene7::Update()
 	ObjectManager::GetInstance()->Update();
 	RECT temp;
 	RECT temp2 = Obj->FindObject("Door")->GetRect();
-	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
 	if (IntersectRect(&temp, &temp2, &temp3))
 	{
 		if (INPUT->GetKeyDown('F'))
@@ -141,10 +141,7 @@ void GameScene7::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 44));
 	}
 
-	//if (INPUT->GetKeyDown('F'))
-	//{
-	//	SceneManager::GetInstance()->LoadScene(L"GameScene8");
-	//}
+
 }
 
 void GameScene7::Render(HDC hdc)

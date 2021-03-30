@@ -23,6 +23,7 @@ BerserkerHead::BerserkerHead(int indexX, int indexY)
 	mSlot2Name = L"매드러시";
 	mSlot2Explanation = L"전방으로 나아가며 지면을 수차례 내려찍은 뒤 크게 내려 찍어 강력한 물리 데미지를 입힙니다.\n\n쿨다운 12초.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"BerserkerHead", Resources(L"skulImage/BerserkerHead.bmp"), 35, 19, true);
 	IMAGEMANAGER->LoadFromFile(L"BerserkerSkill1", Resources(L"skillImage/BerserkerSkill1.bmp"), 24, 24, true);

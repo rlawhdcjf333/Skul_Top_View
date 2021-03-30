@@ -44,21 +44,21 @@ void GameScene5::Update()
 	if (offsetY > 3 * TileSizeY / 2 - offsetX / 2) { x++; }
 	//}}
 
-	//RECT temp;
-	//RECT temp2 = Obj->FindObject("Door")->GetRect();
-	//RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
-	//if (IntersectRect(&temp, &temp2, &temp3))
-	//{
-	//	if (INPUT->GetKeyDown('F'))
-	//	{
-	//		SceneManager::GetInstance()->LoadScene(L"GameScene6");
-	//	}
-	//}
-
-	if (INPUT->GetKeyDown('F'))
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	if (IntersectRect(&temp, &temp2, &temp3))
 	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene6");
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene6");
+		}
 	}
+
+	//if (INPUT->GetKeyDown('F'))
+	//{
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene6");
+	//}
 }
 
 void GameScene5::Render(HDC hdc)

@@ -78,7 +78,7 @@ void GameScene3::Update()
 	ObjectManager::GetInstance()->Update();
 	RECT temp;
 	RECT temp2 = Obj->FindObject("Door")->GetRect();
-	RECT temp3 = SKUL->GetCurrentSkul()->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
 	if (IntersectRect(&temp, &temp2, &temp3))
 	{
 		if (INPUT->GetKeyDown('F'))

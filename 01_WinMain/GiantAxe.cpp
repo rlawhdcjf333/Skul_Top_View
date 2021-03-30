@@ -13,7 +13,7 @@ GiantAxe::GiantAxe(int indexX, int indexY)
 
 	mItemName = L"거인의 도끼";
 	mExplanation = L"당신이 누구건 그들의 매머드를 건드리지 마세요.";
-	mEffect = L"파워 타입 스컬로 교대 시 주변 적들을 밀쳐내고 물리데미지를 입힙니다.\n물리공격력이 35 % 증가합니다.";
+	mEffect = L"스컬 교대 시 주변 적들을 밀쳐내고 물리데미지를 입힙니다.\n물리공격력이 35 % 증가합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"March", Resources(L"/item/March.bmp"), 78, 78, true);
 	mSlot1Name = L"행군";
@@ -29,10 +29,16 @@ GiantAxe::GiantAxe(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = (float)mPhysicalAttackPower*35.f/100.f;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = []() 
+	{
+		if (SKUL->GetSwitchingCoolTime() == SKUL->GetInitSwitchingCoolTime() and INPUT->GetKeyDown(VK_SPACE))
+		{
+			SKUL->GetCurrentSkul()->Attack(mPhysicalAttackPower, 2, AttackType::Whirlwind);
+		}
+	};
+	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue);};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -92,14 +98,12 @@ void GiantAxe::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

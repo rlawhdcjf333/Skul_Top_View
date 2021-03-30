@@ -4,7 +4,7 @@
 class MedalOfCarleon :public Item
 {
 	float mValue;
-
+	bool mButton;
 public:
 
 	MedalOfCarleon(int indexX, int indexY);

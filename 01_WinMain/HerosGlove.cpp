@@ -15,6 +15,7 @@ HerosGlove::HerosGlove(int indexX, int indexY)
 	mExplanation = L"검과 마법 모두에 적합한 방어구";
 	mEffect = L"대쉬 시 물리데미지를 입히는 기폭발을 일으킵니다.(쿨타임 7초)";
 
+	IMAGEMANAGER->LoadFromFile(L"BoneHowl", Resources(L"item/BoneHowl.bmp"), 400, 300, 4, 3, true);
 	IMAGEMANAGER->LoadFromFile(L"March", Resources(L"/item/March.bmp"), 78, 78, true);
 	mSlot1Name = L"행군";
 	mSlot1Image = IMAGEMANAGER->FindImage(L"March");
@@ -29,10 +30,20 @@ HerosGlove::HerosGlove(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 0;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]() 
+	{
+		mValue -= dTime;
+		if (mValue < 0) mValue = 0;
+		if (SKUL->GetCurrentSkul()->GetIsDash() and SKUL->GetCurrentSkul()->GetInitDashCoolTime() == SKUL->GetCurrentSkul()->GetDashCoolTime() and mValue==0)
+		{
+			mValue = 7.f;
+			(new Effect(L"BoneHowl", 0, 0, EffectType::Follow))->Scaling(200,200,0.7f);
+			SKUL->GetCurrentSkul()->Attack(mPhysicalAttackPower, 4, AttackType::Stab);
+		}
+	};
+	mDeactivationFunc = [](){};
 	mIsCollision = false;
 
 	mIsTrashed = true;

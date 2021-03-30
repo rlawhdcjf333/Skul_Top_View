@@ -2,6 +2,7 @@
 #include "RitualDagger.h"
 #include "Inventory.h"
 #include "Effect.h"
+#include "MagicalAtkBuff.h"
 
 RitualDagger::RitualDagger(int indexX, int indexY)
 {
@@ -13,7 +14,7 @@ RitualDagger::RitualDagger(int indexX, int indexY)
 
 	mItemName = L"의식용 단검";
 	mExplanation = L"칼레온 구마사제의 애장품";
-	mEffect = L"치명타 확률이 5% 증가합니다.\n치명타 시 3초간 마법공격력이 55 % 증가합니다.";
+	mEffect = L"상대가 피격되었을 때, 5% 확률로 3초간 마법공격력이 55 % 증가합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Strategy", Resources(L"/item/Strategy.bmp"), 78, 78, true);
 	mSlot1Name = L"전술";
@@ -29,9 +30,15 @@ RitualDagger::RitualDagger(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = mPhysicalAttackPower * 55.f / 100.f;
 
-	mActivationFunc = []() {};
+	mActivationFunc = []() 
+	{
+		if (Obj->EnemyHitCheck() and RAND->Probablity(5))
+		{
+			new MagicalAtkBuff(55, 3, "RitualDaggerBuff");
+		}
+	};
 	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
 	mIsCollision = false;
 

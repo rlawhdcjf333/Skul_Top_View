@@ -4,6 +4,7 @@
 class AssassinationDagger :public Item
 {
 	float mValue;
+	float mSpeedValue;
 
 public:
 

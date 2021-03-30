@@ -56,6 +56,9 @@ public:
 
 	void SetTimeStop(bool b) { mTimeStop = b; }
 
+	bool EnemyHitCheck();
+	void DamageUpToEnemy(int val);
+
 };
 
 #define Obj ObjectManager::GetInstance()

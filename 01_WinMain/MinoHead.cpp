@@ -30,10 +30,12 @@ MinoHead::MinoHead(int indexX, int indexY)
 	mImage = IMAGEMANAGER->FindImage(L"MinoHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"MinoSkill1");
 	mSlot2Image = IMAGEMANAGER->FindImage(L"MinoSkill2");
+	mType = ItemType::SkulHead;
 
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+	mType = ItemType::SkulHead;
 
 	mIsCollision = false;
 

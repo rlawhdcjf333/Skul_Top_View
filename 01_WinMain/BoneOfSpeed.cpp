@@ -13,7 +13,7 @@ BoneOfSpeed::BoneOfSpeed(int indexX, int indexY)
 
 	mItemName = L"신속의 뼈";
 	mExplanation = L"실제로 날개를 달아주지는 않지만, 날개를 달아준 기분이 든다.";
-	mEffect = L"치명타 시 추가 고정데미지를 입힙니다.(쿨타임 0.5초)\n스피드 타입 스컬의 개수에 따라 이 아이템의 효과로 발생하는 추가 데미지가(30 % / 100 %) 증가합니다.";
+	mEffect = L"25% 확률로 추가 고정데미지를 입힙니다.(쿨타임 0.5초)";
 
 	IMAGEMANAGER->LoadFromFile(L"Madness", Resources(L"/item/Madness.bmp"), 78, 78, true);
 	mSlot1Name = L"광기잇";
@@ -29,10 +29,17 @@ BoneOfSpeed::BoneOfSpeed(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 5;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = []() 
+	{
+		if (Obj->EnemyHitCheck() and RAND->Probablity(25))
+		{
+			Obj->DamageUpToEnemy(5);
+		}
+	};
+
+	mDeactivationFunc = NULL;
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +57,6 @@ void BoneOfSpeed::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +98,12 @@ void BoneOfSpeed::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

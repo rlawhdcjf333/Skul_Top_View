@@ -13,7 +13,7 @@ AssassinationDagger::AssassinationDagger(int indexX, int indexY)
 
 	mItemName = L"암살용 단검";
 	mExplanation = L"봐서 알겠지만 베는 칼이 아니라 찌르는 칼이다";
-	mEffect = L"치명타 확률이 10% 증가합니다.\n스피드 타입 스컬의 공격속도가 25 %, 이동속도가 15 % 증가합니다.";
+	mEffect = L"공격속도가 25 %, 이동속도가 15 % 증가합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Madness", Resources(L"/item/Madness.bmp"), 78, 78, true);
 	mSlot1Name = L"광기잇";
@@ -29,10 +29,17 @@ AssassinationDagger::AssassinationDagger(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = mAttackSpeed / 4.f;
+	mSpeedValue = mInitSpeed*0.15f;
 
 	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mDeactivationFunc = [this]() 
+	{
+		SKUL->SetAtkSpeed(mAttackSpeed + mValue); 
+		SKUL->GetCurrentSkul()->SetAttackSpeed();
+		if(SKUL->GetAlterSkul())SKUL->GetAlterSkul()->SetAttackSpeed();
+		SKUL->SetInitMovingSpeed(mInitSpeed - mSpeedValue);
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +57,10 @@ void AssassinationDagger::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
+			SKUL->SetAtkSpeed(mAttackSpeed - mValue);
+			SKUL->GetCurrentSkul()->SetAttackSpeed();
+			if (SKUL->GetAlterSkul())SKUL->GetAlterSkul()->SetAttackSpeed();
+			SKUL->SetInitMovingSpeed(mInitSpeed + mSpeedValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +102,12 @@ void AssassinationDagger::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

@@ -93,7 +93,7 @@ void GameScene6::Update()
 	//{
 	//	SceneManager::GetInstance()->LoadScene(L"GameScene7");
 	//}
-
+	//
 	//if (INPUT->GetKeyDown(VK_CONTROL))
 	//{
 	//	Obj->GetObjectListPt(ObjectLayer::Enemy)->clear();
@@ -143,10 +143,7 @@ void GameScene6::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(55, 27));
 	}
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene7");
-	}
+
 }
 
 void GameScene6::Render(HDC hdc)

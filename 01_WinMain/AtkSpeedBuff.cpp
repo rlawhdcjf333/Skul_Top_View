@@ -9,6 +9,13 @@ AtkSpeedBuff::AtkSpeedBuff(int percentage, float duration, string name)
 	{
 		dynamic_cast<Condition*>(Obj->FindObject(ObjectLayer::Condition, "BerserkerAtkSpeedBuff"))->SetDuration(duration);
 		delete (this);
+		return;
+	}
+	if(mName == "RageClawBuff" and Obj->FindObject(ObjectLayer::Condition, "RageClawBuff"))
+	{
+		dynamic_cast<Condition*>(Obj->FindObject(ObjectLayer::Condition, "RageClawBuff"))->SetDuration(duration);
+		delete (this);
+		return;
 	}
 	else
 	{

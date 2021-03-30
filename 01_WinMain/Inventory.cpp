@@ -229,4 +229,12 @@ void Inventory::GetSkul(Item* item)
 
 }
 
+void Inventory::ActivateItemList()
+{
+	for (auto elem : mItemList)
+	{
+		if(elem !=nullptr) elem->Activate();
+	}
+}
+
 

@@ -13,7 +13,7 @@ MedalOfCarleon::MedalOfCarleon(int indexX, int indexY)
 
 	mItemName = L"칼레온 계급장";
 	mExplanation = L"어디든 그렇겠지만, 칼레온 군은 계급이 높을수록 무장도 좋다.";
-	mEffect = L"맵 이동 시 50골드를 획득합니다.";
+	mEffect = L"맵 클리어 시 50골드를 획득합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Scruge", Resources(L"/item/Scruge.bmp"), 78, 78, true);
 	mSlot1Name = L"수전노";
@@ -30,9 +30,22 @@ MedalOfCarleon::MedalOfCarleon(int indexX, int indexY)
 	mType = ItemType::CommonItem;
 
 	mValue = mPhysicalAttackPower / 4.f;
+	mButton = false;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]() 
+	{
+		if (!Obj->FindObject(ObjectLayer::Door, "Door")->GetIsActive())
+		{
+			mButton = false;
+		}
+		if (Obj->FindObject(ObjectLayer::Door, "Door")->GetIsActive() and mButton==false)
+		{
+			new Effect(L"GoldGet", SKUL->GetCurrentSkul()->GetX(), SKUL->GetCurrentSkul()->GetY(), EffectType::Normal);
+			SKUL->PlusGold(50);
+			mButton = true;
+		}
+	};
+	mDeactivationFunc = []() {};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +63,6 @@ void MedalOfCarleon::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +104,12 @@ void MedalOfCarleon::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

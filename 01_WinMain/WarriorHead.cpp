@@ -30,6 +30,7 @@ WarriorHead::WarriorHead(int indexX, int indexY)
 	mImage = IMAGEMANAGER->FindImage(L"WarriorHead");
 	mSlot1Image = IMAGEMANAGER->FindImage(L"WarriorSkill1");
 	mSlot2Image = IMAGEMANAGER->FindImage(L"WarriorSkill2");
+	mType = ItemType::SkulHead;
 
 	mSizeX = mImage->GetWidth();
 	mSizeY = mImage->GetHeight();

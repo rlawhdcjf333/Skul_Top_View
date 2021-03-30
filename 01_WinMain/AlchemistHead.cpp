@@ -22,6 +22,7 @@ AlchemistHead::AlchemistHead(int indexX, int indexY)
 	mSlot2Name = L"화염 플라스크";
 	mSlot2Explanation = L"닿으면 폭발하는 플라스크를 던집니다.\n(마법 데미지)\n적 공격 시 화상 부여(화상: 마법 데미지)\n이 스킬은 5회 충전할 수 있습니다.\n\n충전 13초.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"AlchemistHead", Resources(L"skulImage/AlchemistHead.bmp"), 26, 21, true);
 	IMAGEMANAGER->LoadFromFile(L"AlchemistSkill1", Resources(L"skillImage/AlchemistSkill1.bmp"), 24, 24, true);

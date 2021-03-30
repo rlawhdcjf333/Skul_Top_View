@@ -69,7 +69,7 @@ void Werewolf::Update()
 	mSpeed = mInitSpeed*1.1f; //웨어울프 패시브: 이동속도 10%증가
 	if (TILE[mIndexY][mIndexX]->GetType() == TileType::Slow)
 	{
-		mSpeed = mInitSpeed / 2;
+		mSpeed = mInitSpeed*1.1f / 2;
 	}
 
 	mTileSelect->Update();

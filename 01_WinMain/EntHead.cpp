@@ -23,6 +23,7 @@ EntHead::EntHead(int indexX, int indexY)
 	mSlot2Name = L"급성장";
 	mSlot2Explanation = L"거대한 주먹으로 내려찍어 물리데미지를 입힙니다.\n버튼을 누르고 있으면 정신을 집중하며 정신집중\n완료 시 공격범위와 데미지가 증가합니다.\n\n쿨다운 13초.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"EntHead", Resources(L"skulImage/EntHead.bmp"), 24, 24, true);
 	IMAGEMANAGER->LoadFromFile(L"EntSkill1", Resources(L"skillImage/EntSkill1.bmp"), 24, 24, true);

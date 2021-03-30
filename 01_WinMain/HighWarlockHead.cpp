@@ -21,6 +21,7 @@ HighWarlockHead::HighWarlockHead(int indexX, int indexY)
 
 	mSlot2Name = L"어비스 오브";
 	mSlot2Explanation = L"앞으로 나아가며 지속적으로 데미지를 입히는 구체를 생성합니다.\n정신집중 시간에 따라 구체의 크기와 데미지가 증가합니다.\n정신집중 완료 시 구체가 사라질 때 폭발을 일으킵니다.\n(마법 데미지)\n\n쿨다운 12초.";
+	mType = ItemType::SkulHead;
 
 
 	IMAGEMANAGER->LoadFromFile(L"HighWarlockHead", Resources(L"skulImage/HighWarlockHead.bmp"), 26, 21, true);

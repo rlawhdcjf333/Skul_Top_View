@@ -13,7 +13,9 @@ BoneOfMana::BoneOfMana(int indexX, int indexY)
 
 	mItemName = L"마나의 뼈";
 	mExplanation = L"대체 어떤 부유한 스켈레톤이 이런걸 만들어서 쓸까?";
-	mEffect = L"스킬 사용 시 자신을 감싸는 마나 폭풍을 일으켜 마법데미지를 입힙니다.\n보유한 밸런스 타입 스컬 개수에 따라 마나폭풍의 데미지와 범위가(30 % / 100 %) 증가합니다.";
+	mEffect = L"스킬이 시전 준비되거나 충전될 때마다 자신 주변에 마나 회오리를 일으킵니다.";
+
+	IMAGEMANAGER->LoadFromFile(L"BoneOfManaEffect", Resources(L"item/BoneOfManaEffect.bmp"), 500, 500, 5, 5, true);
 
 	IMAGEMANAGER->LoadFromFile(L"Strategy", Resources(L"/item/Strategy.bmp"), 78, 78, true);
 	mSlot1Name = L"전술";
@@ -29,10 +31,18 @@ BoneOfMana::BoneOfMana(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 0;
+	mActivationFunc = []() 
+	{
+		if ((SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0 and SKUL->GetCurrentSkul()->GetSkill1CoolTime() <= dTime)
+			or (SKUL->GetCurrentSkul()->GetSkill2CoolTime() > 0 and SKUL->GetCurrentSkul()->GetSkill2CoolTime() <= dTime))
+		{
+			SKUL->GetCurrentSkul()->Attack(mMagicalAttackPower, 2, AttackType::Whirlwind);
+			(new Effect(L"BoneOfManaEffect", SKUL->GetCurrentSkul()->GetX(), SKUL->GetCurrentSkul()->GetY(), EffectType::Normal))->Scaling(200,200,0.5f);
+		}
+	};
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mDeactivationFunc = []() {};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +60,6 @@ void BoneOfMana::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,15 +101,12 @@ void BoneOfMana::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
-
 	}
 
 }

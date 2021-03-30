@@ -294,3 +294,23 @@ void ObjectManager::DeleteSkul(Player* skul)
 		}
 	}
 }
+
+bool ObjectManager::EnemyHitCheck()
+{
+	for (auto elem : mObjectList[ObjectLayer::Enemy])
+	{
+		if (dynamic_cast<Enemy*>(elem)->GetHitTime() == 0.6f) return true;
+	}
+	return false;
+}
+
+void ObjectManager::DamageUpToEnemy(int val)
+{
+	for (auto elem : mObjectList[ObjectLayer::Enemy])
+	{
+		if (dynamic_cast<Enemy*>(elem)->GetHitTime() == 0.6f)
+		{
+			if (elem->GetIsDestroy() == false) elem->Damage(val);
+		}
+	}
+}

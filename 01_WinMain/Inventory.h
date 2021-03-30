@@ -59,4 +59,6 @@ public:
 
 	Item* GetFirstSkul() { return mFirstSkul; }
 
+	void ActivateItemList();
+
 };

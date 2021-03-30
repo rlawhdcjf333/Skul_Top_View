@@ -47,7 +47,6 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 	void SetDelay(float val) { mDelay = val; }
-	void Activation() { mActivationFunc(); }
 
 	wstring GetImageKeyName() { return mImage->GetKeyName(); }
 	wstring GetItemName() { return mItemName; }
@@ -62,6 +61,7 @@ public:
 	wstring GetSlot2Explanation() { return mSlot2Explanation; }
 
 	ItemType GetType() { return mType; }
+	void Activate() { mActivationFunc(); }
 	function <void(void)> GetDeactivationFunc() { return mDeactivationFunc; }
 
 };

@@ -53,7 +53,9 @@ void GameScene8::Update()
 	//}
 
 	if (mRespawnCount <= 0)
+	{
 		Obj->FindObject("Door")->SetIsActive(true);
+	}
 
 	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{

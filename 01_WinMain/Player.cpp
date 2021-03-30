@@ -11,7 +11,7 @@ Player::Player(int indexX, int indexY, float sizeX, float sizeY)
 	mIndexY = indexY;
 	mX = TILE[mIndexY][mIndexX]->GetX()+TileSizeX/2;
 	mY = TILE[mIndexY][mIndexX]->GetY()+TileSizeY/2;
-	mSpeed = mInitSpeed=200;
+	mSpeed =200;
 	mAngle = 0;
 	mSizeX = sizeX;
 	mSizeY = sizeY;

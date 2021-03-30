@@ -48,6 +48,8 @@ public:
 	void Dash(int dist, bool isBack = false);
 	void SetInitDashCoolTime(float val) { mInitDashCoolTime = val; }
 	float GetInitDashCoolTime() { return mInitDashCoolTime; }
+	float GetDashCoolTime() { return mDashCoolTime; }
+	bool GetIsDash() { return mIsDash; }
 
 	void Attack(int damage, int range, AttackType type, bool isBack = false);
 

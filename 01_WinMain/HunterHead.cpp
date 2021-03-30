@@ -22,6 +22,7 @@ HunterHead::HunterHead(int indexX, int indexY)
 	mSlot2Name = L"피어스 샷";
 	mSlot2Explanation = L"전방의 적을 꿰뚫는 마법화살을\n발사해 마법데미지를 입힙니다.\n\n쿨다운 14초.";
 
+	mType = ItemType::SkulHead;
 
 	IMAGEMANAGER->LoadFromFile(L"HunterHead", Resources(L"skulImage/HunterHead.bmp"), 27, 22, true);
 	IMAGEMANAGER->LoadFromFile(L"HunterSkill1", Resources(L"skillImage/HunterSkill1.bmp"), 24, 24, true);

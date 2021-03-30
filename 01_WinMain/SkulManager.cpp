@@ -32,6 +32,7 @@ void SkulManager::Init()
 	mAtkSpeed = 0.1f;
 	mPhysicalAtk = 4;
 	mMagicalAtk = 4;
+	mInitMovingSpeed = 200;
 
 	mInvincibility = false;
 	mHitTime = 0;
@@ -52,7 +53,6 @@ void SkulManager::Update()
 	}
 	else
 	{
-
 		
 		if (INPUT->GetKeyDown(VK_TAB)) //인벤토리 활성
 		{
@@ -63,6 +63,8 @@ void SkulManager::Update()
 		{
 			mInventory->Update(); // 인벤토리 활성 중일때 인벤토리 업데이트 == 커서가 위치한 곳에 따라 렌더 바꾸기
 		}
+
+		mInventory->ActivateItemList();
 
 		mHitTime -= dTime;
 		if (mHitTime < 0) mHitTime = 0;
@@ -127,7 +129,9 @@ void SkulManager::PlusHp(int val)
 
 void SkulManager::PlusGold(int val)
 { 
-	mGold += val; 
+	float bonus = (float)val * mGoldBonusRatio/100.f;
+	if (bonus > 0 and bonus<1) bonus = 1;
+	mGold += (val + (int)bonus);
 	(new Effect(L"GoldGet", mCurrentSkul->GetX(), mCurrentSkul->GetY()-50, EffectType::Normal))->Scaling(50, 50);
 }
 
@@ -168,6 +172,7 @@ void SkulManager::SceneInit()
 	mAtkSpeed = 0.1f;
 	mPhysicalAtk = 4;
 	mMagicalAtk = 4;
+	mInitMovingSpeed = 200;
 
 	mInvincibility = false;
 	mHitTime = 0;
