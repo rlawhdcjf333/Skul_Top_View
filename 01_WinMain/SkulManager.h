@@ -32,6 +32,15 @@ private:
 	stack<int> mDamages;
 	Inventory* mInventory;
 
+	Image* mPlayerFrame;
+	Image* mTimerFrame;
+	Image* mScoreFrame;
+	Image* mCurrentSkulFace;
+	Image* mSecondSkulFace;
+
+	wstring name;
+	wstring name2;
+
 public:
 	void Init();
 	void Damage(int damage) { if (!mInvincibility) { mHp -= damage; mDamages.emplace(damage); } }

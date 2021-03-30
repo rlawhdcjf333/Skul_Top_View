@@ -17,8 +17,45 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"Bleeding", Resources(L"/skul/bleeding.bmp"), 900, 100, 9, 1, true);
 	IMAGEMANAGER->LoadFromFile(L"Burning", Resources(L"/skul/burning.bmp"), 400, 300, 4, 3, true);
 	IMAGEMANAGER->LoadFromFile(L"Healing", Resources(L"/skul/healing.bmp"), 600, 200, 6, 2, true);
-	IMAGEMANAGER->LoadFromFile(L"Debris", Resources(L"/item/Debris.bmp"), 700, 200, 7, 2, true);
+
+	//스컬ui프레임이미지
+	IMAGEMANAGER->LoadFromFile(L"PlayerFrame", Resources(L"/Frame/PlayerFrame.bmp"), 336, 132,true);
+	IMAGEMANAGER->LoadFromFile(L"TimerFrame", Resources(L"/Frame/TimerFrame.bmp"), 132, 42, true);
+
+	//스컬ui이미지
+	IMAGEMANAGER->LoadFromFile(L"Alchemist1", Resources(L"SkulImage/Alchemist1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Alchemist2", Resources(L"SkulImage/Alchemist2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Berserker1", Resources(L"SkulImage/Berserker1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Berserker2", Resources(L"SkulImage/Berserker2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Clown1", Resources(L"SkulImage/Clown1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Clown2", Resources(L"SkulImage/Clown2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Ent1", Resources(L"SkulImage/Ent1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Ent2", Resources(L"SkulImage/Ent2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaper1", Resources(L"SkulImage/GrimReaper1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"GrimReaper2", Resources(L"SkulImage/GrimReaper2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"HighWarlock1", Resources(L"SkulImage/HighWarlock1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"HighWarlock2", Resources(L"SkulImage/HighWarlock2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Hunter1", Resources(L"SkulImage/Hunter1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Hunter2", Resources(L"SkulImage/Hunter2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"LittleBone1", Resources(L"SkulImage/LittleBone1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"LittleBone2", Resources(L"SkulImage/LittleBone2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Minotaurus1", Resources(L"SkulImage/Minotaurus1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Minotaurus2", Resources(L"SkulImage/Minotaurus2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Ninja1", Resources(L"SkulImage/Ninja1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Ninja2", Resources(L"SkulImage/Ninja2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"PettyThief1", Resources(L"SkulImage/PettyThief1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"PettyThief2", Resources(L"SkulImage/PettyThief2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Sword1", Resources(L"SkulImage/Sword1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Sword2", Resources(L"SkulImage/Sword2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Warrior1", Resources(L"SkulImage/Warrior1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Warrior2", Resources(L"SkulImage/Warrior2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"WereWolf1", Resources(L"SkulImage/WereWolf1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"WereWolf2", Resources(L"SkulImage/WereWolf2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Yaksha1", Resources(L"SkulImage/Yaksha1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Yaksha1", Resources(L"SkulImage/Yaksha2.bmp"), 42, 42, true);
 	
+	mPlayerFrame = IMAGEMANAGER->FindImage(L"PlayerFrame");
+	mTimerFrame = IMAGEMANAGER->FindImage(L"TimerFrame");
 
 	mInitSwitchingCoolTime = 8; //교대 쿨 8초
 	mSwitchingCoolTime = 0;
@@ -39,6 +76,7 @@ void SkulManager::Init()
 
 	mInventory = nullptr;
 
+	mCurrentSkulFace = IMAGEMANAGER->FindImage(L"LittleBone1");
 }
 
 
@@ -84,18 +122,31 @@ void SkulManager::Update()
 			mAlterSkul->Skill2();
 		}
 	}
+
+	name = mCurrentSkul->GetKeyName();
+	mCurrentSkulFace = IMAGEMANAGER->FindImage(name.append(L"1"));
+
+	if(mAlterSkul)
+		name2 = mAlterSkul->GetKeyName();
+	mSecondSkulFace = IMAGEMANAGER->FindImage(name2.append(L"2"));
 }
 
 void SkulManager::Release()
 {
-	if (mCurrentSkul) { mCurrentSkul->Release(); SafeDelete(mCurrentSkul); } //이제 게임 씬에서 더이상 플레이어 스컬을 삭제하지 않으므로 얘가 해야 됨
-	if (mAlterSkul) { mAlterSkul->Release(); SafeDelete(mAlterSkul); }
+	if (mCurrentSkul) { mCurrentSkul->Release(); SafeDelete(mCurrentSkul);} //이제 게임 씬에서 더이상 플레이어 스컬을 삭제하지 않으므로 얘가 해야 됨
+	if (mAlterSkul) { mAlterSkul->Release(); SafeDelete(mAlterSkul);}
 	mInventory->Release(); //인벤토리도 날려주자
 	SafeDelete(mInventory);
 }
 
 void SkulManager::Render(HDC hdc)
 {
+	mPlayerFrame->Render(hdc, 0, 588);
+	mTimerFrame->Render(hdc, 0, 0);
+	mCurrentSkulFace->Render(hdc, 10, 588);
+	if(mSecondSkulFace)
+	mSecondSkulFace->Render(hdc, 20, 650);
+
 	while (mDamages.size() > 0) {
 		new FixedSysFont(mCurrentSkul->GetX(),mCurrentSkul->GetY(), 100, 100, to_wstring(mDamages.top()), FontColor::Red);
 		mDamages.pop();
