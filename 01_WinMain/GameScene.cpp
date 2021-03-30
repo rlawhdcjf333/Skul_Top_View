@@ -12,8 +12,9 @@ void GameScene::Init()
 	SoundPlayer::GetInstance()->Play(L"Main", 0.1);
 	MapLoad();
 	SKUL->SceneInit();
-	new DimLightDarkcite(42, 51);
-	//ITEM->RandomSpawn(42,51);
+	
+	ITEM->RandomSpawn(42,51);
+	ITEM->RandomSpawn(38, 53);
 
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);
@@ -28,11 +29,14 @@ void GameScene::Init()
 	mBack = IMAGEMANAGER->FindImage(L"back");
 	IMAGEMANAGER->LoadFromFile(L"Witch", Resources(L"witch.bmp"), 372, 90, 6, 1, true);
 	mWitch = IMAGEMANAGER->FindImage(L"Witch");
+	IMAGEMANAGER->LoadFromFile(L"Witch2", Resources(L"witch2.bmp"), 1280, 720, true);
+	mWitch2 = IMAGEMANAGER->FindImage(L"Witch2");
 	mAnm = new Animation();
 	mAnm->InitFrameByStartEnd(0, 0, 5, 0, false);
 	mAnm->SetIsLoop(true);
 	mAnm->SetFrameUpdateTime(0.2f);
 	mAnm->Play();
+	mTogle = false;
 }
 
 void GameScene::Update()
@@ -98,6 +102,12 @@ void GameScene::Update()
 			
 		//Obj->FindObject("Door")->SetIsActive(true);
 	}
+
+	if (INPUT->GetKeyDown('T'))
+	{
+		if (mTogle)mTogle = false;
+		else if(!mTogle) mTogle = true;
+	}
 }
 
 void GameScene::Render(HDC hdc)
@@ -128,6 +138,8 @@ void GameScene::Render(HDC hdc)
 
 	ObjectManager::GetInstance()->Render(hdc);
 	CAMERA->FrameRender(hdc, mWitch, 800, 1400, mAnm->GetNowFrameX(), 0);
+	if(mTogle)
+	mWitch2->Render(hdc, 0, 0);
 }
 
 void GameScene::Release()

@@ -11,6 +11,8 @@ class GameScene : public Scene
 	int offsetY;
 	Image* mBack;
 	Image* mWitch;
+	Image* mWitch2;
+	bool mTogle;
 	Animation* mAnm;
 	bool mDoorOpen = false;
 	float mOpenTime = 1.0f;

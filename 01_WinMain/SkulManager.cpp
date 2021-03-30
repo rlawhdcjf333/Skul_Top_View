@@ -40,8 +40,8 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"Hunter2", Resources(L"SkulImage/Hunter2.bmp"), 42, 42, true);
 	IMAGEMANAGER->LoadFromFile(L"LittleBone1", Resources(L"SkulImage/LittleBone1.bmp"), 90, 90, true);
 	IMAGEMANAGER->LoadFromFile(L"LittleBone2", Resources(L"SkulImage/LittleBone2.bmp"), 42, 42, true);
-	IMAGEMANAGER->LoadFromFile(L"Minotaurus1", Resources(L"SkulImage/Minotaurus1.bmp"), 90, 90, true);
-	IMAGEMANAGER->LoadFromFile(L"Minotaurus2", Resources(L"SkulImage/Minotaurus2.bmp"), 42, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"Mino1", Resources(L"SkulImage/Mino1.bmp"), 90, 90, true);
+	IMAGEMANAGER->LoadFromFile(L"Mino2", Resources(L"SkulImage/Mino2.bmp"), 42, 42, true);
 	IMAGEMANAGER->LoadFromFile(L"Ninja1", Resources(L"SkulImage/Ninja1.bmp"), 90, 90, true);
 	IMAGEMANAGER->LoadFromFile(L"Ninja2", Resources(L"SkulImage/Ninja2.bmp"), 42, 42, true);
 	IMAGEMANAGER->LoadFromFile(L"PettyThief1", Resources(L"SkulImage/PettyThief1.bmp"), 90, 90, true);
