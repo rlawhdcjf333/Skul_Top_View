@@ -11,7 +11,6 @@ void GameScene::Init()
 	MapLoad();
 	SKUL->SceneInit();
 	ITEM->RandomSpawn(42,51);
-	new GrimReaperHead(42, 50);
 
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);
