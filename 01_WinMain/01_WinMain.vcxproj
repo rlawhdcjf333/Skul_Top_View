@@ -184,6 +184,7 @@
     <ClInclude Include="GameScene6.h" />
     <ClInclude Include="GameScene7.h" />
     <ClInclude Include="GameScene8.h" />
+    <ClInclude Include="GameScene9.h" />
     <ClInclude Include="GiantAxe.h" />
     <ClInclude Include="Gizmo.h" />
     <ClInclude Include="GoldenIncenseBurner.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="GameScene6.cpp" />
     <ClCompile Include="GameScene7.cpp" />
     <ClCompile Include="GameScene8.cpp" />
+    <ClCompile Include="GameScene9.cpp" />
     <ClCompile Include="GiantAxe.cpp" />
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="GoldenIncenseBurner.cpp" />

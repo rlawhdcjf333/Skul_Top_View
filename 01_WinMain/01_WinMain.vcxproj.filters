@@ -444,9 +444,6 @@
     <ClInclude Include="YakshaHead.h">
       <Filter>MainGame\Item\SkulHead</Filter>
     </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="BoneOfBrave.h">
       <Filter>MainGame\Item\MarchItem</Filter>
     </ClInclude>
@@ -859,9 +856,6 @@
     </ClCompile>
     <ClCompile Include="YakshaHead.cpp">
       <Filter>MainGame\Item\SkulHead</Filter>
-    </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="BoneOfBrave.cpp">
       <Filter>MainGame\Item\MarchItem</Filter>

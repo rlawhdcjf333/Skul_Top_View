@@ -5,6 +5,11 @@
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 #include "Door.h"
+#include "Stage1_SwordMan.h"
+#include "Stage1_Hammer.h"
+#include "Stage1_Hunter.h"
+#include "Stage1_NormalEnt.h"
+#include "Stage1_Wizard.h"
 
 void GameScene4::Init()
 {
@@ -13,14 +18,14 @@ void GameScene4::Init()
 	GameObject* door = new Door(1605, 705);
 	Obj->AddObject(ObjectLayer::Door, door);
 	door->SetIsActive(false);
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(18, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(15, 47));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(20, 50));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(18, 44));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(15, 47));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_NormalEnt(20, 50));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 41));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(16, 50));
 	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(23, 44));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 52));
-	Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(33, 50));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(25, 52));
+	Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(33, 50));
 	Obj->Init();
 
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
@@ -106,35 +111,35 @@ void GameScene4::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 52));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(27, 49));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 58));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 54));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 47));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(43, 58));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(42, 47));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(46, 53));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(37, 54));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(35, 47));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(43, 58));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(42, 47));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(46, 53));
 	}
 	if (mRespawnCount == 2 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(37, 41));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(39, 34));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(39, 34));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(35, 29));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(29, 30));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(29, 30));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 28));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(27, 24));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(27, 24));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(22, 24));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(25, 21));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(25, 21));
 
 	}
 
 	if (mRespawnCount == 1 && Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(49, 27));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(56, 30));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(56, 30));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(56, 24));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(55, 17));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(55, 17));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(51, 19));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(47, 19));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(50, 14));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(42, 15));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(50, 14));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(42, 15));
 	}
 
 
