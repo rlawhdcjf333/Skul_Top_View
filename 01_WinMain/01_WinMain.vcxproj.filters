@@ -142,6 +142,15 @@
     <Filter Include="MainGame\Item\MadnessItem">
       <UniqueIdentifier>{651b0805-bce8-4472-8618-0f214fe1bafc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\ThreadManager">
+      <UniqueIdentifier>{b91b9dc8-5596-43c9-8959-dc4cbdf94eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\ThreadManager\LodeList">
+      <UniqueIdentifier>{a8e29428-149b-42cb-8982-8d11c87def02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Bullet\EnemyBullet">
+      <UniqueIdentifier>{d6c2c4b0-af35-4168-9381-bf908d816717}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -531,6 +540,45 @@
     <ClInclude Include="MainScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Stage1_BigEnt.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_GreenEnt.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Hammer.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Hunter.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_NormalEnt.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_PinkEnt.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Wizard.h">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>FrameWork\ThreadManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadList.h">
+      <Filter>FrameWork\ThreadManager\LodeList</Filter>
+    </ClInclude>
+    <ClInclude Include="FirePillar.h">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Thorn.h">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyArrow.h">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="EntGas.h">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -901,6 +949,45 @@
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_BigEnt.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_GreenEnt.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_Hammer.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_Hunter.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_NormalEnt.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_PinkEnt.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_Wizard.cpp">
+      <Filter>MainGame\Enemy\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadList.cpp">
+      <Filter>FrameWork\ThreadManager\LodeList</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>FrameWork\ThreadManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FirePillar.cpp">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Thorn.cpp">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyArrow.cpp">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="EntGas.cpp">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
