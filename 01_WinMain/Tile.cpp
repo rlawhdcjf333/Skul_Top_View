@@ -111,7 +111,7 @@ void Tile::AttackDamage(int damage) {
 		Boss* dumpBoss = dynamic_cast<Boss*> (elem);
 		if (dumpBoss != nullptr) {
 			elem->Damage(damage);
-			new Effect(L"SkulHitEffect", elem->GetRect().left, elem->GetRect().top, EffectType::Normal);
+			new Effect(L"SkulHitEffect", elem->GetX(), elem->GetY(), EffectType::Normal);
 			continue;
 		}
 		Enemy* dumpEnemy = dynamic_cast<Enemy*> (elem);

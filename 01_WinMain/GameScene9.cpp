@@ -100,8 +100,10 @@ void GameScene9::Update()
 	//	Obj->FindObject("Door")->SetIsActive(true);
 	//}
 	Boss* boss = dynamic_cast<Boss*>(Obj->FindObject("Boss"));
-	if (boss->GetDeadCheck()) {
-		mDoorOpen = true;
+	if (boss) {
+		if (boss->GetDeadCheck()) {
+			mDoorOpen = true;
+		}
 	}
 
 	if (INPUT->GetKeyDown('T'))
