@@ -18,7 +18,7 @@ Bleeding::Bleeding(GameObject* target, int damage, float duration)
 
 void Bleeding::Update()
 {
-	if (mDuration < 0 or !mTarget) { mIsDestroy = true; return; }
+	if (mDuration < 0 or !mTarget or mTarget->GetIsDestroy()) { mIsDestroy = true; return; }
 	else
 	{
 		mDuration -= dTime;
@@ -27,7 +27,7 @@ void Bleeding::Update()
 		{
 			if (mDuration > i  and mDuration <= i+ dTime)
 			{
-				mTarget->Damage(mDamage);
+				if(mTarget) mTarget->Damage(mDamage);
 				new Effect(L"Bleeding", mTarget->GetX(), mTarget->GetY(), EffectType::Normal);
 			}
 		}

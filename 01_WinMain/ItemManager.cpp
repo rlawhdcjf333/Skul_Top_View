@@ -14,16 +14,16 @@ ItemManager::ItemManager()
 	mItemContainer.insert(make_pair(4, [](int indexX, int indexY) {new AlchemistHead(indexX, indexY); }));
 	mItemContainer.insert(make_pair(5, [](int indexX, int indexY) {new ClownHead(indexX, indexY); }));
 	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new HunterHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new MinoHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new BerserkerHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new WarriorHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new HighWarlockHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new NinjaHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new GrimReaperHead(indexX, indexY); }));
-	mItemContainer.insert(make_pair(6, [](int indexX, int indexY) {new YakshaHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(7, [](int indexX, int indexY) {new MinoHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(8, [](int indexX, int indexY) {new BerserkerHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(9, [](int indexX, int indexY) {new WarriorHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(10, [](int indexX, int indexY) {new HighWarlockHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(11, [](int indexX, int indexY) {new NinjaHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(12, [](int indexX, int indexY) {new GrimReaperHead(indexX, indexY); }));
+	mItemContainer.insert(make_pair(13, [](int indexX, int indexY) {new YakshaHead(indexX, indexY); }));
 
 
-	mItemContainer.insert(make_pair(7, [](int indexX, int indexY) {new CaerleonSword(indexX, indexY); }));
+	mItemContainer.insert(make_pair(14, [](int indexX, int indexY) {new CaerleonSword(indexX, indexY); }));
 
 
 }

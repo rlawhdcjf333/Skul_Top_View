@@ -84,6 +84,19 @@ void SceneManager::LoadScene(const wstring & targetSceneName, const wstring & lo
 	mLoadingThread = new thread(threadFunc);
 }
 
+bool SceneManager::IsCurrentScene(wstring name)
+{
+	SceneIter iter = mSceneList.find(name);
+	if (iter == mSceneList.end())
+		return false;
+
+	if (mCurrentScene == iter->second)
+		return true;
+	else
+		return false;
+}
+
+
 void SceneManager::LoadingThread()
 {
 	//데드락 주의!! 찾아봐!

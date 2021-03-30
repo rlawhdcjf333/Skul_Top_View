@@ -19,7 +19,7 @@ Burning::Burning(GameObject* target, int damage, float duration)
 
 void Burning::Update()
 {
-	if (mDuration < 0 or !mTarget) { mIsDestroy = true; return; }
+	if (mDuration < 0 or !mTarget or mTarget->GetIsDestroy()) { mIsDestroy = true; return; }
 	else
 	{
 		mDuration -= dTime;
@@ -28,7 +28,7 @@ void Burning::Update()
 		{
 			if (mDuration > i and mDuration <= i + dTime)
 			{
-				mTarget->Damage(mDamage);
+				if(mTarget) mTarget->Damage(mDamage);
 				new Effect(L"Burning", mTarget->GetX(), mTarget->GetY(), EffectType::Normal);
 			}
 		}
