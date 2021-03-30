@@ -8,6 +8,8 @@
 
 void GameScene5::Init()
 {
+	SoundPlayer::GetInstance()->Stop(L"Stage1");
+	SoundPlayer::GetInstance()->Play(L"Store", 0.1);
 	MapLoad();
 	GameObject* door = new Door(1545, 972);
 	Obj->AddObject(ObjectLayer::Door, door);

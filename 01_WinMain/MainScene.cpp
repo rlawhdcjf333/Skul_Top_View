@@ -9,16 +9,25 @@ void MainScene::Init()
 	IMAGEMANAGER->LoadFromFile(L"Anybutton", Resources(L"Anybutton.bmp"), 460, 48, 2, 1, true);
 	mAnyButton = IMAGEMANAGER->FindImage(L"Anybutton");
 	CAMERA->ChangeMode(Camera::Mode::Free);
-	mCount = 3.f;
+	mCount = 5.f;
 	mAnm = new Animation();
 	mAnm->InitFrameByStartEnd(0, 0, 1, 0, false);
 	mAnm->SetIsLoop(true);
 	mAnm->SetFrameUpdateTime(0.4f);
 	mAnm->Play();
+
+	SoundPlayer::GetInstance()->LoadFromFile(L"Title", Resources(L"/Sound/Title.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Stage1", Resources(L"/Sound/Stage1.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Stage2", Resources(L"/Sound/Stage2.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Store", Resources(L"/Sound/Store.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"/Sound/Main.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Airman", Resources(L"/Sound/Airman.mp3"), false);
+	SoundPlayer::GetInstance()->Play(L"Title",0.3);
 }
 
 void MainScene::Update()
 {
+	SoundPlayer::GetInstance()->Update();
 	mAnm->Update();
 	if(mCount>0)
 	mCount += -dTime;

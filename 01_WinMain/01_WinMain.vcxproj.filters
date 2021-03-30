@@ -459,9 +459,6 @@
     <ClInclude Include="YakshaHead.h">
       <Filter>MainGame\Item\SkulHead</Filter>
     </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="BoneOfBrave.h">
       <Filter>MainGame\Item\MarchItem</Filter>
     </ClInclude>
@@ -530,6 +527,9 @@
     </ClInclude>
     <ClInclude Include="InfinityBone.h">
       <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -830,9 +830,6 @@
     <ClCompile Include="YakshaHead.cpp">
       <Filter>MainGame\Item\SkulHead</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="BoneOfBrave.cpp">
       <Filter>MainGame\Item\MarchItem</Filter>
     </ClCompile>
@@ -901,6 +898,9 @@
     </ClCompile>
     <ClCompile Include="InfinityBone.cpp">
       <Filter>MainGame\Item\BlackMagicItem</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,8 @@
 
 void GameScene2::Init()
 {
+	SoundPlayer::GetInstance()->Stop(L"Main");
+	SoundPlayer::GetInstance()->Play(L"Stage1", 0.2);
 	mRespawnCount = 4;
 	MapLoad();
 	GameObject* door = new Door(255, 1135);

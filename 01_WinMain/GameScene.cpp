@@ -8,6 +8,8 @@
 
 void GameScene::Init()
 {
+	SoundPlayer::GetInstance()->Stop(L"Title");
+	SoundPlayer::GetInstance()->Play(L"Main", 0.1);
 	MapLoad();
 	SKUL->SceneInit();
 	ITEM->RandomSpawn(42,51);
