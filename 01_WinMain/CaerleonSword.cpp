@@ -18,7 +18,7 @@ CaerleonSword::CaerleonSword(int indexX, int indexY)
 	IMAGEMANAGER->LoadFromFile(L"March", Resources(L"/item/March.bmp"), 78, 78, true);
 	mSlot1Name = L"행군";
 	mSlot1Image = IMAGEMANAGER->FindImage(L"March");
-	mSlot1Explanation = L"물리공격력이 15/25/40/100%증폭됩니다.";
+	mSlot1Explanation = L"물리공격력이 15/25/40/100% 증폭됩니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"CaerleonSword", Resources(L"item/CaerleonSword.bmp"), 22, 22, true);
 	mImage = IMAGEMANAGER->FindImage(L"CaerleonSword");

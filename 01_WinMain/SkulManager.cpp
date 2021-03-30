@@ -21,6 +21,7 @@ void SkulManager::Init()
 	//스컬ui프레임이미지
 	IMAGEMANAGER->LoadFromFile(L"PlayerFrame", Resources(L"/Frame/PlayerFrame.bmp"), 336, 132,true);
 	IMAGEMANAGER->LoadFromFile(L"TimerFrame", Resources(L"/Frame/TimerFrame.bmp"), 132, 42, true);
+	IMAGEMANAGER->LoadFromFile(L"HpBar", Resources(L"/Frame/HpBar.bmp"), 236, 20, true);
 
 	//스컬ui이미지
 	IMAGEMANAGER->LoadFromFile(L"Alchemist1", Resources(L"SkulImage/Alchemist1.bmp"), 90, 90, true);
@@ -56,6 +57,7 @@ void SkulManager::Init()
 	
 	mPlayerFrame = IMAGEMANAGER->FindImage(L"PlayerFrame");
 	mTimerFrame = IMAGEMANAGER->FindImage(L"TimerFrame");
+	mHpBar = IMAGEMANAGER->FindImage(L"HpBar");
 
 	mInitSwitchingCoolTime = 8; //교대 쿨 8초
 	mSwitchingCoolTime = 0;
@@ -137,6 +139,8 @@ void SkulManager::Update()
 	if(mAlterSkul)
 		name2 = mAlterSkul->GetKeyName();
 	mSecondSkulFace = IMAGEMANAGER->FindImage(name2.append(L"2"));
+
+
 }
 
 void SkulManager::Release()
@@ -151,6 +155,8 @@ void SkulManager::Render(HDC hdc)
 {
 	mPlayerFrame->Render(hdc, 0, 588);
 	mTimerFrame->Render(hdc, 0, 0);
+
+	mHpBar->ScaleRender(hdc, 86, 676, 236 * (float)((float)mHp / (float)mMaxHp), 20);
 	mCurrentSkulFace->Render(hdc, 10, 588);
 	if(mSecondSkulFace)
 	mSecondSkulFace->Render(hdc, 20, 650);
@@ -161,6 +167,14 @@ void SkulManager::Render(HDC hdc)
 	}
 	mInventory->Render(hdc);
 	TextOut(hdc, 200, 100, to_wstring(mPhysicalAtk).c_str(), to_wstring(mPhysicalAtk).size());
+
+	SetBkMode(hdc, TRANSPARENT);
+	SetTextColor(hdc, RGB(255, 255, 255));
+	TextOut(hdc, 220, 678, to_wstring(mMaxHp).c_str(), to_wstring(mMaxHp).size());
+	TextOut(hdc, 200, 678, L"/", 1);
+	TextOut(hdc, 160, 678, to_wstring(mHp).c_str(), to_wstring(mHp).size());
+	SetBkMode(hdc, OPAQUE);
+	SetTextColor(hdc, RGB(0, 0, 0));
 }
 
 void SkulManager::ChangeSkul()

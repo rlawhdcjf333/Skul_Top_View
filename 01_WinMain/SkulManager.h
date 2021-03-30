@@ -35,7 +35,7 @@ private:
 
 	Image* mPlayerFrame;
 	Image* mTimerFrame;
-	Image* mScoreFrame;
+	Image* mHpBar;
 	Image* mCurrentSkulFace;
 	Image* mSecondSkulFace;
 

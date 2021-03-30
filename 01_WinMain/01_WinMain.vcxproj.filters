@@ -588,6 +588,12 @@
     <ClInclude Include="FireBullet.h">
       <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClInclude>
+    <ClInclude Include="GameScene9.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -1000,6 +1006,12 @@
     </ClCompile>
     <ClCompile Include="FireBullet.cpp">
       <Filter>MainGame\Bullet\ItemBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene9.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
