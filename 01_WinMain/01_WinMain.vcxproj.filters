@@ -594,20 +594,17 @@
     <ClInclude Include="FireBullet.h">
       <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene9.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>MainGame\Enemy\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="EndScore.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="BossFireBall.h">
       <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene9.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1022,20 +1019,17 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene9.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>MainGame\Enemy\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="EndScore.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="BossFireBall.cpp">
       <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene9.cpp">
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
