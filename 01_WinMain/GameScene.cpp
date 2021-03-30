@@ -12,7 +12,8 @@ void GameScene::Init()
 	SoundPlayer::GetInstance()->Play(L"Main", 0.1);
 	MapLoad();
 	SKUL->SceneInit();
-	ITEM->RandomSpawn(42,51);
+	new DimLightDarkcite(42, 51);
+	//ITEM->RandomSpawn(42,51);
 
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);

@@ -31,7 +31,7 @@ DimLightDarkcite::DimLightDarkcite(int indexX, int indexY)
 
 	mValue = 40;
 
-	mActivationFunc = NULL;
+	mActivationFunc = []() {};
 	mDeactivationFunc = [this]() {SKUL->SetMaxHp(SKUL->GetMaxHp() - mValue); if (SKUL->GetHp() > SKUL->GetMaxHp()) SKUL->SetHp(SKUL->GetMaxHp()); };
 	mIsCollision = false;
 

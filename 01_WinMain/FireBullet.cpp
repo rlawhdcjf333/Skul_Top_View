@@ -70,15 +70,7 @@ void FireBullet::Update()
 
 void FireBullet::Release()
 {
-	if (mTarget)
-	{
-		(new Effect(L"FireSlash", mTarget->GetX(), mTarget->GetY(), EffectType::Follow))->Scaling(120,120);
-	}
-	else
-	{
-		(new Effect(L"FireSlash", mX, mY, EffectType::Normal))->Scaling(120, 120);
-	}
-
+	(new Effect(L"FireSlash", mX, mY, EffectType::Normal))->Scaling(120, 120);
 }
 
 void FireBullet::Render(HDC hdc)

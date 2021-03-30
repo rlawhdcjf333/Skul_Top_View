@@ -17,7 +17,7 @@ YakshaHead::YakshaHead(int indexX, int indexY)
 	mEffect = L"5번째로 발을 구를 시 전방에 큰 피해를 입힙니다.(물리 데미지)\n태클: 대쉬 시 공격판정, 연속대쉬 불가";
 
 	mSlot1Name = L"야차정권";
-	mSlot1Explanation = L"스킬버튼을 누르고 있으면 정신집중을 합니다./n정신집중 완료시 스킬의 위력이 증가합니다.(물리 데미지)\n\n쿨다운 12초.";
+	mSlot1Explanation = L"스킬버튼을 누르고 있으면 정신집중을 합니다.\n정신집중 완료시 스킬의 위력이 증가합니다.(물리 데미지)\n\n쿨다운 12초.";
 
 	mSlot2Name = L"야차행진";
 	mSlot2Explanation = L"앞으로 나아가며 발을 3번 구릅니다.(물리 데미지)\n\n쿨다운 8초.";
