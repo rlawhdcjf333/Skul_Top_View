@@ -4,6 +4,7 @@
 #include "MapObject.h"
 #include "Door.h"
 #include "Items.h"
+#include "Animation.h"
 
 void GameScene::Init()
 {
@@ -23,6 +24,13 @@ void GameScene::Init()
 
 	IMAGEMANAGER->LoadFromFile(L"back", Resources(L"back.bmp"), 1280, 740, false);
 	mBack = IMAGEMANAGER->FindImage(L"back");
+	IMAGEMANAGER->LoadFromFile(L"Witch", Resources(L"witch.bmp"), 372, 90, 6, 1, true);
+	mWitch = IMAGEMANAGER->FindImage(L"Witch");
+	mAnm = new Animation();
+	mAnm->InitFrameByStartEnd(0, 0, 5, 0, false);
+	mAnm->SetIsLoop(true);
+	mAnm->SetFrameUpdateTime(0.2f);
+	mAnm->Play();
 }
 
 void GameScene::Update()
@@ -92,6 +100,7 @@ void GameScene::Update()
 	//{
 	//	SceneManager::GetInstance()->LoadScene(L"GameScene2");
 	//}
+	mAnm->Update();
 }
 
 void GameScene::Render(HDC hdc)
@@ -121,6 +130,7 @@ void GameScene::Render(HDC hdc)
 
 
 	ObjectManager::GetInstance()->Render(hdc);
+	CAMERA->FrameRender(hdc, mWitch, 800, 1400, mAnm->GetNowFrameX(), 0);
 }
 
 void GameScene::Release()
@@ -135,6 +145,7 @@ void GameScene::Release()
 	SKUL->Reset();
 	Obj->Release();
 	
+	SafeDelete(mAnm);
 }
 
 void GameScene:: MapLoad()
