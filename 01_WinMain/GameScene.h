@@ -10,6 +10,8 @@ class GameScene : public Scene
 	int offsetX;
 	int offsetY;
 	Image* mBack;
+	Image* mWitch;
+	Animation* mAnm;
 	bool mDoorOpen = false;
 	float mOpenTime = 1.0f;
 	float mDoorEventTime = 3.0f;
