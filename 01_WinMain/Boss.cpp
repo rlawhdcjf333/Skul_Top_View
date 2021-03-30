@@ -6,7 +6,7 @@
 #include "BossFireBall.h"
 
 Boss::Boss(int x, int y)
-	:GameObject(), mHp(300), mInvincibility(false), mNextAnimation(0), mDeadCheck(false), mSkillTime1(0), mSkillTime2(0), mShotCheck(true)
+	:GameObject("Boss"), mHp(150), mInvincibility(false), mNextAnimation(0), mDeadCheck(false), mSkillTime1(0), mSkillTime2(0), mShotCheck(true)
 {
 	IMAGEMANAGER->LoadFromFile(L"Boss_Attack1",Resources(L"Monster/Boss/Attack1.bmp"), 416, 138, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Boss_Attack2(End)", Resources(L"Monster/Boss/Attack2(End).bmp"), 781, 152, 11, 2, true);
