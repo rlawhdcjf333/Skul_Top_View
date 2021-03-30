@@ -4,6 +4,8 @@ class MainScene :public Scene
 {
 	Image* mBack;
 	Image* mAnyButton;
+	Animation* mAnm;
+	float mCount;
 public:
 	void Init()override;
 	void Update()override;
