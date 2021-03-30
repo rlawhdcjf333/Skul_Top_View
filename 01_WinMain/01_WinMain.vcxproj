@@ -156,6 +156,8 @@
     <ClInclude Include="BoneOfMana.h" />
     <ClInclude Include="BoneOfSpeed.h" />
     <ClInclude Include="BoneSandglass.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossFireBall.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="Door.h" />
     <ClInclude Include="Dumb.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EndScore.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyArrow.h" />
     <ClInclude Include="EntGas.h" />
@@ -303,6 +306,8 @@
     <ClCompile Include="BoneOfMana.cpp" />
     <ClCompile Include="BoneOfSpeed.cpp" />
     <ClCompile Include="BoneSandglass.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossFireBall.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -313,6 +318,7 @@
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Dumb.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EndScore.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyArrow.cpp" />
     <ClCompile Include="EntGas.cpp" />

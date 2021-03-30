@@ -7,7 +7,7 @@
 Stage1_Wizard::Stage1_Wizard(int indexX, int indexY)
 	:Enemy(indexX, indexY), mNowTeleport(false), mNextAttackTime(0), mNextTeleportTime(0)
 {
-	mHp = 40;
+	mHp = 20;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -87,7 +87,7 @@ void Stage1_Wizard::Update()
 	}
 	else if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetIsPlay()) {
-			mAttackTarget = RectMakeBottom(mTargetTile->GetX()+30,mTargetTile->GetY()+50,60,100);
+			mAttackTarget = RectMakeBottom(mTargetTile->GetX()+30,mTargetTile->GetY()+50,80,100);
 			//추후 불기둥에 해당 Rect값을 보내 렉트 출돌 체크 후 데미지
 		}
 		else if (!mCurrentAnimation->GetIsPlay()) {
@@ -173,7 +173,7 @@ void Stage1_Wizard::Attack()
 	//}
 	//CurrentSet(StateType::Attack, mDirection);
 	new FirePillar(mTargetTile->GetX(),mTargetTile->GetY(),mAttackTarget);
-	mNextAttackTime = 5.f;
+	mNextAttackTime = 3.f;
 }
 
 void Stage1_Wizard::Idle()
@@ -207,7 +207,7 @@ void Stage1_Wizard::Teleport()
 	TILE[mIndexY][mIndexX]->SetObject(this);
 	CurrentSet(StateType::Teleport_Out,mDirection);
 	mTargetTile = nullptr;
-	mNextTeleportTime = 10.f;
+	mNextTeleportTime = 8.f;
 }
 void Stage1_Wizard::Damage(int Damage)
 {

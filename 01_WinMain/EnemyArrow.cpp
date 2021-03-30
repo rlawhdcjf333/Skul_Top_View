@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EnemyArrow.h"
+#include "Effect.h"
 
 EnemyArrow::EnemyArrow(float x, float y, float angle , float speed)
 	:GameObject(),mMove(0)
@@ -29,11 +30,13 @@ void EnemyArrow::Update()
 	RECT rc = SKUL->GetCurrentSkul()->GetHitBox();
 	RECT temp;
 	if (IntersectRect(&temp,&mRect,&rc)) {
-		SKUL->Damage(7);
+		SKUL->Damage(4);
 		mIsDestroy = true;
+		new Effect(L"Boss_BossAttackEffect", mX, mY, EffectType::Normal);
 	}
 	else if (mMove > 1200.f) {
 		mIsDestroy = true;
+		new Effect(L"Boss_BossAttackEffect", mX, mY, EffectType::Normal);
 	}
 }
 

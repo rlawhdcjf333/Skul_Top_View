@@ -157,6 +157,12 @@
     <Filter Include="MainGame\Bullet\ItemBullet">
       <UniqueIdentifier>{75b8dcd6-c71a-4df4-a0f3-b41f47d19ecc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy\Boss">
+      <UniqueIdentifier>{ba2ce166-9cb3-49fe-b37a-0c1506bcadf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\EndScore">
+      <UniqueIdentifier>{2fd6ebef-3c4e-4744-8c64-4305eec9f70d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -589,10 +595,19 @@
       <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClInclude>
     <ClInclude Include="GameScene9.h">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainScene.h">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>MainGame\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="EndScore.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BossFireBall.h">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1008,10 +1023,19 @@
       <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClCompile>
     <ClCompile Include="GameScene9.cpp">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>MainGame\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="EndScore.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BossFireBall.cpp">
+      <Filter>MainGame\Bullet\EnemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

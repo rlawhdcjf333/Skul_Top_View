@@ -7,7 +7,7 @@
 Stage1_NormalEnt::Stage1_NormalEnt(int indexX, int indexY)
 	:Enemy(indexX, indexY)
 {
-	mHp = 60;
+	mHp = 40;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -64,7 +64,7 @@ void Stage1_NormalEnt::Update()
 	}
 	if (mType == StateType::Walk) {
 		if (mTargetSkulTile == nullptr) {
-			if (WalkCheck()) {
+			if (Stage1_NormalEnt::WalkCheck()) {
 				Walk();
 			}
 			else {
@@ -91,7 +91,7 @@ void Stage1_NormalEnt::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(1, 5);
+				AttackDamage(1, 3);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
@@ -108,7 +108,7 @@ void Stage1_NormalEnt::Update()
 				mAttackEnd = true;
 			}
 			else if (mType != StateType::Attack) {
-				if (WalkCheck()) {
+				if (Stage1_NormalEnt::WalkCheck()) {
 					Walk();
 				}
 				else {
@@ -463,10 +463,10 @@ bool Stage1_NormalEnt::WalkCheck() //ºó Ä­ Ã¼Å© ÈÄ ÀÌµ¿
 		}
 	}
 	moveTileList.clear();
-	//if (!(mTargetTile == nullptr))
-	//{
-	//	
-	//}
+	if (!(mTargetTile == nullptr))
+	{
+		return false;
+	}
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {

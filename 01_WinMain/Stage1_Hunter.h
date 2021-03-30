@@ -12,7 +12,7 @@ class Stage1_Hunter:public Enemy
 	wstring mStateType[(int)StateType::End] = { L"Attack",L"Idle",L"Walk",L"Hit" };
 	map<StateType, AnimationPair> mAnimationMap[2];
 	StateType mType;
-	float mShotTime;
+	float mNextAttackTime;
 public:
 	Stage1_Hunter(int indexX, int indexY);
 	void Init() override;

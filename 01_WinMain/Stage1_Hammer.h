@@ -12,6 +12,7 @@ class Stage1_Hammer : public Enemy
 	wstring mStateType[(int)StateType::End] = { L"Attack",L"Idle",L"Walk",L"Tackle" };
 	map<StateType, AnimationPair> mAnimationMap[2];
 	StateType mType;
+	float mNextAttackTime;
 public:
 	Stage1_Hammer(int indexX, int indexY);
 	void Init() override;

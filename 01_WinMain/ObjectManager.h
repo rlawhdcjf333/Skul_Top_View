@@ -12,6 +12,7 @@ enum class ObjectLayer : int
 	Player,
 	Condition,
 	Enemy,
+	Boss,
 	UI,
 	Player_Bullet,
 	Enemy_Bullet,
