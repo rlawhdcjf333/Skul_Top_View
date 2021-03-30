@@ -30,7 +30,7 @@ RitualDagger::RitualDagger(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower * 55.f / 100.f;
+	mValue = mMagicalAttackPower * 55.f / 100.f;
 
 	mActivationFunc = []() 
 	{
@@ -39,7 +39,7 @@ RitualDagger::RitualDagger(int indexX, int indexY)
 			new MagicalAtkBuff(55, 3, "RitualDaggerBuff");
 		}
 	};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mDeactivationFunc = [this]() {SKUL->SetMagicalAtk(mMagicalAttackPower - mValue); };
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -57,7 +57,7 @@ void RitualDagger::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
+			SKUL->SetMagicalAtk(mMagicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
