@@ -98,6 +98,12 @@ void LittleBone::Init()
 
 void LittleBone::Update()
 {
+	if (mAnimationList[M respawning]->GetIsPlay())
+	{
+		mCurrentAnimation->Update();
+		return;
+	}
+
 	if (mIsHead)
 	{
 		if (LEFT and mPath.size()==0) SetAnimation(M leftIdle);
@@ -277,7 +283,6 @@ void LittleBone::SetAnimation(int listNum)
 	if (mAnimationList[M rightSkill1]->GetIsPlay()) return;
 	if (mAnimationList[M leftSkill1]->GetIsPlay()) return;
 
-	if (mAnimationList[M respawning]->GetIsPlay()) return;
 
 	mCurrentAnimation = mAnimationList[listNum];
 	mCurrentAnimation->Play();
