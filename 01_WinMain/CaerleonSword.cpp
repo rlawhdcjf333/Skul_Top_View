@@ -31,6 +31,7 @@ CaerleonSword::CaerleonSword(int indexX, int indexY)
 
 	mValue = mPhysicalAttackPower /4.f;
 
+	mActivationFunc = []() {};
 	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue);};
 	mIsCollision = false;
 
@@ -46,7 +47,7 @@ void CaerleonSword::Update()
 	{
 		mIsCollision = true;
 
-		if (INPUT->GetKeyUp('F') and mDuration>=0) //È¹µæ Æ®¸®°Å
+		if (INPUT->GetKeyUp('F') and mDuration>=1.8f) //È¹µæ Æ®¸®°Å
 		{
 			SKUL->GetInventory()->GetItem(this);
 			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
@@ -55,9 +56,15 @@ void CaerleonSword::Update()
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 		}
 
-		if (INPUT->GetKey('F'))
+		if (INPUT->GetKey('F') and mDuration>=0)
 		{
 			mDuration -= dTime;
+
+			SetObjectOnTile(mIndexX, mIndexY);
+			mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
+			mX += (2 - mDuration) *2 *cosf(RAND->RandomInt(360) * PI / 180);
+			mY -= (2 - mDuration) *2* sinf(RAND->RandomInt(360) * PI / 180);
+			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 		}
 		
 	}
@@ -73,9 +80,9 @@ void CaerleonSword::Update()
 
 	if (mDuration < 0) //¾ÆÀÌÅÛ ÆÄ±« Æ®¸®°Å
 	{
+		new Effect(L"Spark", mX, mY, EffectType::Normal);
 		SetObjectOnTile(1, 1); // Àû´çÈ÷ ¾îµò°¡ ÃÄ¹Ú¾Æ µÎ±â
 		mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
-		new Effect(L"Spark", mX, mY, EffectType::Normal);
 	}
 }
 

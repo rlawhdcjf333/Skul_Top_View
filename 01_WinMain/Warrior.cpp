@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Effect.h"
 #include "Enemy.h"
+#include "PhysicalAtkBuff.h"
 
 Warrior::Warrior(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -76,6 +77,10 @@ void Warrior::Update()
 
 	mTileSelect->Update();
 
+	int param = Obj->GetObjectList(ObjectLayer::Enemy).size() * 5;
+	if (param > 30) param = 30;
+	new PhysicalAtkBuff(param, dTime, "WarriorPhysicalAtkBuff");
+
 	mDashCoolTime -= dTime;
 	if (mDashCoolTime < 0) { mDashCoolTime = 0; mDashCount = 0;}
 
@@ -85,22 +90,10 @@ void Warrior::Update()
 		{
 			mCurrentAnimation->Stop();
 			Dash(3);
+			Attack(2 * mPhysicalAttackPower, 4, AttackType::Stab);
 			if (LEFT) SetAnimation(M leftDash);
 			if (RIGHT) SetAnimation(M rightDash);
-			mDashCount = 1;
 			mDashCoolTime = mInitDashCoolTime;
-		}
-		else if (mAnimationList[M leftDash]->GetIsPlay() or mAnimationList[M rightDash]->GetIsPlay())
-		{
-
-			if (mDashCount == 1)
-			{
-				mCurrentAnimation->Stop();
-				Dash(3);
-				if (LEFT) SetAnimation(M leftDash);
-				if (RIGHT) SetAnimation(M rightDash);
-				mDashCount = 0;
-			}
 		}
 	}
 

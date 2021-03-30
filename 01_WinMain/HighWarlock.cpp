@@ -5,7 +5,7 @@
 #include "Animation.h"
 #include "Effect.h"
 #include "WarlockOrb.h"
-#include"Meteor.h"
+#include "Meteor.h"
 
 HighWarlock::HighWarlock(int indexX, int indexY, float sizeX, float sizeY)
 	:Player(indexX, indexY, sizeX, sizeY)
@@ -353,7 +353,7 @@ void HighWarlock::Skill2()
 
 	if (mAnimationList[M leftSkill2]->GetIsPlay() or mAnimationList[M rightSkill2]->GetIsPlay())
 	{
-		mSkill2CoolTime = 14;
+		mSkill2CoolTime = 12;
 	}
 }
 

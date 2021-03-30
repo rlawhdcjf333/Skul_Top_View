@@ -4,8 +4,6 @@
 class LittleBoneHead :public Item
 {
 
-	
-
 
 
 public:

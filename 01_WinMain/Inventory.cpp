@@ -11,10 +11,15 @@ Inventory::Inventory()
 
 	mToggleInventory = false;
 	mCurrentItem = nullptr;
+
+	mCurrent = RectMake(328, 264, 156, 38);
+	mCurrentSkulSlot = RectMake(386, 312, 40, 40);
 	
+	mHoldingSkuls = RectMake(328, 147, 156, 36);
 	mFirstSkulSlot = RectMake(345, 196, 38, 38);
 	mSecondSkulSlot = RectMake(429, 196, 38, 38);
 
+	mHoldingItems = RectMake(328, 380, 156, 38);
 	mItemSlot[0] = RectMakeCenter(320, 450, 45, 45);
 	mItemSlot[1] = RectMakeCenter(405, 450, 45, 45);
 	mItemSlot[2] = RectMakeCenter(490, 450, 45, 45);
@@ -88,8 +93,19 @@ void Inventory::Render(HDC hdc)
 {
 	if (mToggleInventory)
 	{
+		SetBkMode(hdc, TRANSPARENT);
+
 		IMAGEMANAGER->FindImage(L"Black")->AlphaRender(hdc, 0, 0, 0.6f);
 		mImage->Render(hdc, 0, 0);
+
+		CallFont(hdc, 25, [&]() 
+			{
+				DrawText(hdc, L"보유 스컬", 5, &mHoldingSkuls, DT_VCENTER | DT_CENTER | DT_SINGLELINE);
+				DrawText(hdc, L"현재 스컬", 5, &mCurrent, DT_VCENTER | DT_CENTER | DT_SINGLELINE);
+				DrawText(hdc, L"보유 아이템", 6, &mHoldingItems, DT_VCENTER | DT_CENTER | DT_SINGLELINE);
+			});
+		IMAGEMANAGER->FindImage(SKUL->GetCurrentSkul()->GetKeyName().append(L"Head"))->ScaleRender(hdc, mCurrentSkulSlot.left, mCurrentSkulSlot.top, 40, 40);
+
 		for (int i=0; i<mItemList.size(); i++) //아이템 9개 좌하단 렌더링
 		{
 			if(mItemList[i])
@@ -109,7 +125,6 @@ void Inventory::Render(HDC hdc)
 
 				IMAGEMANAGER->FindImage(mCurrentItem->GetImageKeyName())->ScaleRender(hdc, mImageArea.left, mImageArea.top, 73, 73);
 				IMAGEMANAGER->FindImage(mCurrentItem->GetSlot1Key())->ScaleRender(hdc, mDetailImageSlot1.left, mDetailImageSlot1.top, 40, 40);
-				SetBkMode(hdc, TRANSPARENT);
 				CallFont(hdc, 15, [&]() 
 					{
 						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
@@ -119,13 +134,13 @@ void Inventory::Render(HDC hdc)
 						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER |DT_WORDBREAK);
 					}
 				);
-				SetBkMode(hdc, OPAQUE);
-
 				break;
 
 			case ItemType::SkulHead:
 
-				SetBkMode(hdc, TRANSPARENT);
+				IMAGEMANAGER->FindImage(mCurrentItem->GetImageKeyName())->ScaleRender(hdc, mImageArea.left, mImageArea.top, 73, 73);
+				IMAGEMANAGER->FindImage(mCurrentItem->GetSlot1Key())->ScaleRender(hdc, mDetailImageSlot1.left, mDetailImageSlot1.top, 40, 40);
+				IMAGEMANAGER->FindImage(mCurrentItem->GetSlot2Key())->ScaleRender(hdc, mDetailImageSlot2.left, mDetailImageSlot2.top, 40, 40);
 				CallFont(hdc, 15, [&]()
 					{
 						DrawText(hdc, mCurrentItem->GetItemName().c_str(), mCurrentItem->GetItemName().size(), &mItemNameArea, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
@@ -137,16 +152,14 @@ void Inventory::Render(HDC hdc)
 
 						DrawText(hdc, mCurrentItem->GetSlot1Explanation().c_str(), mCurrentItem->GetSlot1Explanation().size(), &mDetailExplanationSlot1, DT_CENTER | DT_WORDBREAK);
 						DrawText(hdc, mCurrentItem->GetSlot2Explanation().c_str(), mCurrentItem->GetSlot2Explanation().size(), &mDetailExplanationSlot2, DT_CENTER | DT_WORDBREAK);
-
 					}
 				);
-				SetBkMode(hdc, OPAQUE);
-
 				break;
 			}
-			
 
 		}
+
+		SetBkMode(hdc, OPAQUE);
 	}
 }
 
@@ -174,27 +187,39 @@ void Inventory::GetSkul(Item* item)
 	if (mFirstSkul == nullptr)
 	{
 		mFirstSkul = item;
+		mCurrentItem = mFirstSkul;
 		return;
 	}
 	else if(mSecondSkul == nullptr)
 	{
 		mSecondSkul = item;
+		mCurrentItem = mSecondSkul;
 		return;
 	}
 	else if(mFirstSkul->GetImageKeyName() == SKUL->GetCurrentSkul()->GetKeyName().append(L"Head"))
 	{
 		mFirstSkul->SetObjectOnTile(SKUL->GetCurrentSkul()->GetIndexX(), SKUL->GetCurrentSkul()->GetIndexY());
 		mFirstSkul->SetIsTrashed(true);
-		Obj->AddObject(ObjectLayer::Item, mFirstSkul);
+		mFirstSkul->SetDelay(0.5f);
+		if (Obj->FindObject(ObjectLayer::Item, mFirstSkul->GetName()) == nullptr)
+		{
+			Obj->AddObject(ObjectLayer::Item, mFirstSkul);
+		}
 		mFirstSkul = item;
+		mCurrentItem = mFirstSkul;
 		return;
 	}
 	else if (mSecondSkul->GetImageKeyName() == SKUL->GetCurrentSkul()->GetKeyName().append(L"Head"))
 	{
 		mSecondSkul->SetObjectOnTile(SKUL->GetCurrentSkul()->GetIndexX(), SKUL->GetCurrentSkul()->GetIndexY());
 		mSecondSkul->SetIsTrashed(true);
-		Obj->AddObject(ObjectLayer::Item, mSecondSkul);
+		mSecondSkul->SetDelay(0.5f);
+		if (Obj->FindObject(ObjectLayer::Item, mFirstSkul->GetName()) == nullptr)
+		{
+			Obj->AddObject(ObjectLayer::Item, mSecondSkul);
+		}
 		mSecondSkul= item;
+		mCurrentItem = mSecondSkul;
 		return;
 	}
 	else

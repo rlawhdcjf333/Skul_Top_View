@@ -1,32 +1,22 @@
 #include "pch.h"
 #include "GameScene.h"
-#include "Player.h"
 #include "Tile.h"
 #include "MapObject.h"
-#include "Stage1_SwordMan.h"
 #include "Door.h"
 #include "Items.h"
-#include "Inventory.h"
 
 void GameScene::Init()
 {
 	MapLoad();
-	GameObject* little = new LittleBone(41, 57, 30, 30);
-	Item* tmp = new LittleBoneHead(0, 0);
-	tmp->SetIsTrashed(false);
-	SKUL->GetInventory()->GetSkul(tmp);
-	GameObject* alterSkul = new Berserker(30, 30, 30, 30);
+	SKUL->SceneInit();
+	ITEM->RandomSpawn(42,51);
+
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);
-	alterSkul->SetIsActive(false);
-	Obj->AddObject(ObjectLayer::Player, little);
-	Obj->AddObject(ObjectLayer::Player, alterSkul);
+	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Door, door);
-	SKUL->SetCurrentSkul((Player*)alterSkul);
-	SKUL->NewSkulGet((Player*)little);
 	Obj->Init();
 
-	new CaerleonSword(41, 57);
 
 	CAMERA->ChangeMode(Camera::Mode::Follow);
 	CAMERA->SetTarget(Obj->FindObject("player"));

@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Effect.h"
+#include "Player.h"
 
 ObjectManager::ObjectManager()
 {
@@ -84,6 +85,7 @@ void ObjectManager::Update()
 	for (int i = 0; i < (int)ObjectLayer::End; i++)
 	{
 		if (i == (int)ObjectLayer::Background) continue;
+		if (i == (int)ObjectLayer::Item) continue;
 		if (i == (int)ObjectLayer::Effect) continue;
 
 		for (GameObject* elem : mObjectList[(ObjectLayer)i])
@@ -114,6 +116,13 @@ void ObjectManager::Render(HDC hdc)
 		}
 	}
 	for (GameObject* elem : mRenderList)
+	{
+		if (elem->GetIsActive() == true)
+		{
+			elem->Render(hdc);
+		}
+	}
+	for (GameObject* elem : mObjectList[ObjectLayer::Item]) //반드시 앞에 와야되는 오브젝트의 렌더링
 	{
 		if (elem->GetIsActive() == true)
 		{
@@ -270,4 +279,18 @@ void ObjectManager::ReleaseObject(ObjectLayer layer, const string& name)
 vector<class GameObject*>* ObjectManager::GetObjectListPt(ObjectLayer layer)
 {
 	return &mObjectList[layer];
+}
+
+void ObjectManager::DeleteSkul(Player* skul)
+{
+	for (int i=0; i< mObjectList[ObjectLayer::Player].size(); i++)
+	{
+		if (dynamic_cast<Player*>(mObjectList[ObjectLayer::Player][i])->GetKeyName() == skul->GetKeyName())
+		{
+			mObjectList[ObjectLayer::Player][i]->Release();
+			SafeDelete(mObjectList[ObjectLayer::Player][i]);
+			mObjectList[ObjectLayer::Player].erase(mObjectList[ObjectLayer::Player].begin() + i);
+			break;
+		}
+	}
 }

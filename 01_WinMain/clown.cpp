@@ -202,7 +202,6 @@ void Clown::BasicAttack()
 	{
 		if (mCurrentAnimation->GetNowFrameX() == 2 and mCurrentAnimation->GetCurrentFrameTime() > mAttackSpeed-dTime)
 		{
-			UpdateAngle();
 			new ClownDagger(this, 2*mPhysicalAttackPower, mAngle, 500); // 광대 단검 자체 패시브 -3타 표식에 폭발 효과
 		}
 	}
@@ -219,7 +218,6 @@ void Clown::Skill1()
 
 		if (mCurrentAnimation->GetCurrentFrameTime() > 0.1f-dTime and mCurrentAnimation->GetNowFrameX() == 2)
 		{
-			mAngle = Math::GetAngle(mX, mY, CAMERA->CameraMouseX(), CAMERA->CameraMouseY());
 			for (int i = 0; i < 3; i++)
 				new ClownDagger(this, 3 * mMagicalAttackPower, mAngle - PI / 12 + i * PI / 24, 500, true); //여기에도 표식이 묻음
 

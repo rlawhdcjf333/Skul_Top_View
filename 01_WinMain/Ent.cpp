@@ -50,8 +50,8 @@ void Ent::Init()
 		});
 	mAnimationList[M leftAttack2] = new Animation(0, 11, 4, 11, false, false, mAttackSpeed);
 
-	mAnimationList[M rightSkill1] = new Animation(0, 12, 3, 12, false, false, 0.3f);
-	mAnimationList[M leftSkill1] = new Animation(0, 13, 3, 13, false, false, 0.3f);
+	mAnimationList[M rightSkill1] = new Animation(0, 12, 3, 12, false, false, 0.2f);
+	mAnimationList[M leftSkill1] = new Animation(0, 13, 3, 13, false, false, 0.2f);
 
 	mAnimationList[M rightCharging] = new Animation(0, 14, 3, 14, false, false, 0.25f,
 		[this]() {
@@ -299,7 +299,7 @@ void Ent::Skill1()
 	{
 		mSkill1CoolTime = 11;
 
-		if (mCurrentAnimation->GetCurrentFrameTime() > 0.3f-dTime)
+		if (mCurrentAnimation->GetCurrentFrameTime() > 0.2f-dTime)
 		{
 			switch (mCurrentAnimation->GetNowFrameX())
 			{

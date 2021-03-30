@@ -27,7 +27,7 @@ AlchPassive::AlchPassive(GameObject* startUnit, float damage, float angle)
 
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 
-	mAnimation = new Animation(0, 0, 5, 5, false, false, 0.05f, [this]() {mIsDestroy = true; new Effect(L"GolemBulletDespawn", mX, mY, EffectType::Normal);});
+	mAnimation = new Animation(0, 0, 5, 5, false, false, 0.1f, [this]() {mIsDestroy = true; new Effect(L"GolemBulletDespawn", mX, mY, EffectType::Normal);});
 	mAnimation->Play();
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player_Bullet, this);

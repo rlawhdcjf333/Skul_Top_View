@@ -4,6 +4,7 @@
 #include "Effect.h"
 #include "Condition.h"
 #include "Inventory.h"
+#include "Items.h"
 #include "FixedSysFont.h"
 
 void SkulManager::Init()
@@ -16,6 +17,8 @@ void SkulManager::Init()
 	IMAGEMANAGER->LoadFromFile(L"Bleeding", Resources(L"/skul/bleeding.bmp"), 900, 100, 9, 1, true);
 	IMAGEMANAGER->LoadFromFile(L"Burning", Resources(L"/skul/burning.bmp"), 400, 300, 4, 3, true);
 	IMAGEMANAGER->LoadFromFile(L"Healing", Resources(L"/skul/healing.bmp"), 600, 200, 6, 2, true);
+	IMAGEMANAGER->LoadFromFile(L"Debris", Resources(L"/item/Debris.bmp"), 700, 200, 7, 2, true);
+	
 
 	mInitSwitchingCoolTime = 8; //교대 쿨 8초
 	mSwitchingCoolTime = 0;
@@ -33,7 +36,7 @@ void SkulManager::Init()
 	mInvincibility = false;
 	mHitTime = 0;
 
-	mInventory = new Inventory();
+	mInventory = nullptr;
 }
 
 
@@ -43,8 +46,8 @@ void SkulManager::Update()
 	if (mHp <= 0) // 죽었을 때 할 일;
 	{
 		//GameEventManager::PushEvent() 대충 이런거 하나 하고
-		//Init(); //스컬 매니저 초기화
-		//SceneManager::GetInstance()->LoadScene(L"GameScene");
+		Release();
+		SceneManager::GetInstance()->LoadScene(L"GameScene");
 	}
 	else
 	{
@@ -93,7 +96,7 @@ void SkulManager::Render(HDC hdc)
 		mDamages.pop();
 	}
 	mInventory->Render(hdc);
-	TextOut(hdc, 200, 100, to_wstring(mHp).c_str(), to_wstring(mHp).size());
+	TextOut(hdc, 200, 100, to_wstring(mPhysicalAtk).c_str(), to_wstring(mPhysicalAtk).size());
 }
 
 void SkulManager::ChangeSkul()
@@ -125,16 +128,50 @@ void SkulManager::PlusGold(int val)
 	(new Effect(L"GoldGet", mCurrentSkul->GetX(), mCurrentSkul->GetY()-50, EffectType::Normal))->Scaling(50, 50);
 }
 
-Player* SkulManager::NewSkulGet(Player* skul)
+void SkulManager::NewSkulGet(Player* skul)
 {
 	if (mAlterSkul) {
 		Player* temp = mCurrentSkul;
 		mCurrentSkul = skul;
-		return temp;
+		mCurrentSkul->SetIsActive(true);
+		mCurrentSkul->SetAnimation(0);
+		CAMERA->SetTarget(mCurrentSkul);
+		Obj->DeleteSkul(temp);
 	}
-	mAlterSkul = mCurrentSkul;
-	mCurrentSkul = skul;
-	return nullptr;
+	else
+	{
+		mAlterSkul = skul;
+		mCurrentSkul->SkulReset();
+		mCurrentSkul->SetIsActive(false);
+		Player* tmp = mCurrentSkul;
+		mCurrentSkul = mAlterSkul;
+		mAlterSkul = tmp;
+		mCurrentSkul->SetIsActive(true);
+		mCurrentSkul->SetAnimation(0);
+	}
+}
+
+void SkulManager::SceneInit()
+{
+	mInitSwitchingCoolTime = 8; //교대 쿨 8초
+	mSwitchingCoolTime = 0;
+
+	mCurrentSkul = new LittleBone(41, 57, 30, 30);
+	mAlterSkul = nullptr;
+
+	mMaxHp = mHp = 100;
+	mGold = 0;
+
+	mAtkSpeed = 0.1f;
+	mPhysicalAtk = 4;
+	mMagicalAtk = 4;
+
+	mInvincibility = false;
+	mHitTime = 0;
+
+	mInventory = new Inventory();
+	mInventory->GetSkul(new LittleBoneHead(0, 0));
+	mInventory->GetFirstSkul()->SetIsTrashed(false);
 }
 
 int SkulManager::GetLostHpPercentage()

@@ -241,6 +241,20 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="LittleBoneHead.h" />
     <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="BerserkerHead.h" />
+    <ClInclude Include="EntHead.h" />
+    <ClInclude Include="SwordHead.h" />
+    <ClInclude Include="PettyThiefHead.h" />
+    <ClInclude Include="WerewolfHead.h" />
+    <ClInclude Include="AlchemistHead.h" />
+    <ClInclude Include="ClownHead.h" />
+    <ClInclude Include="HunterHead.h" />
+    <ClInclude Include="MinoHead.h" />
+    <ClInclude Include="WarriorHead.h" />
+    <ClInclude Include="HighWarlockHead.h" />
+    <ClInclude Include="NinjaHead.h" />
+    <ClInclude Include="GrimReaperHead.h" />
+    <ClInclude Include="YakshaHead.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -335,6 +349,20 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LittleBoneHead.cpp" />
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="BerserkerHead.cpp" />
+    <ClCompile Include="EntHead.cpp" />
+    <ClCompile Include="SwordHead.cpp" />
+    <ClCompile Include="PettyThiefHead.cpp" />
+    <ClCompile Include="WerewolfHead.cpp" />
+    <ClCompile Include="AlchemistHead.cpp" />
+    <ClCompile Include="ClownHead.cpp" />
+    <ClCompile Include="HunterHead.cpp" />
+    <ClCompile Include="MinoHead.cpp" />
+    <ClCompile Include="WarriorHead.cpp" />
+    <ClCompile Include="HighWarlockHead.cpp" />
+    <ClCompile Include="NinjaHead.cpp" />
+    <ClCompile Include="GrimReaperHead.cpp" />
+    <ClCompile Include="YakshaHead.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />
