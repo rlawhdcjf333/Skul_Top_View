@@ -13,7 +13,7 @@ DeterminationOfKnight::DeterminationOfKnight(int indexX, int indexY)
 
 	mItemName = L"기사의 각오";
 	mExplanation = L"멸망한 왕성에서 방패를 올린 채로 죽어 있던 이름없는 기사의 투구";
-	mEffect = L"현재 체력이 30% 이하일 경우 받는 데미지가 30% 감소합니다.";
+	mEffect = L"현재 체력이 30% 이하일 경우 받는 데미지가 3 감소합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Heart", Resources(L"/item/Heart.bmp"), 78, 78, true);
 	mSlot1Name = L"심장";
@@ -27,12 +27,31 @@ DeterminationOfKnight::DeterminationOfKnight(int indexX, int indexY)
 	mSizeY = mImage->GetHeight();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
+	mIsApplied = false;
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 3;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]() 
+	{
+		if (SKUL->GetLostHpPercentage() >= 70 and mIsApplied ==false)
+		{
+			mIsApplied = true;
+			SKUL->SetDamageDecrease(SKUL->GetDamageDecrease() + 3);
+		}
+		if (SKUL->GetLostHpPercentage() < 70 and mIsApplied == true)
+		{
+			mIsApplied = false;
+			SKUL->SetDamageDecrease(SKUL->GetDamageDecrease() - 3);
+		}
+	};
+	mDeactivationFunc = [this]() 
+	{
+		if (mIsApplied)
+		{
+			SKUL->SetDamageDecrease(SKUL->GetDamageDecrease() - 3);
+		}
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -92,14 +111,12 @@ void DeterminationOfKnight::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

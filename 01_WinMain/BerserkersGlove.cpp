@@ -13,7 +13,7 @@ BerserkersGlove::BerserkersGlove(int indexX, int indexY)
 
 	mItemName = L"광전사의 장갑";
 	mExplanation = L"한 때 별 생각 없이 이걸 팔았다가, 한 부족 전체가 몰살당해버린 일이 있었어.- 떠돌이 상인";
-	mEffect = L"잃은체력에 비례하여 공격속도가 최대 60%까지 증가합니다.";
+	mEffect = L"체력이 절반 이하이면 공격속도가 30% 상승합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Madness", Resources(L"/item/Madness.bmp"), 78, 78, true);
 	mSlot1Name = L"광기잇";
@@ -29,10 +29,37 @@ BerserkersGlove::BerserkersGlove(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mIsApplied=false;
+	mValue = 0.03;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]()
+	{
+		if (SKUL->GetLostHpPercentage() >= 50 and mIsApplied==false)
+		{
+			mIsApplied = true;
+			SKUL->SetPhysicalAtk(mAttackSpeed - mValue);
+			SKUL->GetCurrentSkul()->SetAttackSpeed();
+			if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+		}
+		if (SKUL->GetLostHpPercentage() < 50 and mIsApplied==true)
+		{
+			mIsApplied = false;
+			SKUL->SetPhysicalAtk(mAttackSpeed + mValue);
+			SKUL->GetCurrentSkul()->SetAttackSpeed();
+			if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+		}
+
+
+	};
+	mDeactivationFunc = [this]()
+	{
+		if (mIsApplied == true)
+		{
+			SKUL->SetPhysicalAtk(mAttackSpeed + mValue);
+			SKUL->GetCurrentSkul()->SetAttackSpeed();
+			if (SKUL->GetAlterSkul()) SKUL->GetAlterSkul()->SetAttackSpeed();
+		}
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +77,6 @@ void BerserkersGlove::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);

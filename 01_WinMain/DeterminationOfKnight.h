@@ -4,6 +4,7 @@
 class DeterminationOfKnight :public Item
 {
 	float mValue;
+	bool mIsApplied;
 
 public:
 

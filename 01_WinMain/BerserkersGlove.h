@@ -4,6 +4,7 @@
 class BerserkersGlove :public Item
 {
 	float mValue;
+	bool mIsApplied;
 
 public:
 

@@ -13,7 +13,7 @@ private:
 
 	int mHp;
 	int mMaxHp;
-	
+
 	int mGold;
 	float mGoldBonusRatio;
 
@@ -29,6 +29,7 @@ private:
 
 	float mHitTime;
 
+	int mDamageDecrease;
 	stack<int> mDamages;
 	Inventory* mInventory;
 
@@ -43,18 +44,24 @@ private:
 
 public:
 	void Init();
-	void Damage(int damage) { if (!mInvincibility) { mHp -= damage; mDamages.emplace(damage); } }
+	void Damage(int damage) { if (!mInvincibility) { damage -= mDamageDecrease; mHp -= damage; mDamages.emplace(damage); } }
 	void Update();
 	void Release();
 	void Render(HDC hdc);
-	
+
 	void ChangeSkul();
 
+	void SetSwitchingCoolTime(float val) { mSwitchingCoolTime = val; }
 	float const GetSwitchingCoolTime() { return mSwitchingCoolTime; }
 	float const GetInitSwitchingCoolTime() { return mInitSwitchingCoolTime; }
-	void PlusHp(int val); 
+	void PlusHp(int val);
 	void MinusHp(int val) { mHp -= val; }
 	int GetHp() { return mHp; }
+	void SetHp(int val) { mHp = val; }
+
+
+	int GetMaxHp() { return mMaxHp; }
+	void SetMaxHp(int val) { mMaxHp = val; }
 	int GetLostHpPercentage();
 	void PlusGold(int val);
 	void MinusGold(int val) { if(mGold-val>=0) mGold -= val;}
@@ -87,6 +94,9 @@ public:
 
 	float GetInitMovingSpeed() { return mInitMovingSpeed; }
 	void SetInitMovingSpeed(float val) { mInitMovingSpeed = val; }
+
+	int GetDamageDecrease() { return mDamageDecrease; }
+	void SetDamageDecrease(int val) { mDamageDecrease = val; }
 
 	void Reset() { if(mCurrentSkul != nullptr)mCurrentSkul->PathReset();}
 	void SceneInit();

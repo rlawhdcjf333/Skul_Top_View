@@ -13,6 +13,7 @@ void GameScene::Init()
 	MapLoad();
 	SKUL->SceneInit();
 	ITEM->RandomSpawn(42,51);
+	new MagesNecklace(42, 51);
 
 	new AlchemistHead(43, 52);
 

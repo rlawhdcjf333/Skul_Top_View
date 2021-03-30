@@ -13,7 +13,7 @@ HeartOfNaias::HeartOfNaias(int indexX, int indexY)
 
 	mItemName = L"나이아스의 심장";
 	mExplanation = L"정령 호수를 지키던 요정의 가슴 속에 응결 된 마법의 보석";
-	mEffect = L"최대체력이 35 증가합니다.\n피격 시 주변 적들에게 데미지를 입히고 빙결을 부여합니다.\n(쿨타임: 1초)";
+	mEffect = L"최대체력이 60 증가합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Heart", Resources(L"/item/Heart.bmp"), 78, 78, true);
 	mSlot1Name = L"심장";
@@ -29,10 +29,10 @@ HeartOfNaias::HeartOfNaias(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 60;
 
 	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mDeactivationFunc = [this]() {SKUL->SetMaxHp(SKUL->GetMaxHp() - mValue); if (SKUL->GetHp() > SKUL->GetMaxHp()) SKUL->SetHp(SKUL->GetMaxHp());};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +50,8 @@ void HeartOfNaias::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
+			SKUL->SetMaxHp(SKUL->GetMaxHp() + mValue);
+			SKUL->PlusHp(mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +93,12 @@ void HeartOfNaias::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

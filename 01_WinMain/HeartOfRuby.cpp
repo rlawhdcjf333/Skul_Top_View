@@ -13,7 +13,7 @@ HeartOfRuby::HeartOfRuby(int indexX, int indexY)
 
 	mItemName = L"루비심장";
 	mExplanation = L"칼레온 마도집회에서 자랑 하듯 내세웠던 뱀파이어 혈액 연구의 결과물";
-	mEffect = L"최대체력이 200이상일시 피해감소가 30% 증폭합니다.";
+	mEffect = L"최대체력이 200이상일시 고정 피해 감소 수치(2)가 적용됩니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"Heart", Resources(L"/item/Heart.bmp"), 78, 78, true);
 	mSlot1Name = L"심장";
@@ -28,11 +28,23 @@ HeartOfRuby::HeartOfRuby(int indexX, int indexY)
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 
 	mType = ItemType::CommonItem;
+	mIsApplied = false;
 
-	mValue = mPhysicalAttackPower / 4.f;
-
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]() 
+	{
+		if (SKUL->GetMaxHp() >= 200 and mIsApplied==false)
+		{
+			mIsApplied = true;
+			SKUL->SetDamageDecrease(SKUL->GetDamageDecrease() + 2);
+		}
+	};
+	mDeactivationFunc = [this]()
+	{
+		if (mIsApplied)
+		{
+			SKUL->SetDamageDecrease(SKUL->GetDamageDecrease() - 2);
+		}
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +62,6 @@ void HeartOfRuby::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,15 +103,12 @@ void HeartOfRuby::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
-
 	}
 
 }

@@ -29,8 +29,8 @@ AssassinationDagger::AssassinationDagger(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mAttackSpeed / 4.f;
-	mSpeedValue = mInitSpeed*0.15f;
+	mValue = 0.25f;
+	mSpeedValue = 30.f;
 
 	mActivationFunc = []() {};
 	mDeactivationFunc = [this]() 

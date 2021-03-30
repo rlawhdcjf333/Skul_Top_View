@@ -151,6 +151,12 @@
     <Filter Include="MainGame\Bullet\EnemyBullet">
       <UniqueIdentifier>{d6c2c4b0-af35-4168-9381-bf908d816717}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Bullet\PlayerBullet">
+      <UniqueIdentifier>{1fe7931e-2973-44dc-ab74-591dab35c1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Bullet\ItemBullet">
+      <UniqueIdentifier>{75b8dcd6-c71a-4df4-a0f3-b41f47d19ecc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -327,41 +333,14 @@
     <ClInclude Include="HighWarlock.h">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClInclude>
-    <ClInclude Include="WarlockOrb.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Ninja.h">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
-    </ClInclude>
-    <ClInclude Include="Hwadun.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Shuriken.h">
-      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="GrimReaper.h">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
     </ClInclude>
     <ClInclude Include="Yaksha.h">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
-    </ClInclude>
-    <ClInclude Include="ClownBox.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="ClownDagger.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="AlchPassive.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Meteor.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="LittleHead.h">
-      <Filter>MainGame\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="GrimSoul.h">
-      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Condition.h">
       <Filter>MainGame\Condition</Filter>
@@ -395,9 +374,6 @@
     </ClInclude>
     <ClInclude Include="GameScene8.h">
       <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Arrow.h">
-      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalAtkBuff.h">
       <Filter>MainGame\Condition</Filter>
@@ -582,6 +558,39 @@
     <ClInclude Include="EntGas.h">
       <Filter>MainGame\Bullet\EnemyBullet</Filter>
     </ClInclude>
+    <ClInclude Include="AlchPassive.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ClownBox.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ClownDagger.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GrimSoul.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Hwadun.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleHead.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Meteor.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Shuriken.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="WarlockOrb.h">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBullet.h">
+      <Filter>MainGame\Bullet\ItemBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -743,41 +752,14 @@
     <ClCompile Include="HighWarlock.cpp">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
     </ClCompile>
-    <ClCompile Include="WarlockOrb.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Ninja.cpp">
       <Filter>MainGame\Player\Skuls\UniqueS</Filter>
-    </ClCompile>
-    <ClCompile Include="Hwadun.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Shuriken.cpp">
-      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="GrimReaper.cpp">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
     </ClCompile>
     <ClCompile Include="Yaksha.cpp">
       <Filter>MainGame\Player\Skuls\LegendaryS</Filter>
-    </ClCompile>
-    <ClCompile Include="ClownBox.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="ClownDagger.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="AlchPassive.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Meteor.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="LittleHead.cpp">
-      <Filter>MainGame\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="GrimSoul.cpp">
-      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Condition.cpp">
       <Filter>MainGame\Condition</Filter>
@@ -811,9 +793,6 @@
     </ClCompile>
     <ClCompile Include="GameScene8.cpp">
       <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Arrow.cpp">
-      <Filter>MainGame\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="AtkSpeedBuff.cpp">
       <Filter>MainGame\Condition</Filter>
@@ -994,6 +973,39 @@
     </ClCompile>
     <ClCompile Include="EntGas.cpp">
       <Filter>MainGame\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="AlchPassive.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ClownBox.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ClownDagger.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimSoul.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Hwadun.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleHead.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Shuriken.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="WarlockOrb.cpp">
+      <Filter>MainGame\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>MainGame\Bullet\ItemBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

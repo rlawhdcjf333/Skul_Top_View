@@ -4,6 +4,7 @@
 class HeartOfRuby :public Item
 {
 	float mValue;
+	bool mIsApplied;
 
 public:
 

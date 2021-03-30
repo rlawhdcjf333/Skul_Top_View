@@ -5,6 +5,9 @@ class MagesNecklace :public Item
 {
 	float mValue;
 
+	bool mSkillCheck1;
+	bool mSkillCheck2;
+
 public:
 
 	MagesNecklace(int indexX, int indexY);

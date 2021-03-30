@@ -2,6 +2,7 @@
 #include "MagesNecklace.h"
 #include "Inventory.h"
 #include "Effect.h"
+#include "FireBullet.h"
 
 MagesNecklace::MagesNecklace(int indexX, int indexY)
 {
@@ -29,9 +30,34 @@ MagesNecklace::MagesNecklace(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 0;
 
-	mActivationFunc = []() {};
+	mSkillCheck1 = false;
+	mSkillCheck2 = false;
+
+	mActivationFunc = [this]() 
+	{
+		if (SKUL->GetCurrentSkul()->GetSkill1CoolTime() == 0)
+		{
+			mSkillCheck1 = false;
+		}
+		if (mSkillCheck1 == false and SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0)
+		{
+			mSkillCheck1 = true;
+			SKUL->SetSwitchingCoolTime(SKUL->GetSwitchingCoolTime() - 0.5f);
+			new FireBullet(SKUL->GetCurrentSkul(), mMagicalAttackPower);
+		}
+		if (SKUL->GetCurrentSkul()->GetSkill2CoolTime() == 0)
+		{
+			mSkillCheck2 = false;
+		}
+		if (mSkillCheck2 == false and SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0)
+		{
+			mSkillCheck2 = true;
+			SKUL->SetSwitchingCoolTime(SKUL->GetSwitchingCoolTime() - 0.5f);
+			new FireBullet(SKUL->GetCurrentSkul(), mMagicalAttackPower);
+		}
+	};
 	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
 	mIsCollision = false;
 

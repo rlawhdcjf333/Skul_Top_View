@@ -170,6 +170,7 @@
     <ClInclude Include="EnemyArrow.h" />
     <ClInclude Include="EntGas.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="FireBullet.h" />
     <ClInclude Include="FirePillar.h" />
     <ClInclude Include="FixedSysFont.h" />
     <ClInclude Include="framework.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyArrow.cpp" />
     <ClCompile Include="EntGas.cpp" />
+    <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="FirePillar.cpp" />
     <ClCompile Include="FixedSysFont.cpp" />
     <ClCompile Include="GameEvent.cpp" />
