@@ -269,7 +269,11 @@ void LittleBone::SetAnimation(int listNum)
 
 	if (mAnimationList[M rightDash]->GetIsPlay()) return;
 	if (mAnimationList[M leftDash]->GetIsPlay()) return;
-	if (mAnimationList[M switchAttack]->GetIsPlay()) return;
+	if (mAnimationList[M switchAttack]->GetIsPlay())
+	{
+		mPath.clear();
+		return;
+	}
 	if (mAnimationList[M rightSkill1]->GetIsPlay()) return;
 	if (mAnimationList[M leftSkill1]->GetIsPlay()) return;
 

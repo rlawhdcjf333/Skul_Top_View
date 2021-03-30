@@ -57,6 +57,7 @@ void GameScene7::Update()
 		}
 		else {
 			if (!door->GetIsActive()) {
+				ITEM->RandomSpawn(50, 23);
 				door->SetIsActive(true);
 			}
 			door->Update();
@@ -184,6 +185,8 @@ void GameScene7::Release()
 			SafeDelete(elemelem);
 		}
 	}
+	mTileList.clear();
+
 	SKUL->Reset();
 	Obj->Release();
 

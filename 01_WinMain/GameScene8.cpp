@@ -8,6 +8,7 @@
 
 void GameScene8::Init()
 {
+	mRespawnCount = 4;
 	MapLoad();
 	GameObject* door = new Door(1220, 724);
 	Obj->AddObject(ObjectLayer::Door, door);
@@ -134,6 +135,8 @@ void GameScene8::Release()
 			SafeDelete(elemelem);
 		}
 	}
+	mTileList.clear();
+
 	SKUL->Reset();
 	Obj->Release();
 

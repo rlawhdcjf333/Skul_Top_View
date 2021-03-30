@@ -19,6 +19,7 @@ void GameScene5::Init()
 	if (SKUL->GetAlterSkul())Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 
 	SKUL->GetCurrentSkul()->SetObjectOnTile(22, 52);
+	ITEM->RandomSpawn(36, 36);
 
 	IMAGEMANAGER->LoadFromFile(L"back3", Resources(L"back3.bmp"), 1280, 740, false);
 	mBack = IMAGEMANAGER->FindImage(L"back3");
@@ -98,6 +99,8 @@ void GameScene5::Release()
 			SafeDelete(elemelem);
 		}
 	}
+	mTileList.clear();
+
 	SKUL->Reset();
 	Obj->Release();
 

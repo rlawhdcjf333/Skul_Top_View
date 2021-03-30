@@ -41,7 +41,6 @@ void GameScene2::Init()
 
 void GameScene2::Update()
 {
-	
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
 	float left = cameraRect.left;
@@ -65,6 +64,7 @@ void GameScene2::Update()
 		}
 		else {
 			if (!door->GetIsActive()) {
+				ITEM->RandomSpawn(21, 47); // 랜덤 보상 스폰
 				door->SetIsActive(true);
 			}
 			door->Update();
@@ -181,6 +181,8 @@ void GameScene2::Release()
 			SafeDelete(elemelem);
 		}
 	}
+	mTileList.clear();
+
 	SKUL->Reset();
 	Obj->Release();
 
