@@ -7,7 +7,7 @@
 Stage1_SwordMan::Stage1_SwordMan(int indexX, int indexY)
 	:Enemy(indexX,indexY)
 {
-	mHp = 60;
+	mHp = 40;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);
@@ -91,7 +91,7 @@ void Stage1_SwordMan::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(1, 5);
+				AttackDamage(1, 3);
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {

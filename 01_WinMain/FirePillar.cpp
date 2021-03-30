@@ -31,7 +31,7 @@ void FirePillar::Update()
 				RECT temp;
 				if (IntersectRect(&mRect,&rc,&temp)) {
 					mDamageCheck = false;
-					SKUL->Damage(10);
+					SKUL->Damage(5);
 				}
 			}
 		}

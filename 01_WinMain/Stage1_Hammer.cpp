@@ -4,9 +4,9 @@
 #include "FixedSysFont.h"
 
 Stage1_Hammer::Stage1_Hammer(int indexX, int indexY)
-	:Enemy(indexX, indexY)
+	:Enemy(indexX, indexY), mNextAttackTime(0)
 {
-	mHp = 200;
+	mHp = 70;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -14,7 +14,7 @@ Stage1_Hammer::Stage1_Hammer(int indexX, int indexY)
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Attack],
 		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 432, 109, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Idle],
-		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 273, 100, 6, 2, true);
+		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 273, 100, 5, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Walk],
 		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 448, 100, 8, 2, true);
 	IMAGEMANAGER->LoadFromFile(L"Stage1_Hammer" + mStateType[(int)StateType::Tackle],
@@ -23,16 +23,20 @@ Stage1_Hammer::Stage1_Hammer(int indexX, int indexY)
 	AnimationSet();
 	mDirection = Direction::right;
 	CurrentSet(StateType::Idle, mDirection);
+	mCurrentAnimation->SetIsLoop(true);
 	mAttackDelay = 1.f; // 공격 간격 1초
 }
 
 void Stage1_Hammer::Init()
 {
-
 }
 
 void Stage1_Hammer::Update()
 {
+	mNextAttackTime -= dTime;
+	if (mNextAttackTime < 0) {
+		mNextAttackTime = 0;
+	}
 	if (mHp <= 0) {
 		mIsDestroy = true;
 		return;
@@ -91,7 +95,8 @@ void Stage1_Hammer::Update()
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(2, 10);
+				AttackDamage(2, 5);
+				mNextAttackTime = 3.f;
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
@@ -103,9 +108,11 @@ void Stage1_Hammer::Update()
 	if (mType == StateType::Idle) {
 		if (mType != StateType::Walk) {
 			if (mType != StateType::Attack && AttackCheck(1)) {
-				//근접으로 한칸
-				Attack();
-				mAttackEnd = true;
+				if (mNextAttackTime == 0) {
+					//근접으로 한칸
+					Attack();
+					mAttackEnd = true;
+				}
 			}
 			else if (mType != StateType::Attack) {
 				if (WalkCheck()) {
@@ -457,7 +464,7 @@ bool Stage1_Hammer::WalkCheck() //빈 칸 체크 후 이동
 	moveTileList.clear();
 	//if (!(mTargetTile == nullptr))
 	//{
-	//	
+	//	return false;
 	//}
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {

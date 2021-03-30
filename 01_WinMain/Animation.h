@@ -38,6 +38,7 @@ public:
 	inline void SetIsLoop(bool isLoop) { mIsLoop = isLoop; }
 	inline void SetFrameUpdateTime(float updateTime) { mFrameUpdateTime = updateTime; }
 	inline void SetCurrentFrameIndex(int index) { mCurrentFrameIndex = index; }
+	inline void SetAnimationClear() { mFrameList.clear(); mCurrentFrameIndex = 0; mIsLoop = false; }
 
 	inline float GetFrameUpdateTime()const { return mFrameUpdateTime; }
 	inline int GetCurrentFrameIndex()const { return mCurrentFrameIndex; }
@@ -48,6 +49,7 @@ public:
 	inline pair<int, int> GetNowFrame()const { return mFrameList[mCurrentFrameIndex]; }
 	inline int GetNowFrameX()const { return mFrameList[mCurrentFrameIndex].first; }
 	inline int GetNowFrameY()const { return mFrameList[mCurrentFrameIndex].second; }
+	
 
 };
 

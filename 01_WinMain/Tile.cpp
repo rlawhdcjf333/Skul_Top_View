@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Effect.h"
+#include "Boss.h"
 
 Tile::Tile(Image* pImage, float x, float y, int frameX, int frameY, int sizeX, int sizeY, int indexX, int indexY)
 	:mX(x), mY(y), mFrameX(frameX), mFrameY(frameY), mSizeX(sizeX), mSizeY(sizeY), mImage(pImage), mIndexX(indexX), mIndexY(indexY), mObject(nullptr), mIsTileEmpty(false)
@@ -107,13 +108,19 @@ void Tile::SelectRenderMargenta(HDC hdc)
 void Tile::AttackDamage(int damage) {
 	Update();
 	for (GameObject* elem : mObjects) {
+		Boss* dumpBoss = dynamic_cast<Boss*> (elem);
+		if (dumpBoss != nullptr) {
+			elem->Damage(damage);
+			new Effect(L"SkulHitEffect", elem->GetRect().left, elem->GetRect().top, EffectType::Normal);
+			continue;
+		}
 		Enemy* dumpEnemy = dynamic_cast<Enemy*> (elem);
 		if (dumpEnemy != nullptr) {
 			elem->Damage(damage);
 			new Effect(L"SkulHitEffect", elem->GetRect().left, elem->GetRect().top, EffectType::Normal);
 		}
 	}
-	mAttackTest = true;
+	//mAttackTest = true;
 }
 void Tile::EnemyAttack(int damage) {
 	Update();
@@ -124,6 +131,6 @@ void Tile::EnemyAttack(int damage) {
 			SKUL->SetHitTime(0.6f);
 		}
 	}
-	mAttackTest = true;
+	//mAttackTest = true;
 }
 

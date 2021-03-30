@@ -6,7 +6,7 @@
 Stage1_BigEnt::Stage1_BigEnt(int indexX, int indexY)
 	:Enemy(indexX, indexY)
 {
-	mHp = 60;
+	mHp = 45;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);

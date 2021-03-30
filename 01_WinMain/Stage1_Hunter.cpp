@@ -5,9 +5,9 @@
 #include "EnemyArrow.h"
 
 Stage1_Hunter::Stage1_Hunter(int indexX, int indexY)
-	:Enemy(indexX, indexY), mShotTime(2.f)
+	:Enemy(indexX, indexY), mNextAttackTime(0.f)
 {
-	mHp = 60;
+	mHp = 30;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -34,6 +34,10 @@ void Stage1_Hunter::Init()
 
 void Stage1_Hunter::Update()
 {
+	mNextAttackTime -= dTime;
+	if (mNextAttackTime < 0) {
+		mNextAttackTime = 0;
+	}
 	if (mHp <= 0) {
 		mIsDestroy = true;
 		return;
@@ -92,6 +96,7 @@ void Stage1_Hunter::Update()
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
 			//mCurrentAnimation->Stop();
+			mNextAttackTime = 3.f;
 			Shot();
 			CurrentSet(StateType::Idle, mDirection);
 		}
@@ -101,8 +106,10 @@ void Stage1_Hunter::Update()
 		if (mType != StateType::Walk) {
 			if (mType != StateType::Attack && AttackCheck(5)) {
 				//근접으로 한칸
-				Attack();
-				mAttackEnd = true;
+				if (mNextAttackTime ==0) {
+					Attack();
+					mAttackEnd = true;
+				}
 			}
 			else if (mType != StateType::Attack) {
 				if (WalkCheck()) {
