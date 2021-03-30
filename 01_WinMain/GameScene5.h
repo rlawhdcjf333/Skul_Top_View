@@ -12,6 +12,8 @@ public:
 	int offsetX;
 	int offsetY;
 	class Image* mBack;
+	Image* mStoreMaster;
+	Animation* mAnm;
 	void Init()override;
 	void Update()override;
 	void Render(HDC hdc)override;

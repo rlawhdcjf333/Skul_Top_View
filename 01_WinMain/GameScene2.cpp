@@ -70,6 +70,7 @@ void GameScene2::Update()
 			if (!door->GetIsActive()) {
 				ITEM->RandomSpawn(21, 47); // 랜덤 보상 스폰
 				SKUL->PlusGold(RAND->RandomInt(80, 130));
+				SKUL->PlusHp(20);
 				door->SetIsActive(true);
 			}
 			door->Update();

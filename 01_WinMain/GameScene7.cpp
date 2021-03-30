@@ -64,6 +64,7 @@ void GameScene7::Update()
 			if (!door->GetIsActive()) {
 				ITEM->RandomSpawn(50, 23);
 				SKUL->PlusGold(RAND->RandomInt(80, 130));
+				SKUL->PlusHp(20);
 				door->SetIsActive(true);
 			}
 			door->Update();

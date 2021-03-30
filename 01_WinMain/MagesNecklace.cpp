@@ -118,14 +118,14 @@ void MagesNecklace::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
+		
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
+		
 
 	}
 

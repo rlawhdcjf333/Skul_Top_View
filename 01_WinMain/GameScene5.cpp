@@ -5,6 +5,7 @@
 #include "MapObject.h"
 #include "Stage1_SwordMan.h"
 #include "Door.h"
+#include "Animation.h"
 
 void GameScene5::Init()
 {
@@ -23,12 +24,20 @@ void GameScene5::Init()
 
 	IMAGEMANAGER->LoadFromFile(L"back3", Resources(L"back3.bmp"), 1280, 740, false);
 	mBack = IMAGEMANAGER->FindImage(L"back3");
+	IMAGEMANAGER->LoadFromFile(L"StoreMaster", Resources(L"StoreMaster.bmp"), 1816, 151, 8, 1, true);
+	mStoreMaster = IMAGEMANAGER->FindImage(L"StoreMaster");
+
+	mAnm = new Animation();
+	mAnm->InitFrameByStartEnd(0, 0, 7, 0, false);
+	mAnm->SetIsLoop(true);
+	mAnm->SetFrameUpdateTime(0.1f);
+	mAnm->Play();
 }
 
 void GameScene5::Update()
 {
 	ObjectManager::GetInstance()->Update();
-
+	mAnm->Update();
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
 	float left = cameraRect.left;
@@ -88,6 +97,7 @@ void GameScene5::Render(HDC hdc)
 
 
 	ObjectManager::GetInstance()->Render(hdc);
+	CAMERA->FrameRender(hdc, mStoreMaster, 535, 955,mAnm->GetNowFrameX(),0);
 }
 
 void GameScene5::Release()
@@ -103,7 +113,7 @@ void GameScene5::Release()
 
 	SKUL->Reset();
 	Obj->Release();
-
+	SafeDelete(mAnm);
 }
 
 void GameScene5::MapLoad()
