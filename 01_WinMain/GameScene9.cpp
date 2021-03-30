@@ -84,22 +84,25 @@ void GameScene9::Update()
 	}
 	ObjectManager::GetInstance()->Update();
 
-	//RECT temp;
-	//RECT temp2 = Obj->FindObject("Door")->GetRect();
-	//RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
-	//if (IntersectRect(&temp, &temp2, &temp3))
-	//{
-	//	if (INPUT->GetKeyDown('F'))
-	//	{
-	//		SceneManager::GetInstance()->LoadScene(L"GameScene");
-	//	}
-	//}
-
-	if (mRespawnCount <= 0)
+	RECT temp;
+	RECT temp2 = Obj->FindObject("Door")->GetRect();
+	RECT temp3 = SKUL->GetCurrentSkul()->GetHitBox();
+	if (IntersectRect(&temp, &temp2, &temp3))
 	{
-		Obj->FindObject("Door")->SetIsActive(true);
+		if (INPUT->GetKeyDown('F'))
+		{
+			SceneManager::GetInstance()->LoadScene(L"GameScene");
+		}
 	}
 
+	//if (mRespawnCount <= 0)
+	//{
+	//	Obj->FindObject("Door")->SetIsActive(true);
+	//}
+	Boss* boss = dynamic_cast<Boss*>(Obj->FindObject("Boss"));
+	if (boss->GetDeadCheck()) {
+		mDoorOpen = true;
+	}
 
 	if (INPUT->GetKeyDown('T'))
 	{

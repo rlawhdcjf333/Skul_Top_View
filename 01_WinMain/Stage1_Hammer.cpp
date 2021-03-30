@@ -6,7 +6,7 @@
 Stage1_Hammer::Stage1_Hammer(int indexX, int indexY)
 	:Enemy(indexX, indexY), mNextAttackTime(0)
 {
-	mHp = 70;
+	mHp = 55;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);

@@ -62,7 +62,11 @@ void Boss::Update()
 		mSkillTime2 = 0;
 	}
 	if (mHp <= 0) {
-		mCurentPattern = BossPattern::Dead;
+		if (mCurentPattern != BossPattern::Dead) {
+			mCurentPattern = BossPattern::Dead;
+			mNextAnimation = 0;
+		}
+			
 	}
 	mAngle = Math::GetAngle(mX, mY, SKUL->GetCurrentSkul()->GetX(), SKUL->GetCurrentSkul()->GetY());
 	if (mCurentPattern == BossPattern::StartRanding) {
