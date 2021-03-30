@@ -1,37 +1,38 @@
 #include "pch.h"
-#include "Animation.h"
 #include "Image.h"
-#include "Stage1_SwordMan.h"
-#include "FixedSysFont.h"
+#include "Animation.h"
+#include "Stage1_GreenEnt.h"
 
-Stage1_SwordMan::Stage1_SwordMan(int indexX, int indexY)
-	:Enemy(indexX,indexY)
+
+Stage1_GreenEnt::Stage1_GreenEnt(int indexX, int indexY)
+	:Enemy(indexX, indexY)
 {
-	mHp = 60;
+	mHp = 10;
 	mSizeX = 30.f;
 	mSizeY = 30.f;
-	mRect = RectMakeBottom(mX,mY,mSizeX, mSizeY);
-	mResources = L"Monster/stage1/SwordMan/";
-	IMAGEMANAGER->LoadFromFile(L"Stage1_SwordMan"+ mStateType[(int)StateType::Attack],
-		Resources(mResources+mStateType[(int)StateType::Attack] + L".bmp"),312,128,4,2,true);
-	IMAGEMANAGER->LoadFromFile(L"Stage1_SwordMan" + mStateType[(int)StateType::Hit], 
-		Resources(mResources + mStateType[(int)StateType::Hit] + L".bmp"), 92, 102, 2, 2, true);
-	IMAGEMANAGER->LoadFromFile(L"Stage1_SwordMan" + mStateType[(int)StateType::Idle],
-		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 204, 112, 6, 2, true);
-	IMAGEMANAGER->LoadFromFile(L"Stage1_SwordMan" + mStateType[(int)StateType::Walk], 
-		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 416, 100, 8, 2, true);
+	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
+	mResources = L"Monster/stage1/GreenEnt/";
+	IMAGEMANAGER->LoadFromFile(L"Stage1_GreenEnt" + mStateType[(int)StateType::Attack],
+		Resources(mResources + mStateType[(int)StateType::Attack] + L".bmp"), 800, 134, 8, 2, true);
+	IMAGEMANAGER->LoadFromFile(L"Stage1_GreenEnt" + mStateType[(int)StateType::Hit],
+		Resources(mResources + mStateType[(int)StateType::Hit] + L".bmp"), 124, 132, 2, 2, true);
+	IMAGEMANAGER->LoadFromFile(L"Stage1_GreenEnt" + mStateType[(int)StateType::Idle],
+		Resources(mResources + mStateType[(int)StateType::Idle] + L".bmp"), 290, 130, 5, 2, true);
+	IMAGEMANAGER->LoadFromFile(L"Stage1_GreenEnt" + mStateType[(int)StateType::Walk],
+		Resources(mResources + mStateType[(int)StateType::Walk] + L".bmp"), 324, 130, 6, 2, true);
 
 	AnimationSet();
 	mDirection = Direction::right;
-	CurrentSet(StateType::Idle,mDirection);
+	CurrentSet(StateType::Idle, mDirection);
 	mAttackDelay = 1.f; // 공격 간격 1초
 }
 
-void Stage1_SwordMan::Init()
+void Stage1_GreenEnt::Init()
 {
+
 }
 
-void Stage1_SwordMan::Update()
+void Stage1_GreenEnt::Update()
 {
 	if (mHp <= 0) {
 		mIsDestroy = true;
@@ -56,21 +57,26 @@ void Stage1_SwordMan::Update()
 		}
 	}
 	mCurrentSkul = SKUL->GetCurrentSkul();
-	if (mTargetSkulTile != nullptr) {
-		mCurrentSkulTileCheckTime += dTime;
-	}
-	else {
-		mCurrentSkulTileCheckTime = 0;
-	}
-	if (mType == StateType::Walk) {
-		if (mTargetSkulTile == nullptr) {
-			if (WalkCheck()) {
-				Walk();
+	mTargetSkulTile = TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()];
+	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
+	if (mType == StateType::Idle) {
+		if (mType != StateType::Walk) {
+			if (mType != StateType::Attack && AttackCheck(5)) {
+				//근접으로 한칸
+				Attack();
 			}
-			else {
-				MoveReset();
+			else if (mType != StateType::Attack) {
+				if (WalkCheck()) {
+					Walk();
+				}
+				else {
+					MoveReset();
+				}
+
 			}
 		}
+	}
+	if (mType == StateType::Walk) {
 		float mAngle = Math::GetAngle(mX, mY, mCurrentSkul->GetX(), mCurrentSkul->GetY());
 		if (LEFT && mDirection == Direction::right) {
 			mDirection = Direction::left;
@@ -84,14 +90,14 @@ void Stage1_SwordMan::Update()
 	}
 	if (mType == StateType::Attack) {
 		if (mCurrentAnimation->GetNowFrameX() == 0) {
-			mCurrentAnimation->SetFrameUpdateTime(1.f);
+			mCurrentAnimation->SetFrameUpdateTime(2.f);
 		}
 		if (mCurrentAnimation->GetNowFrameX() != 0) {
 			mCurrentAnimation->SetFrameUpdateTime(0.1f);
 		}
 		if (mCurrentAnimation->GetNowFrameX() == 2) {
 			if (mAttackEnd) {
-				AttackDamage(1, 5);
+				AttackDamage();
 			}
 		}
 		if (!mCurrentAnimation->GetIsPlay()) {
@@ -99,31 +105,15 @@ void Stage1_SwordMan::Update()
 			CurrentSet(StateType::Idle, mDirection);
 		}
 	}
-	//기본 적으로 idle 상태에서만 다음 이벤트가 일어난다.
-	if (mType == StateType::Idle) {
-		if (mType != StateType::Walk) {
-			if (mType != StateType::Attack && AttackCheck(1)) {
-				//근접으로 한칸
-				Attack();
-				mAttackEnd = true;
-			}
-			else if (mType != StateType::Attack) {
-				if (WalkCheck()) {
-					Walk();
-				}
-				else {
-					MoveReset();
-				}
-
-			}
-		}
-	}
 	mCurrentAnimation->Update();
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 }
 
-void Stage1_SwordMan::Release()
+void Stage1_GreenEnt::Release()
 {
+	//타일에서 지워주깅
+	//TILE[mIndexY][mIndexX]->ClearObject(this);
+
 	// 좌우 Animation 삭제
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[0].begin(); itr != mAnimationMap[0].end(); itr++) {
 		SafeDelete(itr->second.animation);
@@ -131,26 +121,18 @@ void Stage1_SwordMan::Release()
 	for (map<StateType, AnimationPair>::iterator itr = mAnimationMap[1].begin(); itr != mAnimationMap[1].end(); itr++) {
 		SafeDelete(itr->second.animation);
 	}
-	while (mDamages.size() > 0) {
-		new FixedSysFont(mX, mY, 100, 100, to_wstring(mDamages.top()), FontColor::Blue);
-		mDamages.pop();
-	}
 }
 
-void Stage1_SwordMan::Render(HDC hdc)
+void Stage1_GreenEnt::Render(HDC hdc)
 {
-	
-	while(mDamages.size() > 0) {
-		new FixedSysFont(mX,mY,100,100, to_wstring(mDamages.top()),FontColor::Blue);
-		mDamages.pop();
-	}
+
 	//CAMERA->RenderRect(hdc, mRect);
 	if (mCurrentImage) {
-		CAMERA->CenterBottomFrameRender(hdc,mCurrentImage,mX,mY,mCurrentAnimation->GetNowFrameX(),mCurrentAnimation->GetNowFrameY());
+		CAMERA->CenterBottomFrameRender(hdc, mCurrentImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY());
 	}
 }
 
-void Stage1_SwordMan::Walk()
+void Stage1_GreenEnt::Walk()
 {
 	//int skulX = SkulManager::GetInstance()->GetCurrentSkul()->GetX();
 	//int skulY = SkulManager::GetInstance()->GetCurrentSkul()->GetY();
@@ -164,12 +146,12 @@ void Stage1_SwordMan::Walk()
 	mCurrentAnimation->SetIsLoop(true);
 }
 
-void Stage1_SwordMan::Attack()
+void Stage1_GreenEnt::Attack()
 {
 	//0번 대기 후 공격
 	float x = mCurrentSkul->GetX();
 	float y = mCurrentSkul->GetY();
-	float mAngle = Math::GetAngle(mX,mY,x,y);
+	float mAngle = Math::GetAngle(mX, mY, x, y);
 
 	if (LEFT) {
 		mDirection = Direction::left;
@@ -177,58 +159,52 @@ void Stage1_SwordMan::Attack()
 	else {
 		mDirection = Direction::right;
 	}
-	CurrentSet(StateType::Attack,mDirection);
+	CurrentSet(StateType::Attack, mDirection);
 }
 
-void Stage1_SwordMan::Idle()
+void Stage1_GreenEnt::Idle()
 {
 	CurrentSet(StateType::Idle, mDirection);
 	mCurrentAnimation->SetIsLoop(true);
 }
 
-void Stage1_SwordMan::Hit()
+void Stage1_GreenEnt::Hit()
 {
 	if (mHitTime > 0) {
 		mCurrentAnimation->Play();
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
 		mCurrentAnimation->Update();
 		mCurrentAnimation->Pause();
-		if(mHitTime<0.6f) mHitTime = 0.6f;
+		mHitTime = 0.6f;
 	}
-	else{
+	else {
 		CurrentSet(StateType::Hit, mDirection);
 		mCurrentAnimation->Pause();
 		mCurrentAnimation->SetFrameUpdateTime(0.01f);
-		mHitTime = 0.6f; //이 타이밍으로 애들 피격 순간 체크를 하고 있으므로 변경되면 알려주시길 바람
+		mHitTime = 0.6f;
 	}
 	KnockBack();
 }
 
-void Stage1_SwordMan::Damage(int Damage)
+void Stage1_GreenEnt::Damage(int Damage)
 {
 	mHp -= Damage;
-	mDamages.emplace(Damage);
 	Hit();
 }
 
-void Stage1_SwordMan::Move(int speed)
+void Stage1_GreenEnt::Move(int speed)
 {
-	
+
 	if (!mPath.empty()) {
 		mTargetTile->Update();
-		if (mPath.size() <= mPathIndex) //목적지까지 이동 완료
+		if (mPath.size() <= mPathIndex || !mTargetTile->GetTileEmpty()
+			|| mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()]) //목적지까지 이동 완료
 		{
 			mPath.clear();
 			mPathIndex = 1;
 			mTargetTile = nullptr;
 			mTargetSkulTile = nullptr;
 			Idle();
-		}
-		else if ((mTargetSkulTile != TILE[mCurrentSkul->GetIndexY()][mCurrentSkul->GetIndexX()] || !mTargetTile->GetTileEmpty())&&(mCurrentSkulTileCheckTime > TileCheckTime)) {
-			mPath.clear();
-			mPathIndex = 1;
-			mTargetTile = nullptr;
-			mTargetSkulTile = nullptr;
 		}
 		else //이동 중
 		{
@@ -254,36 +230,18 @@ void Stage1_SwordMan::Move(int speed)
 	}
 }
 
-void Stage1_SwordMan::AttackDamage(int range, int damage)
+void Stage1_GreenEnt::AttackDamage()
 {
-	for (int y = mIndexY - range; y <= mIndexY + range; y++) {
-		for (int x = mIndexX - range; x <= mIndexX + range; x++) {
-			if (y <= 0 || y > TILESizeY || x <= 0 || x > TILESizeX) {
-				continue;
-			}
-			if (mDirection == Direction::right) //우측
-			{
-				if (y - x > mIndexY - mIndexX) continue;
-				TILE[y][x]->EnemyAttack(damage);
-			}
-			else if (mDirection == Direction::left) //좌측
-			{
-				if (y - x < mIndexY - mIndexX) continue;
-				TILE[y][x]->EnemyAttack(damage);
-			}
-		}
-	}
-	mAttackEnd = false;
 }
 
-void Stage1_SwordMan::ReMove()
+void Stage1_GreenEnt::ReMove()
 {
 	if (WalkCheck()) {
 		CurrentSet(StateType::Walk, mDirection);
 	}
 }
 
-void Stage1_SwordMan::CurrentSet(StateType type, Direction direction)
+void Stage1_GreenEnt::CurrentSet(StateType type, Direction direction)
 {
 	if (mDirection != direction)
 		mDirection = direction;
@@ -295,20 +253,20 @@ void Stage1_SwordMan::CurrentSet(StateType type, Direction direction)
 	mCurrentAnimation->Play();
 	mType = type;
 }
-void Stage1_SwordMan::MoveReset()
+void Stage1_GreenEnt::MoveReset()
 {
 	mTargetTile = nullptr;
 	mPathIndex = 1;
 	mPath.clear();
 	EnemyInTileCheck();
 }
-void Stage1_SwordMan::EnemyInTileCheck()
+void Stage1_GreenEnt::EnemyInTileCheck()
 {
 	mX = TILE[mIndexY][mIndexX]->GetX() + TileSizeX / 2;
 	mY = TILE[mIndexY][mIndexX]->GetY() + TileSizeY / 2;
 	mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
 }
-void Stage1_SwordMan::KnockBack()
+void Stage1_GreenEnt::KnockBack()
 {
 	if (mIsKnockBack) {
 		return;
@@ -372,15 +330,11 @@ void Stage1_SwordMan::KnockBack()
 			mKnockTile = TILE[mIndexY][mIndexX + 1];
 		}
 	}
-	if (mKnockTile != nullptr) {
-		if (mKnockTile->GetType() == TileType::Block) {
-			mKnockTile = TILE[mIndexY][mIndexX];
-		}
-	}
+	TILE[mIndexY][mIndexX]->ClearObject(this);
 	EnemyInTileCheck();
 	mIsKnockBack = true; //넉백이 일어났을 때
 }
-void Stage1_SwordMan::KnockBackMove()
+void Stage1_GreenEnt::KnockBackMove()
 {
 	if (!mKnockTile) {
 		return;
@@ -410,19 +364,19 @@ void Stage1_SwordMan::KnockBackMove()
 		}
 	}
 }
-bool Stage1_SwordMan::AttackCheck(int area)
+bool Stage1_GreenEnt::AttackCheck(int area)
 {
 	int indexX = mCurrentSkul->GetIndexX();
 	int indexY = mCurrentSkul->GetIndexY();
 
-	if (indexX-area <= mIndexX && indexX+area >= mIndexX) {
-		if (indexY-area <= mIndexY && indexY+area >= mIndexY) {
+	if (indexX - area <= mIndexX && indexX + area >= mIndexX) {
+		if (indexY - area <= mIndexY && indexY + area >= mIndexY) {
 			return true;
 		}
 	}
 	return false;
 }
-bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
+bool Stage1_GreenEnt::WalkCheck() //빈 칸 체크 후 이동
 {
 	if (mTargetTile != nullptr) {
 		mTargetTile->Update();
@@ -437,10 +391,10 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 	int indexX = mCurrentSkul->GetIndexX();
 	int indexY = mCurrentSkul->GetIndexY();
 	vector<Tile*> moveTileList;
-	for (int y = indexY - 1; y < indexY + 2; y++) {
-		for (int x = indexX - 1; x < indexX + 2; x++) {
-			if ((y >= 0 &&y<TILESizeY)&&(x >=0 && x< TILESizeX)
-				&&!(x == indexX && y == indexY)) {
+	for (int y = indexY - 4; y < indexY + 4; y++) {
+		for (int x = indexX - 4; x < indexX + 4; x++) {
+			if ((y >= 0 && y < TILESizeY) && (x >= 0 && x < TILESizeX)
+				&& !(x == indexX && y == indexY)) {
 				if (TILE[y][x]->GetType() != TileType::Block) {
 					TILE[y][x]->Update();
 					if (TILE[y][x]->GetTileEmpty()) {
@@ -451,26 +405,21 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 		}
 	}
 	for (int a = 0; a < moveTileList.size(); a++) {
-		if ( a == 0) {
+		if (a == 0) {
 			mTargetTile = moveTileList[a];
 		}
 		else {
-			float firstM = Math::GetDistance(mX,mY,mTargetTile->GetX(),mTargetTile->GetY());
-			float secondM = Math::GetDistance(mX,mY,moveTileList[a]->GetX(), moveTileList[a]->GetY());
+			float firstM = Math::GetDistance(mX, mY, mTargetTile->GetX(), mTargetTile->GetY());
+			float secondM = Math::GetDistance(mX, mY, moveTileList[a]->GetX(), moveTileList[a]->GetY());
 			if (firstM > secondM) {
 				mTargetTile = moveTileList[a];
 			}
 		}
 	}
 	moveTileList.clear();
-	//if (!(mTargetTile == nullptr))
-	//{
-	//	
-	//}
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {
-			mTargetSkulTile = TILE[SKUL->GetCurrentSkul()->GetIndexY()][SKUL->GetCurrentSkul()->GetIndexX()];
 			return true;
 		}
 		else {
@@ -481,13 +430,13 @@ bool Stage1_SwordMan::WalkCheck() //빈 칸 체크 후 이동
 	mTargetTile = nullptr;
 	return false;
 }
-void Stage1_SwordMan::AnimationSet() {
+void Stage1_GreenEnt::AnimationSet() {
 	//왼쪽
 	for (int a = 0; a < (int)StateType::End; a++) {
 		StateType type = (StateType)a;
-		Image* image = IMAGEMANAGER->FindImage(L"Stage1_SwordMan" + mStateType[a]);
+		Image* image = IMAGEMANAGER->FindImage(L"Stage1_GreenEnt" + mStateType[a]);
 		Animation* animation = new Animation();
-		animation->InitFrameByStartEnd(0, (int)Direction::left, image->GetFrameX()-1, (int)Direction::left, false);
+		animation->InitFrameByStartEnd(0, (int)Direction::left, image->GetFrameX() - 1, (int)Direction::left, false);
 		animation->SetFrameUpdateTime(0.1f);
 		AnimationPair aPair = { image,animation };
 		mAnimationMap[(int)Direction::left].insert(make_pair(type, aPair));
@@ -495,9 +444,9 @@ void Stage1_SwordMan::AnimationSet() {
 	//오른쪽
 	for (int a = 0; a < (int)StateType::End; a++) {
 		StateType type = (StateType)a;
-		Image* image = IMAGEMANAGER->FindImage(L"Stage1_SwordMan" + mStateType[a]);
+		Image* image = IMAGEMANAGER->FindImage(L"Stage1_GreenEnt" + mStateType[a]);
 		Animation* animation = new Animation();
-		animation->InitFrameByStartEnd(0, (int)Direction::right, image->GetFrameX()-1, (int)Direction::right, false);
+		animation->InitFrameByStartEnd(0, (int)Direction::right, image->GetFrameX() - 1, (int)Direction::right, false);
 		animation->SetFrameUpdateTime(0.1f);
 		AnimationPair aPair = { image,animation };
 		mAnimationMap[(int)Direction::right].insert(make_pair(type, aPair));
