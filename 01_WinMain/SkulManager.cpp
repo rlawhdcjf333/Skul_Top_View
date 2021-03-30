@@ -37,6 +37,7 @@ void SkulManager::Init()
 	mHitTime = 0;
 
 	mInventory = nullptr;
+
 }
 
 
@@ -51,6 +52,8 @@ void SkulManager::Update()
 	}
 	else
 	{
+
+		
 		if (INPUT->GetKeyDown(VK_TAB)) //인벤토리 활성
 		{
 			mInventory->SetIsToggle(!mInventory->GetIsToggle());

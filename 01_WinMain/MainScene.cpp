@@ -40,4 +40,5 @@ void MainScene::Render(HDC hdc)
 
 void MainScene::Release()
 {
+	SafeDelete(mAnm)
 }

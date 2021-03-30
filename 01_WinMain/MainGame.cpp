@@ -80,7 +80,7 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"GameScene6", new GameScene6);
 	SceneManager::GetInstance()->AddScene(L"GameScene7", new GameScene7);
 	SceneManager::GetInstance()->AddScene(L"GameScene8", new GameScene8);
-	SceneManager::GetInstance()->LoadScene(L"GameScene");
+	SceneManager::GetInstance()->LoadScene(L"MainScene");
 
 }
 
@@ -103,12 +103,18 @@ Update : 매 프레임 실행되는 함수, 여기서 연산 처리 한다.
 void MainGame::Update()
 {
 	INPUT->Update();
-	SkulManager::GetInstance()->Update();
-	if (SKUL->GetInventory()->GetIsToggle()==false)
+	
+	if (SceneManager::GetInstance()->IsCurrentScene(L"MainScene"))
 	{
+		SceneManager::GetInstance()->Update();
+	}
+	else if (SKUL->GetInventory()->GetIsToggle()==false)
+	{
+		SkulManager::GetInstance()->Update();
 		CAMERA->Update();
 		SceneManager::GetInstance()->Update();
 	}
+	
 	//if (INPUT->GetKeyDown(VK_ESCAPE)) SceneManager::LoadScene();
 }
 
@@ -126,10 +132,17 @@ void MainGame::Render(HDC hdc)
 	PatBlt(backDC, 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
 	// ==================================================
 	{
-		SceneManager::GetInstance()->Render(backDC);
-		SKUL->Render(backDC);
-		RenderTime(backDC);
-		mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
+		if (SceneManager::GetInstance()->IsCurrentScene(L"MainScene"))
+		{
+			SceneManager::GetInstance()->Render(backDC);
+		}
+		else
+		{
+			SceneManager::GetInstance()->Render(backDC);
+			SKUL->Render(backDC);
+			RenderTime(backDC);
+			mCursorImage->Render(backDC, nonC_mousePosition.x, nonC_mousePosition.y);
+		}
 	}
 	//====================================================
 	//후면버퍼 내용을 윈도우 창에 고속 복사
