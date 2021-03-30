@@ -463,10 +463,10 @@ bool Stage1_NormalEnt::WalkCheck() //ºó Ä­ Ã¼Å© ÈÄ ÀÌµ¿
 		}
 	}
 	moveTileList.clear();
-	if (!(mTargetTile == nullptr))
-	{
-		return false;
-	}
+	//if (!(mTargetTile == nullptr))
+	//{
+	//	return false;
+	//}
 	if (!(mTargetTile->GetIndexX() == mCurrentSkul->GetIndexX() &&
 		mTargetTile->GetIndexY() == mCurrentSkul->GetIndexY())) {
 		if (PathFinder::GetInstance()->FindPath(TILE, mPath, mIndexX, mIndexY, mTargetTile->GetIndexX(), mTargetTile->GetIndexY())) {

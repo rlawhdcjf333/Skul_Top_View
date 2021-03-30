@@ -32,11 +32,9 @@ void EnemyArrow::Update()
 	if (IntersectRect(&temp,&mRect,&rc)) {
 		SKUL->Damage(4);
 		mIsDestroy = true;
-		new Effect(L"Boss_BossAttackEffect", mX, mY, EffectType::Normal);
 	}
 	else if (mMove > 1200.f) {
 		mIsDestroy = true;
-		new Effect(L"Boss_BossAttackEffect", mX, mY, EffectType::Normal);
 	}
 }
 

@@ -61,11 +61,23 @@ void Boss::Update()
 	if (mSkillTime2 < 0) {
 		mSkillTime2 = 0;
 	}
+	if (mHp <= 0) {
+		mCurentPattern = BossPattern::Dead;
+	}
 	mAngle = Math::GetAngle(mX, mY, SKUL->GetCurrentSkul()->GetX(), SKUL->GetCurrentSkul()->GetY());
 	if (mCurentPattern == BossPattern::StartRanding) {
 		StartRanding();
 	}
-	else if (mCurentPattern == BossPattern::Idle)
+	else if (mCurentPattern == BossPattern::Normal) {
+		Normal();
+	}
+	else if (mCurentPattern == BossPattern::RandingAttack) {
+		RandingAttack();
+	}
+	else if (mCurentPattern == BossPattern::Dead) {
+		Dead();
+	}
+	if (mCurentPattern == BossPattern::Idle)
 	{
 		if (mSkillTime1 == 0) {
 			mCurentPattern = BossPattern::Normal;
@@ -79,15 +91,7 @@ void Boss::Update()
 			Idle();
 		}
 	}
-	else if(mCurentPattern == BossPattern::Normal){
-		Normal();
-	}
-	else if (mCurentPattern == BossPattern::RandingAttack) {
-		RandingAttack();
-	}
-	else if (mCurentPattern == BossPattern::Dead) {
-		Dead();
-	}
+	
 	if (mAnimation) {
 		mAnimation->Update();
 	}
@@ -348,10 +352,25 @@ void Boss::DoubleWaveAttack()
 
 void Boss::Dead()
 {
-	if (mNextAnimation ==0) {
-		mImage = IMAGEMANAGER->FindImage(L"Boss_Die");
-	}
 	mDeadCheck = true;
+	if (mNextAnimation == 0) {
+		mAnimation->SetAnimationClear();
+		mImage = IMAGEMANAGER->FindImage(L"Boss_Die");
+		if (LEFT) {
+			mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, 0, false);
+		}
+		else {
+			mAnimation->InitFrameByStartEnd(0, 0, mImage->GetFrameX() - 1, 1, false);
+		}
+		mAnimation->Play();
+		mNextAnimation++;
+	}
+	else if (mNextAnimation ==1 && mAnimation->GetIsPlay()) {
+		if (mAnimation->GetCurrentFrameIndex() == 4) {
+			mAnimation->Pause();
+		}
+	}
+	
 }
 
 void Boss::Move()

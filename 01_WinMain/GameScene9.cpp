@@ -5,6 +5,7 @@
 #include "Door.h"
 #include "Items.h"
 #include "Animation.h"
+#include "Boss.h"
 
 void GameScene9::Init()
 {
@@ -18,6 +19,7 @@ void GameScene9::Init()
 	GameObject* door = new Door(630, 900);
 	door->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
+	Obj->AddObject(ObjectLayer::Boss, new Boss(40,40));
 	Obj->AddObject(ObjectLayer::Door, door);
 	Obj->Init();
 
