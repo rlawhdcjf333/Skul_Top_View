@@ -129,8 +129,8 @@ void GameScene7::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(38, 9));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_SwordMan(36, 9));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(33, 15));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(28, 16));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(28, 24));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(34, 16));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(35, 17));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(29, 33));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(23, 36));
 
@@ -141,7 +141,7 @@ void GameScene7::Update()
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(29, 33));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(23, 36));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hammer(16, 42));
-		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(17, 46));
+		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(35, 50));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(21, 51));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Hunter(29, 53));
 		Obj->AddObject(ObjectLayer::Enemy, new Stage1_Wizard(35, 50));
