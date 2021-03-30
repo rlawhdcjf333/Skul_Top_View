@@ -95,6 +95,11 @@ void GameScene::Update()
 		}
 	}
 
+	if (INPUT->GetKeyDown('F'))
+	{
+		SceneManager::GetInstance()->LoadScene(L"GameScene9");
+	}
+
 	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
 		if (INPUT->GetKeyDown('G'))

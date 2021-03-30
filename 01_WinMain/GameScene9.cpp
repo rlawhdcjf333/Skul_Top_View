@@ -9,6 +9,7 @@
 void GameScene9::Init()
 {
 	SoundPlayer::GetInstance()->Stop(L"Stage2");
+	SoundPlayer::GetInstance()->Stop(L"Main");
 	SoundPlayer::GetInstance()->Play(L"Airman", 0.1);
 	MapLoad();
 
@@ -26,6 +27,15 @@ void GameScene9::Init()
 
 	IMAGEMANAGER->LoadFromFile(L"back5", Resources(L"back5.bmp"), 1280, 740, false);
 	mBack = IMAGEMANAGER->FindImage(L"back5");
+
+	IMAGEMANAGER->LoadFromFile(L"ScoreFrame", Resources(L"ScoreFrame.bmp"), 1280, 720, false);
+	mScoreFrame = IMAGEMANAGER->FindImage(L"ScoreFrame");
+
+	mTogle = false;
+
+	mDeathCount = 3;
+	mKillCount = 192;
+	mCurrentGold = SKUL->GetGold();
 }
 
 void GameScene9::Update()
@@ -87,6 +97,16 @@ void GameScene9::Update()
 	{
 		Obj->FindObject("Door")->SetIsActive(true);
 	}
+
+
+	if (INPUT->GetKeyDown('T'))
+	{
+		if (mTogle)mTogle = false;
+		else if (!mTogle) mTogle = true;
+
+		mPlayTime = (int)Time::GetInstance()->GetWorldTime();
+		mScore = mCurrentGold + (2000 - ((mPlayTime / 60) * 100));
+	}
 }
 
 void GameScene9::Render(HDC hdc)
@@ -116,6 +136,19 @@ void GameScene9::Render(HDC hdc)
 
 
 	ObjectManager::GetInstance()->Render(hdc);
+
+	if (mTogle)
+	{
+		mScoreFrame->Render(hdc, 0, 0);
+
+		SetBkMode(hdc, TRANSPARENT);
+		TextOut(hdc, 535, 220, to_wstring(mPlayTime).c_str(), to_wstring(mPlayTime).size());
+		TextOut(hdc, 535, 277, to_wstring(mDeathCount).c_str(), to_wstring(mDeathCount).size());
+		TextOut(hdc, 530, 334, to_wstring(mKillCount).c_str(), to_wstring(mKillCount).size());
+		TextOut(hdc, 535, 391, to_wstring(mCurrentGold).c_str(), to_wstring(mCurrentGold).size());
+		TextOut(hdc, 525, 448, to_wstring(mScore).c_str(), to_wstring(mScore).size());
+		SetBkMode(hdc, OPAQUE);
+	}
 }
 
 void GameScene9::Release()

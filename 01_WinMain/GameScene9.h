@@ -9,8 +9,16 @@ class GameScene9 : public Scene
 	int y;
 	int offsetX;
 	int offsetY;
+
+	int mPlayTime;
+	int mDeathCount;
+	int mKillCount;
+	int mCurrentGold;
+	int mScore;
 	Image* mBack;
 	Image* mWitch;
+	Image* mScoreFrame;
+	bool mTogle;
 	Animation* mAnm;
 	bool mDoorOpen = false;
 	float mOpenTime = 1.0f;
