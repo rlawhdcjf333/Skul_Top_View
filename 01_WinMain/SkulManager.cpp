@@ -86,6 +86,14 @@ void SkulManager::Update()
 	if (mHp <= 0) // 죽었을 때 할 일;
 	{
 		//GameEventManager::PushEvent() 대충 이런거 하나 하고
+		SoundPlayer::GetInstance()->Stop(L"Title");
+		SoundPlayer::GetInstance()->Stop(L"Stage1");
+		SoundPlayer::GetInstance()->Stop(L"Title");
+		SoundPlayer::GetInstance()->Stop(L"Stage2");
+		SoundPlayer::GetInstance()->Stop(L"Store");
+		SoundPlayer::GetInstance()->Stop(L"Main");
+		SoundPlayer::GetInstance()->Stop(L"Airman");
+
 		Release();
 		SceneManager::GetInstance()->LoadScene(L"GameScene");
 	}

@@ -16,12 +16,12 @@ void MainScene::Init()
 	mAnm->SetFrameUpdateTime(0.4f);
 	mAnm->Play();
 
-	SoundPlayer::GetInstance()->LoadFromFile(L"Title", Resources(L"/Sound/Title.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Stage1", Resources(L"/Sound/Stage1.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Stage2", Resources(L"/Sound/Stage2.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Store", Resources(L"/Sound/Store.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"/Sound/Main.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Airman", Resources(L"/Sound/Airman.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Title", Resources(L"/Sound/Title.mp3"), true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Stage1", Resources(L"/Sound/Stage1.mp3"), true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Stage2", Resources(L"/Sound/Stage2.mp3"), true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Store", Resources(L"/Sound/Store.mp3"), true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"/Sound/Main.mp3"), true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Airman", Resources(L"/Sound/Airman.mp3"), true);
 	SoundPlayer::GetInstance()->Play(L"Title",0.3);
 }
 
