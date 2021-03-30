@@ -56,7 +56,10 @@ public:
 	virtual void Skill1() {};
 	virtual void Skill2() {};
 	float const GetSkill1CoolTime() { return mSkill1CoolTime; };
+	void SetSkill1CoolTime(float val) { mSkill1CoolTime = val; }
 	float const GetSkill2CoolTime() { return mSkill2CoolTime; };
+	void SetSkill2CoolTime(float val) { mSkill2CoolTime = val; }
+
 
 	void UpdateAngle() 
 	{ 

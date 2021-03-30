@@ -13,7 +13,7 @@ BoneSandglass::BoneSandglass(int indexX, int indexY)
 
 	mItemName = L"뼈 모래시계";
 	mExplanation = L"곱게 간 뼈를 담은 기괴한 모래시계";
-	mEffect = L"스킬을 사용할 때마다 교대 쿨타임이 0.5초 감소합니다.";
+	mEffect = L"비충전형 스킬을 사용할 때마다 교대 쿨타임이 0.5초 감소합니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"BlackMagic", Resources(L"/item/BlackMagic.bmp"), 78, 78, true);
 	mSlot1Name = L"흑마술";
@@ -31,8 +31,27 @@ BoneSandglass::BoneSandglass(int indexX, int indexY)
 
 	mValue = mPhysicalAttackPower / 4.f;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mActivationFunc = [this]()
+	{
+		if (SKUL->GetCurrentSkul()->GetSkill1CoolTime() == 0)
+		{
+			mSkillCheck1 = false;
+		}
+		if (mSkillCheck1 == false and SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0)
+		{
+			mSkillCheck1 = true;
+			SKUL->SetSwitchingCoolTime(SKUL->GetSwitchingCoolTime() - 0.5f);
+		}
+		if (SKUL->GetCurrentSkul()->GetSkill2CoolTime() == 0)
+		{
+			mSkillCheck2 = false;
+		}
+		if (mSkillCheck2 == false and SKUL->GetCurrentSkul()->GetSkill2CoolTime() > 0)
+		{
+			mSkillCheck2 = true;
+			SKUL->SetSwitchingCoolTime(SKUL->GetSwitchingCoolTime() - 0.5f);
+		}
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +69,6 @@ void BoneSandglass::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,14 +110,12 @@ void BoneSandglass::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
 
 	}
 

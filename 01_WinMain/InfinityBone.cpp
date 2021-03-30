@@ -13,7 +13,7 @@ InfinityBone::InfinityBone(int indexX, int indexY)
 
 	mItemName = L"무한의 뼈";
 	mExplanation = L"여기라면 마녀님의 두루마리를 정말 안전하게 보호할 수 있다.";
-	mEffect = L"스킬 사용 시 30% 확률로 해당 스킬의 쿨타임이 초기화 됩니다.";
+	mEffect = L"비충전형 스킬 사용 시 30% 확률로 해당 스킬의 쿨타임이 초기화 됩니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"BlackMagic", Resources(L"/item/BlackMagic.bmp"), 78, 78, true);
 	mSlot1Name = L"흑마술";
@@ -29,10 +29,32 @@ InfinityBone::InfinityBone(int indexX, int indexY)
 
 	mType = ItemType::CommonItem;
 
-	mValue = mPhysicalAttackPower / 4.f;
+	mValue = 0;
 
-	mActivationFunc = []() {};
-	mDeactivationFunc = [this]() {SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue); };
+	mSkillCheck1 = false;
+	mSkillCheck2 = false;
+
+	mActivationFunc = [this]()
+	{
+		if (SKUL->GetCurrentSkul()->GetSkill1CoolTime() == 0)
+		{
+			mSkillCheck1 = false;
+		}
+		if (mSkillCheck1 == false and SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0)
+		{
+			mSkillCheck1 = true;
+			if (RAND->Probablity(30)) SKUL->GetCurrentSkul()->SetSkill1CoolTime(0);
+		}
+		if (SKUL->GetCurrentSkul()->GetSkill2CoolTime() == 0)
+		{
+			mSkillCheck2 = false;
+		}
+		if (mSkillCheck2 == false and SKUL->GetCurrentSkul()->GetSkill2CoolTime() > 0)
+		{
+			mSkillCheck2 = true;
+			if (RAND->Probablity(30)) SKUL->GetCurrentSkul()->SetSkill2CoolTime(0);
+		}
+	};
 	mIsCollision = false;
 
 	mIsTrashed = true;
@@ -50,7 +72,6 @@ void InfinityBone::Update()
 		if (INPUT->GetKeyUp('F') and mDuration >= 1.8f) //획득 트리거
 		{
 			SKUL->GetInventory()->GetItem(this);
-			SKUL->SetPhysicalAtk(mPhysicalAttackPower + mValue);
 			mIsTrashed = false;
 			SetObjectOnTile(0, 0); //안보이는 어디론가로 숨겨놓는다... 이러면 어차피 클리핑되서 렌더도 안 돈다;
 			mRect = RectMakeBottom(mX, mY, mSizeX, mSizeY);
@@ -92,15 +113,12 @@ void InfinityBone::Render(HDC hdc)
 
 	if (mIsCollision)
 	{
-		SetBkMode(hdc, TRANSPARENT);
 		CallFont(hdc, 15, [&]()
 		{
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 40 - CAMERA->GetRect().top, mItemName.c_str(), mItemName.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 25 - CAMERA->GetRect().top, mExplanation.c_str(), mExplanation.size());
 			TextOut(hdc, mRect.left - CAMERA->GetRect().left, mRect.top - 10 - CAMERA->GetRect().top, mEffect.c_str(), mEffect.size());
 		});
-		SetBkMode(hdc, OPAQUE);
-
 	}
 
 }

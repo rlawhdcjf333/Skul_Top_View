@@ -13,16 +13,12 @@ void GameScene::Init()
 	MapLoad();
 	SKUL->SceneInit();
 	ITEM->RandomSpawn(42,51);
-	new MagesNecklace(42, 51);
-
-	new AlchemistHead(43, 52);
 
 	GameObject* door = new Door(680, 744);
 	door->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
 	Obj->AddObject(ObjectLayer::Door, door);
 	Obj->Init();
-
 
 	CAMERA->ChangeMode(Camera::Mode::Follow);
 	CAMERA->SetTarget(SKUL->GetCurrentSkul());

@@ -140,7 +140,7 @@ void Bullet::Render(HDC hdc)
 		}
 		else
 		{
-			CAMERA->Render(hdc, mImage, mRect.left, mRect.top);
+			CAMERA->Render(hdc, mImage, mRect.left, mRect.top-15);
 		}
 	}
 }

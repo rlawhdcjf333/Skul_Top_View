@@ -5,6 +5,9 @@ class InfinityBone :public Item
 {
 	float mValue;
 
+	bool mSkillCheck1;
+	bool mSkillCheck2;
+
 public:
 
 	InfinityBone(int indexX, int indexY);

@@ -14,8 +14,8 @@ FireBullet::FireBullet(Player* startUnit, float damage)
 	mImage = IMAGEMANAGER->FindImage(L"FireBullet");
 	IMAGEMANAGER->LoadFromFile(L"FireSlash", Resources(L"item/fireSlash.bmp"), 500, 400, 5, 4, true);
 
-	mSizeX = 60;
-	mSizeY = 60;
+	mSizeX = 45;
+	mSizeY = 45;
 
 	mType = BulletType::Straight;
 
@@ -61,13 +61,10 @@ void FireBullet::Update()
 	}
 
 
-	new LoopEffect(L"FireBullet", mX, mY);
 	mX += mSpeed * dTime * cosf(mAngle);
 	mY -= mSpeed * dTime * sinf(mAngle);
 
 	mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
-
-
 
 }
 
@@ -86,4 +83,5 @@ void FireBullet::Release()
 
 void FireBullet::Render(HDC hdc)
 {
+	CAMERA->ScaleRender(hdc, mImage, mRect.left, mRect.top, mSizeX, mSizeY);
 }

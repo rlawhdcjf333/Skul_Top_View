@@ -14,7 +14,7 @@ MagesNecklace::MagesNecklace(int indexX, int indexY)
 
 	mItemName = L"마법사의 목걸이";
 	mExplanation = L"목걸이에 박힌 보석의 영향으로 마나의 흐름을 더욱 잘 느낄 수 있게된다.";
-	mEffect = L"스킬을 사용할 때마다 교대 쿨타임이 0.5초 감소합니다.스킬 사용 시 화염옥이 생성됩니다.\n화염옥은 일정범위 내 가장 가까운 적에게 파이어볼을 발사하여 마법데미지를 입힙니다.";
+	mEffect = L"비충전형 스킬을 사용할 때마다 교대 쿨타임이 0.5초 감소합니다.비충전형 스킬 사용 시 화염옥이 생성됩니다.\n화염옥은 일정범위 내 가장 가까운 적에게 파이어볼을 발사하여 마법데미지를 입힙니다.";
 
 	IMAGEMANAGER->LoadFromFile(L"BlackMagic", Resources(L"/item/BlackMagic.bmp"), 78, 78, true);
 	mSlot1Name = L"흑마술";
@@ -51,7 +51,7 @@ MagesNecklace::MagesNecklace(int indexX, int indexY)
 		{
 			mSkillCheck2 = false;
 		}
-		if (mSkillCheck2 == false and SKUL->GetCurrentSkul()->GetSkill1CoolTime() > 0)
+		if (mSkillCheck2 == false and SKUL->GetCurrentSkul()->GetSkill2CoolTime() > 0)
 		{
 			mSkillCheck2 = true;
 			SKUL->SetSwitchingCoolTime(SKUL->GetSwitchingCoolTime() - 0.5f);
