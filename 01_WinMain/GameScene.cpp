@@ -13,7 +13,8 @@ void GameScene::Init()
 	MapLoad();
 	SKUL->SceneInit();
 	
-	new GrimReaperHead(43,51);
+	//new GrimReaperHead(43,51);
+	ITEM->RandomSpawn(43, 51);
 	ITEM->RandomSpawn(38, 53);
 
 	GameObject* door = new Door(680, 744);
@@ -95,10 +96,10 @@ void GameScene::Update()
 		}
 	}
 
-	if (INPUT->GetKeyDown('R'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene7");
-	}
+	//if (INPUT->GetKeyDown('R'))
+	//{
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene7");
+	//}
 
 	if (Obj->GetObjectList(ObjectLayer::Enemy).size() == 0)
 	{
