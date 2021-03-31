@@ -39,7 +39,6 @@ void GameScene8::Init()
 
 void GameScene8::Update()
 {
-	ObjectManager::GetInstance()->Update();
 
 	//}} 타일 클리핑
 	RECT cameraRect = CAMERA->GetRect();
