@@ -15,10 +15,11 @@ void GameScene9::Init()
 	MapLoad();
 
 	SKUL->GetCurrentSkul()->SetObjectOnTile(50, 48);
-	
+
 	GameObject* door = new Door(630, 900);
 	door->SetIsActive(false);
 	Obj->AddObject(ObjectLayer::Player, SKUL->GetCurrentSkul());
+	if (SKUL->GetAlterSkul())Obj->AddObject(ObjectLayer::Player, SKUL->GetAlterSkul());
 	Obj->AddObject(ObjectLayer::Boss, new Boss(40,40));
 	Obj->AddObject(ObjectLayer::Door, door);
 	Obj->Init();
