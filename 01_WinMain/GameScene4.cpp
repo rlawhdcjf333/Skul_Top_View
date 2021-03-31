@@ -145,10 +145,10 @@ void GameScene4::Update()
 	}
 
 
-	if (INPUT->GetKeyDown('F'))
-	{
-		SceneManager::GetInstance()->LoadScene(L"GameScene5");
-	}
+	//if (INPUT->GetKeyDown('F'))
+	//{
+	//	SceneManager::GetInstance()->LoadScene(L"GameScene5");
+	//}
 }
 
 void GameScene4::Render(HDC hdc)
