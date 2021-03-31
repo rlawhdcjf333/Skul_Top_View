@@ -27,7 +27,7 @@ MagicalAtkBuff::MagicalAtkBuff(int percentage, float duration, string name)
 
 		mValue = mMagicalAttackPower * (float)percentage / 100.f;
 
-		SKUL->SetPhysicalAtk(mMagicalAttackPower + mValue);
+		SKUL->SetMagicalAtk(mMagicalAttackPower + mValue);
 
 		Obj->AddObject(ObjectLayer::Condition, this);
 	}
@@ -46,5 +46,5 @@ void MagicalAtkBuff::Render(HDC hdc)
 
 void MagicalAtkBuff::Release()
 {
-	SKUL->SetPhysicalAtk(mPhysicalAttackPower - mValue);
+	SKUL->SetMagicalAtk(mPhysicalAttackPower - mValue);
 }
