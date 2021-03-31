@@ -297,6 +297,7 @@ void ObjectManager::DeleteSkul(Player* skul)
 
 bool ObjectManager::EnemyHitCheck()
 {
+	if (mObjectList[ObjectLayer::Enemy].size() <= 0) return false;
 	for (auto elem : mObjectList[ObjectLayer::Enemy])
 	{
 		if (dynamic_cast<Enemy*>(elem)->GetHitTime() == 0.6f) return true;

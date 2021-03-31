@@ -39,7 +39,7 @@ RitualDagger::RitualDagger(int indexX, int indexY)
 			new MagicalAtkBuff(55, 3, "RitualDaggerBuff");
 		}
 	};
-	mDeactivationFunc = [this]() {SKUL->SetMagicalAtk(mMagicalAttackPower - mValue); };
+	mDeactivationFunc = []() { };
 	mIsCollision = false;
 
 	mIsTrashed = true;
