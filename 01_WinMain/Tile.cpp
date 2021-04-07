@@ -50,6 +50,14 @@ void Tile::Render(HDC hdc)
 	if (mImage)
 	{
 		CAMERA->FrameRender(hdc, mImage, mX, mY-mZaxis, mFrameX, mFrameY);
+
+		//CallFont(hdc, 10,
+		//	[=]() {
+		//		TextOut(hdc, mX+TileSizeX/2 - 5 - CAMERA->GetRect().left, mY +TileSizeY/2-5- CAMERA->GetRect().top, to_wstring(mIndexX).c_str(), to_wstring(mIndexX).size());
+		//		TextOut(hdc, mX + TileSizeX / 2 +5 - CAMERA->GetRect().left, mY +TileSizeY/2-5- CAMERA->GetRect().top, to_wstring(mIndexY).c_str(), to_wstring(mIndexY).size());
+		//	});
+
+	
 		//mImage->ScaleFrameRender(hdc, mX, mY, mFrameX, mFrameY, mSizeX, mSizeY);
 		
 			
@@ -120,7 +128,7 @@ void Tile::AttackDamage(int damage) {
 			new Effect(L"SkulHitEffect", elem->GetRect().left, elem->GetRect().top, EffectType::Normal);
 		}
 	}
-	//mAttackTest = true;
+	mAttackTest = true;
 }
 void Tile::EnemyAttack(int damage) {
 	Update();
